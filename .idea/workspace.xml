@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Packages/Runtime/index.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/Reactivity/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/Reactivity/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SUMMARY.md" beforeDir="false" afterPath="$PROJECT_DIR$/SUMMARY.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,9 +25,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Packages/Runtime" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\vue3源码解释\Packages\Runtime" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\vue3源码解释\Packages" />
     </key>
@@ -57,7 +62,7 @@
       <workItem from="1602599172754" duration="1777000" />
       <workItem from="1602645786665" duration="4883000" />
       <workItem from="1603684988580" duration="4704000" />
-      <workItem from="1603722810568" duration="5006000" />
+      <workItem from="1603722810568" duration="6080000" />
     </task>
     <servers />
   </component>
