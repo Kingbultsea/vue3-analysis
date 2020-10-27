@@ -176,6 +176,7 @@
 &#x6A21;&#x5757;&#x4E4B;&#x95F4;&#x7684;&#x4E92;&#x76F8;&#x7EC4;&#x5408;&#xFF0C;&#x6765;&#x6784;&#x6210;&#x4E00;&#x4E2A;&#x6574;&#x4F53;&#xFF0C;
 &#x8FD9;&#x6837;&#x66F4;&#x5229;&#x4E8E;&#x56E2;&#x961F;&#x5F00;&#x53D1;&#x4E86;&#xFF0C;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x56E2;&#x961F;&#x60C5;&#x51B5;&#x6765;&#x5B9A;&#x5236;&#x5408;&#x9002;&#x7684;&#x5F00;&#x53D1;&#x67B6;&#x6784;&#x3002;composition-api&#x7684;&#x51FA;&#x73B0;&#xFF0C;&#x5982;&#x679C;&#x60F3;&#x771F;&#x6B63;&#x5229;&#x7528;&#x597D;&#xFF0C;&#x5F04;&#x61C2;vue3&#x6E90;&#x7801;&#x662F;&#x5FC5;&#x987B;&#x7684;&#x3002;
 vue3&#x4E2D;&#x91CD;&#x8981;&#x7684;&#x5305;&#xFF1A;Reactivity&#x3001;runtime-x&#x548C; compiler-x&#x3002;</p>
+<p>gitbook&#x94FE;&#x63A5;&#xFF1A;<a href="https://kingbultsea.github.io/vue3-analysis/book/index.html" target="_blank">https://kingbultsea.github.io/vue3-analysis/book/index.html</a></p>
 <h2 id="&#x5982;&#x4F55;&#x9605;&#x8BFB;&#x6E90;&#x7801;">&#x5982;&#x4F55;&#x9605;&#x8BFB;&#x6E90;&#x7801;</h2>
 <p>&#x5355;&#x6B65;&#x8C03;&#x8BD5;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x3002;</p>
 <p>&#x4F7F;&#x7528;webstrom&#xFF0C;Run -&gt; Edit Configurations -&gt; + -&gt; npm
@@ -185,18 +186,18 @@ vue3&#x4E2D;&#x91CD;&#x8981;&#x7684;&#x5305;&#xFF1A;Reactivity&#x3001;runtime-x&
 <pre><code class="lang-typescript">testMatch: [<span class="hljs-string">&apos;&lt;rootDir&gt;/packages/runtime-core/__tests__/**/rendererAttrsFallthrough.spec.[jt]s?(x)&apos;</span>]
 </code></pre>
 <p>&#x6BD4;&#x5982;&#x8FD9;&#x91CC;&#x662F;&#x542F;&#x52A8;runtime-core&#x4E2D;&#x7684;rendererAttrsFallthrough.spec.ts&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x3002;</p>
-<h5 id="reactivity&#x5305;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x9605;&#x8BFB;&#x987A;&#x5E8F;">reactivity&#x5305;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x9605;&#x8BFB;&#x987A;&#x5E8F;</h5>
-<p><strong>ref</strong>.spec.ts -&gt; <strong>reactive</strong>.spec.ts -&gt; <strong>readonly</strong>.spec.ts -&gt; 
-<strong>reactiveArray</strong>.spec.ts -&gt; <strong>shallowReactive</strong>.spec.ts -&gt;
-<strong>effect</strong>.spec.ts -&gt; <strong>computed</strong>.spec.ts -&gt; <strong>collections</strong>(Map Set weekMap weekSet&#x7684;&#x5904;&#x7406;)</p>
+<h4 id="reactivity&#x5305;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x9605;&#x8BFB;&#x987A;&#x5E8F;">reactivity&#x5305;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x9605;&#x8BFB;&#x987A;&#x5E8F;</h4>
+<p>ref.spec.ts -&gt; reactive.spec.ts -&gt; readonly.spec.ts -&gt; 
+reactiveArray.spec.ts -&gt; shallowReactive.spec.ts -&gt;
+effect__.spec.ts -&gt; computed.spec.ts -&gt; collections(Map Set weekMap weekSet&#x7684;&#x5904;&#x7406;)</p>
 <h4 id="runtime-core&#x5305;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x9605;&#x8BFB;&#x987A;&#x5E8F;">runtime-core&#x5305;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x9605;&#x8BFB;&#x987A;&#x5E8F;</h4>
-<p><strong>vnode</strong>.spec.ts -&gt; <strong>h</strong>.spec.ts -&gt; <strong>vnodeHooks_.spec.ts -&gt; scheduler.spec.ts -&gt;
-</strong>rendererElement<strong>.spec.ts -&gt; </strong>rendererFragment<strong>.spec.ts -&gt; 
-</strong>rendererComponent<strong>.spec.ts -&gt; </strong>rendererChildren<strong>.spec.ts(&#x4E86;&#x89E3;diff&#x7B97;&#x6CD5;) -&gt; 
-</strong>rendererAttrsFallthrough__.spec.ts</p>
-<h5 id="&#x5982;&#x4F55;&#x8C03;&#x8BD5;promisemicrotask&#x5FAE;&#x4EFB;&#x52A1;">&#x5982;&#x4F55;&#x8C03;&#x8BD5;promise(microtask&#x5FAE;&#x4EFB;&#x52A1;)?</h5>
+<p>vnode.spec.ts -&gt; h.spec.ts -&gt; vnodeHooks.spec.ts -&gt; scheduler.spec.ts -&gt;
+rendererElement.spec.ts -&gt; rendererFragment.spec.ts -&gt; 
+rendererComponent.spec.ts -&gt; rendererChildren.spec.ts(&#x4E86;&#x89E3;diff&#x7B97;&#x6CD5;) -&gt; 
+rendererAttrsFallthrough.spec.ts</p>
+<h4 id="&#x5982;&#x4F55;&#x8C03;&#x8BD5;promisemicrotask&#x5FAE;&#x4EFB;&#x52A1;">&#x5982;&#x4F55;&#x8C03;&#x8BD5;promise(microtask&#x5FAE;&#x4EFB;&#x52A1;)?</h4>
 <p>&#x5728;&#x5FAE;&#x4EFB;&#x52A1;&#x5185;&#x90E8;&#x6253;&#x4E0A;&#x65AD;&#x70B9;debugger&#xFF0C;&#x5355;&#x6B65;&#x8C03;&#x8BD5;&#x65F6;&#xFF0C;&#x76F4;&#x63A5;&#x70B9;&#x51FB;&#x8DF3;&#x8F6C;&#x5230;&#x4E0B;&#x4E00;&#x4E2A;&#x65AD;&#x70B9;&#x5373;&#x53EF;&#x3002;</p>
-<h2 id="reactivity">Reactivity</h2>
+<h4 id="reactivity">Reactivity</h4>
 <p>Reactivity&#x662F;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5305;&#xFF0C;vue3&#x4E2D;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;ref&#x548C;relative&#x6765;&#x8FDB;&#x884C;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5316;&#xFF0C;&#x8FD9;&#x4E2A;&#x5305;&#x6D89;&#x53CA;&#x4E09;&#x4E2A;&#x6982;&#x5FF5;effect&#x3001;track&#x3001;trigger&#xFF0C;
 effect(fn)&#x5C31;&#x597D;&#x6BD4;&#x6DFB;&#x52A0;&#x5F71;&#x54CD;&#xFF0C;fn&#x6267;&#x884C;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x9047;&#x5230;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x53D6;&#x503C;&#xFF0C;&#x5219;&#x89E6;&#x53D1;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x6240;&#x83B7;&#x53D6;&#x7684;&#x5B57;&#x6BB5;&#x7684;track&#xFF0C;
 &#x6DFB;&#x52A0;&#x8FFD;&#x8E2A;&#x5F53;&#x524D;&#x6FC0;&#x6D3B;&#x7684;effect&#xFF0C;&#x5F53;&#x6709;&#x4E8B;&#x4EF6;&#x89E6;&#x53D1;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5BF9;&#x5E94;&#x7684;&#x5B57;&#x6BB5;&#x7684;&#x4FEE;&#x6539;&#x503C;&#x7684;&#x884C;&#x4E3A;&#x65F6;&#xFF0C;&#x5C06;&#x4F1A;trigger&#xFF0C;&#x89E6;&#x53D1;&#x6240;&#x8FFD;&#x8E2A;&#x7684;effect&#xFF0C;&#x518D;&#x6B21;&#x6267;&#x884C;fn&#x7684;&#x6D41;&#x7A0B;&#x3002;</p>
@@ -268,7 +269,7 @@ it(<span class="hljs-string">&apos;should create an element&apos;</span>, () =&g
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"介绍","level":"1.1","depth":1,"next":{"title":"reactivity","level":"1.2","depth":1,"path":"Packages/Reactivity/index.md","ref":"Packages/Reactivity/index.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-10-27T03:58:51.582Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-27T06:20:28.997Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"介绍","level":"1.1","depth":1,"next":{"title":"reactivity","level":"1.2","depth":1,"path":"Packages/Reactivity/index.md","ref":"Packages/Reactivity/index.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2020-10-27T07:53:18.393Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-27T07:53:26.447Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
