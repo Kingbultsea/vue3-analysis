@@ -5,6 +5,8 @@ vue3做了最大的变化就是api的细分，适配typescript。給我一种感
 这样更利于团队开发了，可以根据团队情况来定制合适的开发架构。composition-api的出现，如果想真正利用好，弄懂vue3源码是必须的。
 vue3中重要的包：Reactivity、runtime-x和 compiler-x。
 
+gitbook链接：https://kingbultsea.github.io/vue3-analysis/book/index.html
+
 ## 如何阅读源码
 单步调试单元测试。
 
