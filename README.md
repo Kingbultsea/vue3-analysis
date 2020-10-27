@@ -19,21 +19,21 @@ testMatch: ['<rootDir>/packages/runtime-core/__tests__/**/rendererAttrsFallthrou
 ```
 比如这里是启动runtime-core中的rendererAttrsFallthrough.spec.ts测试用例。
 
-##### reactivity包的单元测试阅读顺序
-__ref__.spec.ts -> __reactive__.spec.ts -> __readonly__.spec.ts -> 
-__reactiveArray__.spec.ts -> __shallowReactive__.spec.ts ->
-__effect__.spec.ts -> __computed__.spec.ts -> __collections__(Map Set weekMap weekSet的处理)
+#### reactivity包的单元测试阅读顺序
+ref.spec.ts -> reactive.spec.ts -> readonly.spec.ts -> 
+reactiveArray.spec.ts -> shallowReactive.spec.ts ->
+effect__.spec.ts -> computed.spec.ts -> collections(Map Set weekMap weekSet的处理)
 
 #### runtime-core包的单元测试阅读顺序
-__vnode__.spec.ts -> __h__.spec.ts -> __vnodeHooks_.spec.ts -> scheduler.spec.ts ->
-__rendererElement__.spec.ts -> __rendererFragment__.spec.ts -> 
-__rendererComponent__.spec.ts -> __rendererChildren__.spec.ts(了解diff算法) -> 
-__rendererAttrsFallthrough__.spec.ts
+vnode.spec.ts -> h.spec.ts -> vnodeHooks.spec.ts -> scheduler.spec.ts ->
+rendererElement.spec.ts -> rendererFragment.spec.ts -> 
+rendererComponent.spec.ts -> rendererChildren.spec.ts(了解diff算法) -> 
+rendererAttrsFallthrough.spec.ts
 
-##### 如何调试promise(microtask微任务)?
+#### 如何调试promise(microtask微任务)?
 在微任务内部打上断点debugger，单步调试时，直接点击跳转到下一个断点即可。
 
-## Reactivity
+#### Reactivity
 Reactivity是响应式数据包，vue3中可以使用ref和relative来进行响应式数据化，这个包涉及三个概念effect、track、trigger，
 effect(fn)就好比添加影响，fn执行的过程中，遇到响应式数据取值，则触发响应式数据所获取的字段的track，
 添加追踪当前激活的effect，当有事件触发响应式数据对应的字段的修改值的行为时，将会trigger，触发所追踪的effect，再次执行fn的流程。
