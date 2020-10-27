@@ -35,7 +35,7 @@ rendererAttrsFallthrough.spec.ts
 #### 如何调试promise(microtask微任务)?
 在微任务内部打上断点debugger，单步调试时，直接点击跳转到下一个断点即可。
 
-#### Reactivity
+## Reactivity
 Reactivity是响应式数据包，vue3中可以使用ref和relative来进行响应式数据化，这个包涉及三个概念effect、track、trigger，
 effect(fn)就好比添加影响，fn执行的过程中，遇到响应式数据取值，则触发响应式数据所获取的字段的track，
 添加追踪当前激活的effect，当有事件触发响应式数据对应的字段的修改值的行为时，将会trigger，触发所追踪的effect，再次执行fn的流程。
