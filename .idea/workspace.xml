@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +61,9 @@
       <workItem from="1602645786665" duration="4883000" />
       <workItem from="1603684988580" duration="4704000" />
       <workItem from="1603722810568" duration="6372000" />
-      <workItem from="1603765453207" duration="13356000" />
+      <workItem from="1603765453207" duration="13993000" />
+      <workItem from="1603810517358" duration="2526000" />
+      <workItem from="1603850286279" duration="468000" />
     </task>
     <servers />
   </component>
