@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Packages/Runtime/一些问题.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/Runtime/desc.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SUMMARY.md" beforeDir="false" afterPath="$PROJECT_DIR$/SUMMARY.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/一些问题.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/一些问题.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/book/search_index.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +70,7 @@
       <workItem from="1603765453207" duration="13993000" />
       <workItem from="1603810517358" duration="2526000" />
       <workItem from="1603850286279" duration="8587000" />
-      <workItem from="1603940251531" duration="2656000" />
+      <workItem from="1603940251531" duration="2920000" />
     </task>
     <servers />
   </component>
