@@ -72,4 +72,18 @@ if (!instance.type.props) {
 步骤三：子组件进行patch，同样经过initProps处理，
 在②中调用setup方法，并传入instance.props, instance.setupConetxt，这个时候子组件就会利用到父组件传入的props了。
 
+那更新的时候，是怎么样的？
 
+触发父组件instance，renderComponentRoot(instance)中调用instance.render（这个过程就是vnode.props的更新了）
+再次进行当前track追踪（effect运行的特性，是会删除当前追踪），patch(旧vnode1, 新vnode2)，processComponent updateComponent，
+新vnode2引用vnode1.component（instance2，子组件instance2），删除queue任务中的instance2.update，instance2.next = n2，执行instance2.update，
+检测到有next字段，执行updateComponentPreRender,这里instance2是为了标识是子instance
+```typescript
+nextVNode.component = instance2 // 对当前没用，因为已经引用了
+const prevProps = instance2.vnode.props
+instance2.vnode = nextVNode // 更新vnode
+instance2.next = null // 删除next
+updateProps(instance2, nextVNode.props, prevProps, optimized)
+updateSlots(instance2, nextVNode.children)
+```
+updateProps会利用setFullProps来更新attrs和props，这里的更新过的props和attrs可以提供給Child内部使用，如当前使用了props.foo。
