@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/vue3源码解释.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/FontAwesome.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1h5HHoM5wXR4eY5j2wzsRglAG6r" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Packages/Runtime" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\vue3源码解释\Packages\Runtime" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\vue3源码解释\Packages" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="" />
+      <created>1599293947367</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1599293947367</updated>
+      <workItem from="1599293949272" duration="1583000" />
+      <workItem from="1599330337577" duration="599000" />
+      <workItem from="1602599172754" duration="1777000" />
+      <workItem from="1602645786665" duration="4883000" />
+      <workItem from="1603684988580" duration="4704000" />
+      <workItem from="1603722810568" duration="6372000" />
+      <workItem from="1603765453207" duration="13993000" />
+      <workItem from="1603810517358" duration="2526000" />
+      <workItem from="1603850286279" duration="8587000" />
+      <workItem from="1603940251531" duration="5599000" />
+      <workItem from="1604022053518" duration="643000" />
+      <workItem from="1604023370967" duration="599000" />
+      <workItem from="1604024976231" duration="2676000" />
+      <workItem from="1604121837825" duration="1829000" />
+      <workItem from="1604239466686" duration="4346000" />
+      <workItem from="1604281438582" duration="17494000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="573" y="527" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603944050339">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="573" y="527" key="#com.intellij.fileTypes.FileTypeChooser/2560.-114.1600.880/0.0.2560.1400@0.0.2560.1400" timestamp="1603944050339" />
+    <state x="226" y="417" width="667" height="566" key="find.popup" timestamp="1604289544907">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="304" y="417" width="667" height="566" key="find.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1604242400292" />
+    <state x="226" y="417" width="667" height="566" key="find.popup/2560.-114.1600.880/0.0.2560.1400@0.0.2560.1400" timestamp="1604289544907" />
+    <state x="1788" y="693" width="672" height="678" key="search.everywhere.popup" timestamp="1604242985359">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1788" y="693" width="672" height="678" key="search.everywhere.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1604242985359" />
+    <state x="1331" y="693" width="672" height="678" key="search.everywhere.popup/2560.-114.1600.880/0.0.2560.1400@0.0.2560.1400" timestamp="1603874600243" />
+  </component>
+</project>

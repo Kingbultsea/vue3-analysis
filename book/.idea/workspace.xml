@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="" />
+    <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/vue3源码解释.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/FontAwesome.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +37,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Packages/Runtime" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -67,7 +84,7 @@
       <workItem from="1604024976231" duration="2676000" />
       <workItem from="1604121837825" duration="1829000" />
       <workItem from="1604239466686" duration="4346000" />
-      <workItem from="1604281438582" duration="6046000" />
+      <workItem from="1604281438582" duration="17935000" />
     </task>
     <servers />
   </component>

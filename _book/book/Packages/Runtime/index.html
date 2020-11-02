@@ -1,0 +1,389 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Runtime · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="desc.html" />
+    
+    
+    <link rel="prev" href="../../" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Runtime
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="desc.html">
+            
+                <a href="desc.html">
+            
+                    
+                    渲染流程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="question.html">
+            
+                <a href="question.html">
+            
+                    
+                    一些问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../Reactivity/">
+            
+                <a href="../Reactivity/">
+            
+                    
+                    Reactivity
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../Reactivity/diff.html">
+            
+                <a href="../Reactivity/diff.html">
+            
+                    
+                    diff算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Runtime</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;">&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</h2>
+<pre><code class="lang-typescript">it(<span class="hljs-string">&apos;should allow attrs to fallthrough&apos;</span>, async () =&gt; {
+    debugger
+    <span class="hljs-keyword">const</span> click = jest.fn()
+    <span class="hljs-keyword">const</span> childUpdated = jest.fn()
+
+    <span class="hljs-keyword">const</span> Hello = {
+      setup() { <span class="hljs-comment">// &#x5982;&#x679C;&#x6709;render &#x5C31;&#x4F18;&#x5148;&#x6E32;&#x67D3;render&#x4E86;</span>
+        <span class="hljs-keyword">const</span> count = ref(<span class="hljs-number">0</span>)
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inc</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// &#x9700;&#x8981;&#x4E86;&#x89E3;onClick&#x4E8B;&#x4EF6;&#x7CFB;&#x7EDF;</span>
+          count.value++
+          click()
+        }
+
+        <span class="hljs-comment">// &#x8FD9;&#x91CC;&#x7684;&#x4EFB;&#x4F55;&#x4E1C;&#x897F; &#x90FD;&#x4E0D;&#x4F1A;&#x88AB;&#x672C;&#x8EAB;effect&#x6536;&#x96C6; &#x53EA;&#x6709;return &#x540E;&#x7684;&#x65B9;&#x6CD5; &#x624D;&#x4F1A;</span>
+
+        <span class="hljs-keyword">return</span> () =&gt; <span class="hljs-comment">// &#x8FD9;&#x91CC;&#x8FD8;&#x53EF;&#x4EE5;&#x5F53;redner&#x6765;&#x4F7F;&#x7528; &#x6211;&#x5E73;&#x65F6;&#x4F1A;&#x7684;&#x53EA;&#x662F; return {}  template&#x6240;&#x9700;&#x8981;&#x7684;&#x4E8B;&#x4EF6;&#x6216;&#x5C5E;&#x6027; &#x6240;&#x4EE5;&#x662F;&#x68C0;&#x67E5;function &#x8FD8;&#x662F; object&#x6765;&#x5224;&#x65AD;&#x7684;&#x5427;</span>
+          h(Child, { <span class="hljs-comment">// &#x90A3;&#x662F;&#x4E0D;&#x662F;&#x6709;&#x4E00;&#x4E2A;props effect? &#x6807;&#x8BB0;&#x4E5F;&#x8981;&#x6CE8;&#x610F;&#x4E0B;</span>
+            foo: count.value + <span class="hljs-number">1</span>,
+            id: <span class="hljs-string">&apos;test&apos;</span>,
+            <span class="hljs-keyword">class</span>: <span class="hljs-string">&apos;c&apos;</span> + count.value,
+            style: { color: count.value ? <span class="hljs-string">&apos;red&apos;</span> : <span class="hljs-string">&apos;green&apos;</span> },
+            onClick: inc,
+            <span class="hljs-string">&apos;data-id&apos;</span>: count.value + <span class="hljs-number">1</span>
+          })
+      },
+      mounted() {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;?&apos;</span>)
+      }
+    }
+
+    <span class="hljs-keyword">const</span> Child = { <span class="hljs-comment">// &#x539F;&#x6765;&#x662F;&#x8FD9;&#x6837;&#x4F20;&#x53C2;&#x6570;&#x7684; &#x90A3;&#x4E48;&#x5C31;&#x4E0D;&#x9700;&#x8981;this &#x4EC0;&#x4E48;&#x7684;&#x4E86;</span>
+      setup(props: <span class="hljs-built_in">any</span>) {
+        onUpdated(childUpdated)
+        <span class="hljs-keyword">return</span> () =&gt;
+          h(
+            <span class="hljs-string">&apos;div&apos;</span>,
+            {
+              <span class="hljs-keyword">class</span>: <span class="hljs-string">&apos;c2&apos;</span>,
+              style: { fontWeight: <span class="hljs-string">&apos;bold&apos;</span> }
+            },
+            props.foo <span class="hljs-comment">// &#x8FD9;&#x4E2A;&#x4E3A;&#x4EC0;&#x4E48;&#x662F;undefinded&#x5462; &#x56E0;&#x4E3A;setFullProps&#x6267;&#x884C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5224;&#x65AD;&#x5230;&#x7684;&#x8D4B;&#x503C;Props&#x65B9;&#x5F0F;&#x4E3A;attrs&#xFF0C;&#x6240;&#x4EE5;instance.props&#x4E3A;&#x7A7A;</span>
+         )
+      }
+    }
+
+    <span class="hljs-keyword">const</span> root = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>)
+    <span class="hljs-built_in">document</span>.body.appendChild(root)
+    render(h(Hello), root) <span class="hljs-comment">// &#x8FD9;&#x4E2A;render &#x662F;&apos;@vue/runtime-dom&apos; &#x6211;&#x4EEC;&#x4E4B;&#x524D;&#x7528;&#x7684; &#x662F;&apos;@vue/runtime-test&apos; &#x91CC;&#x9762;&#x7684; &#x6D4B;&#x8BD5;&#x7528;&#x7684;... &#x4F46;&#x662F;&#x533A;&#x522B;&#x4E0D;&#x4E00;&#x6837;&#x7684;&#x5C31;&#x662F; &#x4F1A;&#x4E0D;&#x4F1A;&#x521D;&#x59CB;&#x5316;&#x800C;&#x5DF2;</span>
+
+    <span class="hljs-keyword">const</span> node = root.children[<span class="hljs-number">0</span>] as HTMLElement
+
+    expect(node.getAttribute(<span class="hljs-string">&apos;id&apos;</span>)).toBe(<span class="hljs-string">&apos;test&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;foo&apos;</span>)).toBe(<span class="hljs-string">&apos;1&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).toBe(<span class="hljs-string">&apos;c2 c0&apos;</span>)
+    expect(node.style.color).toBe(<span class="hljs-string">&apos;green&apos;</span>)
+    expect(node.style.fontWeight).toBe(<span class="hljs-string">&apos;bold&apos;</span>)
+    expect(node.dataset.id).toBe(<span class="hljs-string">&apos;1&apos;</span>)
+
+    node.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&apos;click&apos;</span>)) <span class="hljs-comment">// &#x4E8B;&#x4EF6;&#x89E6;&#x53D1;a</span>
+    node.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&apos;click&apos;</span>)) <span class="hljs-comment">// &#x4E8B;&#x4EF6;&#x89E6;&#x53D1;a</span>
+    expect(click).toHaveBeenCalled()
+
+    await nextTick()
+    expect(childUpdated).toHaveBeenCalled()
+    expect(node.getAttribute(<span class="hljs-string">&apos;id&apos;</span>)).toBe(<span class="hljs-string">&apos;test&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;foo&apos;</span>)).toBe(<span class="hljs-string">&apos;2&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).toBe(<span class="hljs-string">&apos;c2 c1&apos;</span>)
+    expect(node.style.color).toBe(<span class="hljs-string">&apos;red&apos;</span>)
+    expect(node.style.fontWeight).toBe(<span class="hljs-string">&apos;bold&apos;</span>)
+    expect(node.dataset.id).toBe(<span class="hljs-string">&apos;2&apos;</span>)
+  })
+</code></pre>
+<h2 id="processcomponent&#x6D41;&#x7A0B;&#x56FE;&#xFF1A;">processComponent&#x6D41;&#x7A0B;&#x56FE;&#xFF1A;</h2>
+<p><a href="https://www.processon.com/view/link/5f85c9321e085307a0892f7e" target="_blank">https://www.processon.com/view/link/5f85c9321e085307a0892f7e</a></p>
+<p><img src="https://res.psy-1.com/FkR9Rnsq2SKkx9C274ypMAL1MUss" alt="processComponent&#x6D41;&#x7A0B;&#x56FE;"></p>
+<h2 id="vnode&#xFF1A;">vnode&#xFF1A;</h2>
+<p><a href="https://www.processon.com/view/link/5f963f37f346fb06e1ec35b2" target="_blank">https://www.processon.com/view/link/5f963f37f346fb06e1ec35b2</a>
+<img src="https://res.psy-1.com/Fl3_9xTvszqf7gRIPdOWG4eqT4k0" alt="vnode"></p>
+<h2 id="instance&#xFF1A;">instance&#xFF1A;</h2>
+<p><a href="https://www.processon.com/view/link/5f963f5fe401fd06fda22681" target="_blank">https://www.processon.com/view/link/5f963f5fe401fd06fda22681</a>
+<img src="https://res.psy-1.com/FmF17k7lj1iysIogq31ZIkj8HGf5" alt="instance"></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../../" class="navigation navigation-prev " aria-label="Previous page: 介绍">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="desc.html" class="navigation navigation-next " aria-label="Next page: 渲染流程">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Runtime","level":"1.2","depth":1,"next":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"previous":{"title":"介绍","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/index.md","mtime":"2020-10-29T03:36:08.024Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-02T04:27:54.157Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
