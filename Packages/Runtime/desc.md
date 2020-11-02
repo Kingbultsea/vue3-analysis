@@ -102,6 +102,7 @@ compiler做的东西还有静态标记之类的，这里只是举个简单的例
 和单步调试来食用，
 如果你没有使用电脑，无法进行单步调试，没关系，看着我的图也不是不行，我会以文字和概念的方式，尽量和你科普明白。<font color=#ff8000>这个颜色是运行的代码</font>。
 
+#### render
 入口<font color=#ff8000>render(①vnode，②HtmlElement)</font>，①参数是vnode，②参数是你实际浏览器中的DOM，这一整个东西就是把vnode，变成一个真的DOM，然后插入到②参数DOM中。
 我们先来了解一下这个①，这个①在当前测试用例中使用<font color=#ff8000>h(Hello)</font>制作出来的，这做了啥？设置<font color=#ff8000>vnode.type = Hello</font>，设置vnode.shapeFlag，
 检测到传入的参数Hello是Object类型的，所以<font color=#ff8000>vnode.shapeFlag = ShapeFlags.STATEFUL_COMPONENT</font>，顺便说一下normalizeChildren，如果有chlidren的情况下是用来加密vnode.shapeFlag的
@@ -115,7 +116,7 @@ render(testVnode, HTMLDivElement)
 
 ![wocao](https://res.psy-1.com/FimJsXIrCCMb7NhhduJbEBUPD2tF)什么，还不懂？那从头看一遍，懂了的可以继续往下看<font color=#ff8000>render</font>到底做了啥。
 
- --------
+#### shapeFlage 
 把②参数命名为container，传入render的①vnode称为n2，container.vnode称为n1。
 
 判断到n2不为空，进行<font color=#ff8000>patch</font>，判断到n1 == null，且n2.shapeFlag进行decode，为ShapeFlags.COMPONENT类型，执行processComponent。
@@ -161,4 +162,22 @@ export declare const enum ShapeFlags {
 <font color=#ff8000>ShapeFlags.COMPONENT</font>为110，再看看那个表，是不是FUNCTIONAL_COMPONENT | STATEFUL_COMPONENT可以得到110？
 所以10100 & 110为true，以上方法就是通过|来进行两种类型二进制占位符来合并，通过&判断该位置的值是否存在。
 
-![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)，是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？
+![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？
+那继续下面的东西。
+
+#### processComponent 
+<font color=#ff8000>processComponent</font>，判断到<font color=#ff8000>n1 == null && n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE</font>
+则执行<font color=#ff8000>mountComponent</font>，这个东西作用是挂载组件，这里挂载组件分三步走：
+
+* **createComponentInstance** 创建instance，一个组件相关的Object。
+* **setupComponent**，对attrs的一些处理 还有setup的处理 instance.type中的所有关键词字段的处理。
+* **setupRenderEffect**，处理instance.render。
+
+#### createComponentInstance
+没有做什么，就是像vnode一样，生成了一个对象<font color=#ff8000>instance</font>，该对象记录了当前组件的信息，比如parent字段为父组件的instance，
+root根组件的instance，render根据STATEFUL_COMPONENT、FUNCTIONAL_COMPONENT所生成的一个返回vnode的函数，也会记录一些生命周期的钩子相关字段。
+
+#### setupComponent
+<font color=#ff8000>initProps</font>，标准化生成vnode.attrs和vnode.props。
+instance.props = shallowReactive(props) 浅响应式化，这里的浅响应式化我是认为没有任何作用的，可以去看一些问题章节中的3,props的更新，是根本用不着的。
+<font color=#ff8000>initSlots</font>

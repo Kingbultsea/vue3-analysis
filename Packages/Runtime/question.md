@@ -56,7 +56,7 @@ render(h(Hello), root)
 
 ```
 
-步骤一：第一次渲染，流程图②setupComponent的initProps，使用Hello组件的vnode.props（当前为空，所以输出的attrs都是为空的），标准化生成vnode.attrs和vnode.props
+步骤一：第一次渲染，流程图②setupComponent的initProps，使用Hello组件的vnode.props（当前为空，所以输出的attrs都是为空的），标准化生成instance.attrs和instance.props
 ```typescript
 if (!instance.type.props) {
   // functional w/ optional props, props === attrs
@@ -77,7 +77,9 @@ _**那更新的时候，是怎么样的？**_
 触发父组件instance，renderComponentRoot(instance)中调用instance.render（这个过程就是vnode.props的更新了）
 再次进行当前track追踪（effect运行的特性，是会删除当前追踪），patch(旧vnode1, 新vnode2)，processComponent updateComponent，
 新vnode2引用vnode1.component（instance2，子组件instance2），删除queue任务中的instance2.update，instance2.next = n2，执行instance2.update，
-检测到有next字段，执行updateComponentPreRender,这里instance2是为了标识是子instance
+检测到有next字段，执行updateComponentPreRender,这里instance2是为了标识是子instance。
+
+updateComponentPreRender：
 ```typescript
 nextVNode.component = instance2 // 对当前没用，因为已经引用了
 const prevProps = instance2.vnode.props
