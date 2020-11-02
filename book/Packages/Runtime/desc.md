@@ -107,10 +107,58 @@ compiler做的东西还有静态标记之类的，这里只是举个简单的例
 检测到传入的参数Hello是Object类型的，所以<font color=#ff8000>vnode.shapeFlag = ShapeFlags.STATEFUL_COMPONENT</font>，顺便说一下normalizeChildren，如果有chlidren的情况下是用来加密vnode.shapeFlag的
 ，这里有没有chlidren的传入，可以忽略，啥？啥又是chlidren的传入？
 ```typescript
-const testVnode = h('span', { id: 1 }, 'hello')
-render(testVnode, HTMLDivElement) 
-// 最终生成<div><span id="1">hello</span></div>
+const testVnode = h('span', { id: 1 }, 'nihao')
+render(testVnode, HTMLDivElement)
+// 最终生成<div><span id="1">nihao</span></div>
 ```
-这下了解了吧，这个hello就是chldren。
+这下了解了吧，这个nihao就是chldren。
 
 ![wocao](https://res.psy-1.com/FimJsXIrCCMb7NhhduJbEBUPD2tF)什么，还不懂？那从头看一遍，懂了的可以继续往下看<font color=#ff8000>render</font>到底做了啥。
+
+ --------
+把②参数命名为container，传入render的①vnode称为n2，container.vnode称为n1。
+
+判断到n2不为空，进行<font color=#ff8000>patch</font>，判断到n1 == null，且n2.shapeFlag进行decode，为ShapeFlags.COMPONENT类型，执行processComponent。
+这里的decode和encode是什么来的？
+我们在生成vnode的时候，vnode.type数据被<font color=#ff8000>normalizeChildren</font>加密过，因为当前children为null,所以type为0，加密方式为<font color=#ff8000>vnode.shapeFlag |= type</font>
+解密方式为<font color=#ff8000>const a = vnode.shapeFlag & ShapeFlags.COMPONENT</font>，只要a > 0就为true，ShapeFlags.COMPONENT为一个常数。
+```typescript
+export declare const enum ShapeFlags {
+    ELEMENT = 1, // 1
+    FUNCTIONAL_COMPONENT = 2, // 10
+    STATEFUL_COMPONENT = 4, // 100
+    TEXT_CHILDREN = 8, // 1000
+    ARRAY_CHILDREN = 16, // 10000
+    SLOTS_CHILDREN = 32, // 100000
+    TELEPORT = 64, // 1000000
+    SUSPENSE = 128, // 10000000
+    COMPONENT_SHOULD_KEEP_ALIVE = 256, // 100000000
+    COMPONENT_KEPT_ALIVE = 512, // 1000000000
+    COMPONENT = 6 // 110
+}
+```
+![托脸](https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR)想了解这套运行机制麽？上面被normalizeChildren过的，
+是按位与的意思，比如二进制中
+```typescript
+01 | 01 === 01
+01 | 10 === 11
+10 | 10 === 10 
+```
+对应位置0 | 1 === 1, 0 | 0 === 0，就像||的逻辑，只要满足其中一个为真值。
+
+判断类型的按位且
+```typescript
+11 & 11 === 11
+01 & 10 === 00
+10 & 10 === 10
+```
+对应位置1 & 1 === 1, 1 | 0 === 0，就像&&的逻辑，要满足所有为真值。
+
+有没有注意到上面typescript的ShapeFlags的枚举,后面有二进制注释,有没有注意到判断类型渲染，都是使用if来判断的，就是说只要大于0就行。
+有没有发现了什么？再提醒一点，二进制标记法？没错<font color=#ff8000>normalizeChildren</font>中，
+只不过是两个类型利用二进制标记的合并，比如100代表STATEFUL_COMPONENT类型，10000代表ARRAY_CHILDREN类型，两个使用100 | 10000是不是等于10100，而在
+<font color=#ff8000>patch</font>中<font color=#ff8000>if(vnode.shapeFlag & ShapeFlags.COMPONENT)</font>，
+<font color=#ff8000>ShapeFlags.COMPONENT</font>为110，再看看那个表，是不是FUNCTIONAL_COMPONENT | STATEFUL_COMPONENT可以得到110？
+所以10100 & 110为true，以上方法就是通过|来进行两种类型二进制占位符来合并，通过&判断该位置的值是否存在。
+
+![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)，是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？

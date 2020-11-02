@@ -4,19 +4,33 @@
     <list default="true" id="851faa88-e04b-4984-84d4-00f412c25b08" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/Runtime/desc.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.idea/vue3源码解释.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/FontAwesome.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/gitbook/fonts/fontawesome/fontawesome-webfont.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/_book/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/Packages/Reactivity/diff.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Reactivity/diff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Reactivity/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/desc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/question.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Reactivity/diff.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Reactivity/diff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Reactivity/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/question.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/search_index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/search_index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/book/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/diff.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/diff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/question.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/book/search_index.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +98,7 @@
       <workItem from="1604024976231" duration="2676000" />
       <workItem from="1604121837825" duration="1829000" />
       <workItem from="1604239466686" duration="4346000" />
-      <workItem from="1604281438582" duration="17935000" />
+      <workItem from="1604281438582" duration="22479000" />
     </task>
     <servers />
   </component>
