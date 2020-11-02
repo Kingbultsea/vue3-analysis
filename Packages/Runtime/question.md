@@ -72,7 +72,7 @@ if (!instance.type.props) {
 步骤三：子组件进行patch，同样经过initProps处理，
 在②中调用setup方法，并传入instance.props, instance.setupConetxt，这个时候子组件就会利用到父组件传入的props了。
 
-那更新的时候，是怎么样的？
+_**那更新的时候，是怎么样的？**_
 
 触发父组件instance，renderComponentRoot(instance)中调用instance.render（这个过程就是vnode.props的更新了）
 再次进行当前track追踪（effect运行的特性，是会删除当前追踪），patch(旧vnode1, 新vnode2)，processComponent updateComponent，
