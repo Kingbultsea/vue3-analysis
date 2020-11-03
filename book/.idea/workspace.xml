@@ -11,26 +11,8 @@
       <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/desc.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/Packages/Runtime/question.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Reactivity/diff.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Reactivity/diff.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Reactivity/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/desc.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/Packages/Runtime/question.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_book/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/search_index.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/search_index.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/book/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/diff.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/diff.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/question.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/book/search_index.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +80,9 @@
       <workItem from="1604024976231" duration="2676000" />
       <workItem from="1604121837825" duration="1829000" />
       <workItem from="1604239466686" duration="4346000" />
-      <workItem from="1604281438582" duration="22479000" />
+      <workItem from="1604281438582" duration="23162000" />
+      <workItem from="1604331237033" duration="3947000" />
+      <workItem from="1604367881791" duration="22534000" />
     </task>
     <servers />
   </component>
@@ -115,10 +99,10 @@
     </state>
     <state x="304" y="417" width="667" height="566" key="find.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1604242400292" />
     <state x="226" y="417" width="667" height="566" key="find.popup/2560.-114.1600.880/0.0.2560.1400@0.0.2560.1400" timestamp="1604289544907" />
-    <state x="1788" y="693" width="672" height="678" key="search.everywhere.popup" timestamp="1604242985359">
-      <screen x="0" y="0" width="3440" height="1400" />
+    <state x="1331" y="693" width="672" height="678" key="search.everywhere.popup" timestamp="1604400309293">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1788" y="693" width="672" height="678" key="search.everywhere.popup/0.0.3440.1400@0.0.3440.1400" timestamp="1604242985359" />
-    <state x="1331" y="693" width="672" height="678" key="search.everywhere.popup/2560.-114.1600.880/0.0.2560.1400@0.0.2560.1400" timestamp="1603874600243" />
+    <state x="1331" y="693" width="672" height="678" key="search.everywhere.popup/2560.-114.1600.880/0.0.2560.1400@0.0.2560.1400" timestamp="1604400309293" />
   </component>
 </project>

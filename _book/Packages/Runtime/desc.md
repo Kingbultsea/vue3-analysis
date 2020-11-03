@@ -162,22 +162,265 @@ export declare const enum ShapeFlags {
 <font color=#ff8000>ShapeFlags.COMPONENT</font>为110，再看看那个表，是不是FUNCTIONAL_COMPONENT | STATEFUL_COMPONENT可以得到110？
 所以10100 & 110为true，以上方法就是通过|来进行两种类型二进制占位符来合并，通过&判断该位置的值是否存在。
 
-![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？
-那继续下面的东西。
+![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？那继续下面的东西。
 
 #### processComponent 
 <font color=#ff8000>processComponent</font>，判断到<font color=#ff8000>n1 == null && n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE</font>
 则执行<font color=#ff8000>mountComponent</font>，这个东西作用是挂载组件，这里挂载组件分三步走：
 
-* **createComponentInstance** 创建instance，一个组件相关的Object。
-* **setupComponent**，对attrs的一些处理 还有setup的处理 instance.type中的所有关键词字段的处理。
-* **setupRenderEffect**，处理instance.render。
+* createComponentInstance 创建instance，一个组件相关的Object。
+* setupComponent，对attrs的一些处理 还有setup的处理 instance.type中的所有关键词字段的处理。
+* setupRenderEffect，处理instance.render。
 
 #### createComponentInstance
 没有做什么，就是像vnode一样，生成了一个对象<font color=#ff8000>instance</font>，该对象记录了当前组件的信息，比如parent字段为父组件的instance，
 root根组件的instance，render根据STATEFUL_COMPONENT、FUNCTIONAL_COMPONENT所生成的一个返回vnode的函数，也会记录一些生命周期的钩子相关字段。
 
 #### setupComponent
-<font color=#ff8000>initProps</font>，标准化生成vnode.attrs和vnode.props。
-instance.props = shallowReactive(props) 浅响应式化，这里的浅响应式化我是认为没有任何作用的，可以去看一些问题章节中的3,props的更新，是根本用不着的。
-<font color=#ff8000>initSlots</font>
+<font color=#ff8000>initProps</font>:
+
+```typescript
+// 创建了一个props和attrs的数组:
+const props = []
+const attrs = []
+```
+<font color=#ff8000>setFullProps(instance, instance.vnode.props, props, attrs)</font>，就是处理props啦，什么，你问这个东西做了什么？
+
+![熊猫紧张](https://res.psy-1.com/FsnFrGmMvgD_GI9YnZeJuc8-xTbk)
+
+**1**.normalizePropsOptions，我们组件中，如果存在props字段。
+```typescript
+const a = {
+  props: ['a-b', 'c-d']
+}
+const b = {
+  props: { 
+    foo: Boolean,
+    test: {
+        type: Number,
+        default: 0
+    }
+  }
+}
+
+const normalized = {}
+const needCastKeys = []
+```
+
+如果拿a做举例，检测到props是一个数组，看代码你就明白了，不用文字解释了![托脸](https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR)
+```typescript
+const EMPTY_OBJ: { readonly [key: string]: any } = __DEV__
+  ? Object.freeze({})
+  : {}
+
+normalized = {
+    'aB': EMPTY_OBJ,
+    'cD': EMPTY_OBJ
+}
+needCastKeys = undefined
+```
+
+b做举例，检测到是对象，遍历props，把key转换为驼峰式写法，
+检测到key为foo的type为Boolean类型，<font color=#ff8000>needCastKeys.push(key)</font>，检测到test拥有default字段，
+<font color=#ff8000>needCastKeys.push(key)</font>。下面这个代码可以不看。
+```typescript
+for(const key in instance.props) {
+  const opt = raw[key]
+  const prop: NormalizedProp = (normalized[normalizedKey] =
+          isArray(opt) || isFunction(opt) ? { type: opt } : opt)
+  if (prop) {
+    const booleanIndex = getTypeIndex(Boolean, prop.type) // 检测boolean类型，如果是数组返回第一个index否则返回0
+    const stringIndex = getTypeIndex(String, prop.type) // 检测string类型
+    prop[BooleanFlags.shouldCast] = booleanIndex > -1
+    prop[BooleanFlags.shouldCastTrue] =
+      stringIndex < 0 || booleanIndex < stringIndex
+    // if the prop needs boolean casting or default value
+    if (booleanIndex > -1 || hasOwn(prop, 'default')) {
+      needCastKeys.push(normalizedKey)
+    }
+  }
+}
+```
+
+最终输出：
+```typescript
+normalized = {
+  foo: {
+    type: Boolean
+  },
+  test: {
+    type: Number,
+    default: 0
+  }
+}
+normalized.foo[BooleanFlags.shouldCast] = true
+normalized.foo[BooleanFlags.shouldCastTrue] = true
+
+normalized.test[BooleanFlags.shouldCast] = true
+normalized.test[BooleanFlags.shouldCastTrue] = true
+needCastKeys = ['foo', 'test']
+```
+
+这里有一个是instance.type.mixins、instance.type.mixins和全局minxins的循环调用normalizePropsOptions，最终是会合并成一整个:
+```typescript
+const normalizedEntry: NormalizedPropsOptions = [normalized, needCastKeys]
+return normalizedEntry
+```
+
+**2**.经过1得到\[<font color=#ff8000>normalized</font>, <font color=#ff8000>needCastKeys</font>\]
+
+![setFullProps](https://res.psy-1.com/Fg7cLitiSUiz-V6wR9ogC5-N4F-B)
+
+最后根据\[<font color=#ff8000>normalized</font>, <font color=#ff8000>needCastKeys</font>\]
+遍历vnode.props来赋值給props或是attrs。
+还记得一开始我们创建的props,attrs麽？以上都是为了设置这两个的。
+
+**3**.如果有<font color=#ff8000>needCastKeys</font>，这里<font color=#ff8000>normalized</font>改一个名称为<font color=#ff8000>options</font>
+```typescript
+if (needCastKeys) {
+    const rawCurrentProps = toRaw(props) // 避免有引用属性的响应式的干扰
+    for (let i = 0; i < needCastKeys.length; i++) {
+      const key = needCastKeys[i]
+      props[key] = resolvePropValue(
+        options!,
+        rawCurrentProps,
+        key,
+        rawCurrentProps[key]
+      )
+    }
+  }
+```
+我们现在还是用上面的1中的b做例子，这里先说Boolean的。这里的例子因为props没有test这个字段，所以设置默认值为false。
+```typescript
+// 参数名称：
+resolvePropValue(
+  options: NormalizedPropsOptions[0],
+  props: Data,
+  key: string,
+  value: unknown
+)
+ 
+
+const opt = options[key] as any
+const hasDefault = hasOwn(opt, 'default')
+
+// boolean casting
+    if (opt[BooleanFlags.shouldCast]) {
+      if (!hasOwn(props, key) && !hasDefault) {
+        value = false
+      } else if (
+        opt[BooleanFlags.shouldCastTrue] &&
+        (value === '' || value === hyphenate(key))
+      ) {
+        value = true
+      }
+    }
+return value // 执行到这里
+```
+
+再说一下default的，没有value且有默认这个字段，检测到default不是function而是一个值，所以直接防护default的值0.
+```typescript
+// 参数名称：
+resolvePropValue(
+  options: NormalizedPropsOptions[0],
+  props: Data,
+  key: string,
+  value: unknown
+)
+
+const opt = options[key] as any
+const hasDefault = hasOwn(opt, 'default')
+
+// default values
+    if (hasDefault && value === undefined) {
+      const defaultValue = opt.default
+      value =
+        opt.type !== Function && isFunction(defaultValue)
+          ? defaultValue()
+          : defaultValue
+    }
+return value
+```
+
+看不懂有什么用是吧？**就这么说吧，现在有两个数组一个为props一个为attrs，然后经过setFullProps，这个东西把我们组件中的props的键值給设置为驼峰式，然后遍历vnode.props，
+但是跳过键为'key'和'ref'，如果需要驼峰形式的则赋值給props，如果不存在instance.type.emits或者没有被子组件触发emits则赋值給attrs。遍历needCastKeys
+，props经过resolvePropValue的处理，给上默认值，就是給默认值而已，只对props的处理。**
+
+![熊猫紧张](https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_)什么？你又想让我給你科普一下emit？下次一定下次一定！行了，点开emit章节，你就能了解欸。
+
+最后设置instance的引用。
+```typescript
+if (isStateful) {
+  // stateful
+  instance.props = isSSR ? props : shallowReactive(props) // 所以props一层响应
+} else {
+  if (!instance.type.props) {
+    // functional w/ optional props, props === attrs
+    instance.props = attrs
+  } else {
+    // functional w/ declared props
+    instance.props = props
+  }
+}
+instance.attrs = attrs
+```
+
+<font color=#ff8000>initSlots</font>：
+
+这里的测试用例没有slots，相关移步去slots章节。
+
+<font color=#ff8000>setupStatefulComponent</font>：
+ShapeFlags.STATEFUL_COMPONENT才会执行，当前组件为ShapeFlags.STATEFUL_COMPONENT类型。设置accessCache和proxy，proxy在处理options，或者说options中使用的this，将指向proxy。
+就是methods: { foo(){ console.log(this) } }，会输出instance.proxy。
+```
+instance.accessCache = {}
+instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
+```
+
+组件中setup的运行：
+```typescript
+currentInstance = instance // 使用钩子api的时候会使用到。
+pauseTracking() // 暂停track，reactive相关，这里停止track是避免执行setup方法的时候，有响应式数据追踪到其他地方的effect，比如具有父组件进行componentEffect的过程中会patch子组件，子组件更新，父组件也需要更新，这一步仅仅在componentEffect中处理。
+setupResult = callWithErrorHandling // 调用组件的setup方法，传入(instance.props, instance.setupConetxt)。
+resetTracking() // 恢复上一个track的状态，reactive相关
+currentInstance = null // 恢复
+```
+
+callWithErrorHandling包裹setup方法，执行<font color=#ff8000>setup(instance.props, instance.setupConetxt)</font>。
+
+setup内部有钩子，当前测试用例调用了onUpdated(CLICKEVENT)钩子，设置instance.u = []，instance.u.push(CLICKEVENT)，可以去看instance.u字段。
+```typescript
+createHook(LifecycleHooks.UPDATED)
+
+// createHook内部：
+injectHook(LifecycleHooks.UPDATED, CLICKEVENT, currentInstance)
+
+// injectHook内部：
+const hooks = target[type] || (target[type] = [])
+const wrappedHook =
+hook.__weh || hook.__weh = (...args: unknown[]) => {
+      // 暂不讨论...
+}
+hooks.push(wrappedHook)
+```
+
+最后返回setup的结果給setupResult。执行<font color=#ff8000>handleSetupResult</font>，setupResult是一个Function，
+所以:
+```typescript
+instance.render = setupResult
+```
+如果setupResult是一个Object类型：
+```typescript
+instance.setupState = reactive(setupResult) // 进行响应式
+```
+
+setupResult为Object类型的时候，进行响应式化有什么好处？（其实我是感觉防止新手不知道怎么处理吧）我们平时会直接返回一个对象，对象里面包裹响应式数据对象，如果再套一层响应式化，可以让我们直接设置字段，
+输入数据，不需要再进行一次relative或者ref的调用，这和处理instance.type.data同一个原理，**也就是说你可以直接在setup中的return直接当data(){}那样返回**。
+
+这里再提醒一下，你需要打开[渲染流程图](https://www.processon.com/view/link/5f85c9321e085307a0892f7e)，才能知道流程走向到底去哪了。
+
+执行<font color=#ff8000>finishComponentSetup</font>，这里就涉及到options的设置了。具体去测试用例调试吧，这里说几个重点。
+
+callSyncHook('beforeCreate', instance.type.options)，调用全局mixin、extends、本身mixin，最后才是调用自身的。
+这里会有两个钩子被执行'beforeCreate'和'created'，这两个钩子是使用composition API是没有的，这里的钩子比setup中使用api的钩子要提早执行。
+如果内部方法使用this，那么都会指向instance.proxy，详情可以查看PublicInstanceProxyHandlers。
