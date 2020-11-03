@@ -419,8 +419,11 @@ setupResult为Object类型的时候，进行响应式化有什么好处？（其
 
 这里再提醒一下，你需要打开[渲染流程图](https://www.processon.com/view/link/5f85c9321e085307a0892f7e)，才能知道流程走向到底去哪了。
 
-执行<font color=#ff8000>finishComponentSetup</font>，这里就涉及到options的设置了。具体去测试用例调试吧，这里说几个重点。
+执行<font color=#ff8000>finishComponentSetup</font>，这里就涉及到options的设置了。具体去测试用例调试吧，如果需要特别说一下可以在Github提一下issus，这里说几个重点。
 
 **callSyncHook('beforeCreate', instance.type.options)，调用全局mixin、extends、本身mixin，最后才是调用自身的。
 这里会有两个钩子被执行'beforeCreate'和'created'，这两个钩子是使用composition API是没有的，这里的钩子比setup中使用api的钩子要提早执行。
 如果内部方法使用this，那么都会指向instance.proxy，详情可以查看PublicInstanceProxyHandlers。**
+
+#### setupRenderEffect
+![sucide](https://res.psy-1.com/Fn1AHqFf-NFtXHr6tO7AS30GVs-F)终于要看到重点了，这个就分开说吧，因为涉及到的东西很多了。
