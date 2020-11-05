@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>diff算法 · GitBook</title>
+        <title>API DOC · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,8 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../API_DOC/" />
     
-    
-    <link rel="prev" href="./" />
+    <link rel="prev" href="../Reactivity/diff.html" />
     
 
     </head>
@@ -160,9 +158,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="./">
+        <li class="chapter " data-level="1.3" data-path="../Reactivity/">
             
-                <a href="./">
+                <a href="../Reactivity/">
             
                     
                     Reactivity
@@ -174,9 +172,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.3.1" data-path="diff.html">
+        <li class="chapter " data-level="1.3.1" data-path="../Reactivity/diff.html">
             
-                <a href="diff.html">
+                <a href="../Reactivity/diff.html">
             
                     
                     diff算法
@@ -192,9 +190,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="../API_DOC/">
+        <li class="chapter active" data-level="1.4" data-path="./">
             
-                <a href="../API_DOC/">
+                <a href="./">
             
                     
                     API DOC
@@ -235,7 +233,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >diff算法</a>
+        <a href="../.." >API DOC</a>
     </h1>
 </div>
 
@@ -250,7 +248,28 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h2 id="api&#x8BE6;&#x89E3;">API&#x8BE6;&#x89E3;</h2>
+<h3 id="normalizevnode">normalizeVNode</h3>
+<p>child == null &#x6216;&#x8005;child&#x662F;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FD4;&#x56DE;Comment&#x7C7B;&#x578B;VNode&#x3002;</p>
+<p>child&#x4E3A;&#x6570;&#x7EC4;&#x7C7B;&#x578B;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FD4;&#x56DE;Fragment&#x7C7B;&#x578B;VNnode&#xFF0C;child&#x4F5C;&#x4E3A;&#x5B50;VNode&#x3002;</p>
+<p>child&#x4E3A;&#x5176;&#x4ED6;&#x7C7B;&#x578B;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FD4;&#x56DE;Text&#x7C7B;&#x578B;VNode&#xFF0C;child&#x4F5C;&#x4E3A;&#x5B50;VNode&#x3002;</p>
+<h4 id="&#x8BED;&#x6CD5;">&#x8BED;&#x6CD5;</h4>
+<blockquote>
+<p>normalizeVNode(child as VNodeChild)</p>
+</blockquote>
+<h4 id="&#x53C2;&#x6570;&#xFF08;&#x9009;&#x586B;&#xFF09;">&#x53C2;&#x6570;&#xFF08;&#x9009;&#x586B;&#xFF09;</h4>
+<p>child&#xFF0C;VNodeChild&#x7C7B;&#x578B;</p>
+<h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
+<p>VNode</p>
+<h3 id="getfallthroughattrs">getFallthroughAttrs</h3>
+<p>&#x904D;&#x5386;attrs&#xFF0C;&#x8FD4;&#x56DE;&#xFF0C;&#x8FC7;&#x6EE4;&#x6389;&#x952E;&#x4E0D;&#x4E3A;&apos;class&apos;&#x6216;&#x8005;&apos;style&apos;&#x6216;&#x8005;&#x6B63;&#x5219;&#x5339;&#x914D;&#x4E3A;on&#x5F00;&#x5934;&#x7684;&#x952E;&#x503C;&#x5BF9;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x3002;</p>
+<h4 id="&#x8BED;&#x6CD5;">&#x8BED;&#x6CD5;</h4>
+<blockquote>
+<p>getFallthroughAttrs(attrs: Data): Data | undefined</p>
+</blockquote>
+<h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
+<p>undefined | Data&#x7C7B;&#x578B;</p>
+
                                 
                                 </section>
                             
@@ -277,14 +296,10 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Reactivity">
+                <a href="../Reactivity/diff.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: diff算法">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="../API_DOC/" class="navigation navigation-next " aria-label="Next page: API DOC">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -293,7 +308,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"diff算法","level":"1.3.1","depth":2,"next":{"title":"API DOC","level":"1.4","depth":1,"path":"Packages/API_DOC/index.md","ref":"Packages/API_DOC/index.md","articles":[]},"previous":{"title":"Reactivity","level":"1.3","depth":1,"path":"Packages/Reactivity/index.md","ref":"Packages/Reactivity/index.md","articles":[{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]}]},"dir":"neutral"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Reactivity/diff.md","mtime":"2020-10-29T04:15:56.595Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T18:25:54.201Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"API DOC","level":"1.4","depth":1,"previous":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/API_DOC/index.md","mtime":"2020-11-05T10:07:33.264Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T18:25:54.201Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
