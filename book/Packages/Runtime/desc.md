@@ -364,6 +364,12 @@ if (isStateful) {
 }
 instance.attrs = attrs
 ```
+![熊猫紧张](https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_)流程图有... 写得很明白，希望你能去看几眼。
+
+instance.attrs 将会被subTree.props合并，subTree就是instance.render()返回的vnode。
+instance.props 状态类型组件（STATEFUL_COMPONENT）在运行instance.setup中传入的是instance.proxy，只会在instance.render(instance.props)应用到。
+函数类型的组件，调用的时候也会传入instance.props。
+
 
 <font color=#ff8000>initSlots</font>：
 
