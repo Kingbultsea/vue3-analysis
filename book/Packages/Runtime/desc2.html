@@ -192,6 +192,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.4" data-path="../API_DOC/index.html">
+            
+                <span>
+            
+                    
+                    API DOC
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -246,19 +259,34 @@
 }
 instance.update = effect(componentEffect, prodEffectOptions)
 </code></pre>
+<h3 id="rendercomponentroot">renderComponentRoot</h3>
+<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlags.STATEFUL_COMPONENT&#xFF0C;&#x8C03;&#x7528;instance.render(instance.withProxy || instance.proxy, instance.renderCache)&#x751F;&#x6210;subTree&#xFF0C;&#x68C0;&#x6D4B;instance.type.inheritAttrs&#x662F;&#x5426;&#x4E0D;&#x4E3A;false&#xFF0C;inheriAttrs&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;undefided&#xFF0C;&#x518D;&#x6B21;&#x68C0;&#x6D4B;subTree.shapeFlag&#x662F;&#x5426;&#x5C5E;&#x4E8E;ShapeFlags.ELEMENT&#x7C7B;&#x578B;
+&#x6216;&#x8005;ShapeFlags.COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x5219;&#x901A;&#x8FC7;cloneVNode&#x5185;&#x90E8;&#x8C03;&#x7528;mergeProps&#x628A;subTree.props&#x4E0E;subTree.attrs&#x5408;&#x5E76;&#xFF0C;&#x662F;&#x4E0D;&#x662F;&#x5FD8;&#x8BB0;&#x4E86;attrs&#x662F;&#x4EC0;&#x4E48;&#x4E1C;&#x897F;&#xFF1F;&#x5728;initProps&#x4E2D;&#xFF0C;&#x6839;&#x636E;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;vnode.props&#x6240;&#x904D;&#x5386;&#x5F97;&#x5230;&#x7684;&#xFF0C;&#x672C;&#x8D28;&#x4E0A;&#x662F;vnode.props&#x3002;</p>
+<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlage.FUNCTIONAL_COMPONENT&#xFF0C;&#x8C03;&#x7528;instance.vnode.type&#x751F;&#x6210;&#xFF0C;&#x548C;ShapeFlags.STATEFUL_COMPONENT&#x7684;&#x5408;&#x5E76;subTree.props&#x884C;&#x4E3A;&#x4E00;&#x81F4;&#xFF0C;
+&#x4F46;&#x662F;attrs = instance.type.props ? instance.attrs : getFallthroughAttrs(instance.attrs)&#x3002;getFallthroughAttrs&#x5728;API DOC&#x4E2D;&#x6709;&#x63CF;&#x8FF0;&#xFF0C;&#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x662F;&#x7B5B;&#x9009;key&#x4E3A;class&#x3001;style&#x548C;on&#x5F00;&#x5934;&#x7684;key&#x3002;attrs&#x662F;&#x7528;&#x6765;&#x4E0E;subTree.props&#x5408;&#x5E76;&#x7684;&#x3002;</p>
 <p>componentUpdate&#xFF0C;&#x6839;&#x636E;instance.isMounted&#x6765;&#x5224;&#x65AD;&#x662F;&#x5426;&#x5DF2;&#x7ECF;&#x6302;&#x8F7D;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x6302;&#x8F7D;&#x5219;&#x8C03;&#x7528;instance.render&#xFF0C;
-&#x8C03;&#x7528;instance.render&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#xFF0C;&#x5C06;&#x4F1A;track&#x5230;&#x5F53;&#x524D;instance.update&#x7684;effect&#xFF0C;&#x6700;&#x7EC8;&#x751F;&#x6210;subVnode&#xFF0C;&#x628A;subVnode.props&#x4E0E;instance.attrs&#x5408;&#x5E76;&#x3002;
+&#x8C03;&#x7528;instance.render&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#xFF0C;&#x5C06;&#x4F1A;track&#x5230;&#x5F53;&#x524D;instance.update&#x7684;effect&#xFF0C;&#x6700;&#x7EC8;&#x751F;&#x6210;subTree&#xFF0C;&#x628A;subTrree.props&#x4E0E;instance.attrs&#x5408;&#x5E76;&#x3002;
 &#x770B;&#x6E32;&#x67D3;&#x6D41;&#x7A0B;1&#x4E2D;&#x7684;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;</p>
 <pre><code class="lang-typescript"><span class="hljs-keyword">const</span> node = root.children[<span class="hljs-number">0</span>] as HTMLElement
 expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).toBe(<span class="hljs-string">&apos;c2 c0&apos;</span>)
 </code></pre>
 <p>c2 &#x548C;c0&#x5408;&#x5E76;&#x4E86;&#xFF0C;&#x5C31;&#x662F;&#x57FA;&#x4E8E;&#x8FD9;&#x4E00;&#x884C;&#x4EE3;&#x7801;&#x3002;</p>
-<pre><code class="lang-typescript">subVnode = cloneVNode(subVnode, instance.attrs) <span class="hljs-comment">// subVnode.props&#x4E0E;instance.attrs&#x7684;&#x5408;&#x5E76;</span>
+<pre><code class="lang-typescript">subTree = cloneVNode(subTree, instance.attrs) <span class="hljs-comment">// subTree.props&#x4E0E;instance.attrs&#x7684;&#x5408;&#x5E76;</span>
 </code></pre>
-<p>&#x63A5;&#x7740;</p>
+<p>&#x5982;&#x679C;&#x6709;&#x7236;parent.type.parentScopeId&#xFF0C;&#x5219;&#x62D3;&#x5C55;&#x5230;subTree.props</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> parentScopeId = parent &amp;&amp; parent.type.__scopeId
+    <span class="hljs-keyword">if</span> (parentScopeId) {
+      root = cloneVNode(root, { [parentScopeId]: <span class="hljs-string">&apos;&apos;</span> })
+    }
+</code></pre>
+<p>&#x63A5;&#x7740;&#x89E6;&#x53D1;API&#x4E2D;&#x7684;beforeMounted&#xFF0C;&#x4E0E;vnode.</p>
 <pre><code class="lang-typescript">invokeArrayFnc(instance.bm) <span class="hljs-comment">// &#x89E6;&#x53D1;&#x4F7F;&#x7528;composition API&#x521B;&#x5EFA;&#x7684;beforeMount&#x4E8B;&#x4EF6;&#x3002;</span>
 
-invokeVNodeHook(vnode.props, instance.parent, vnode) <span class="hljs-comment">// vnode.props&#x4E2D;&#x7684;&#x94A9;&#x5B50;</span>
+
+<span class="hljs-comment">// onVnodeBeforeMount</span>
+<span class="hljs-keyword">if</span> ((vnodeHook = props &amp;&amp; props.onVnodeBeforeMount)) { <span class="hljs-comment">// vnode.props.onVnodeBeforeMount</span>
+  invokeVNodeHook(vnodeHook, parent, initialVNode)
+}
 </code></pre>
 <p>&#x518D;&#x6B21;&#x8FDB;&#x884C;patch&#xFF1A;</p>
 <pre><code class="lang-typescript">patch(<span class="hljs-literal">null</span>, instance.subTree, container) <span class="hljs-comment">// container &#x4E3A; render&#x4E2D;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x2461;</span>
@@ -313,7 +341,7 @@ hostInsert(el, container)&#xFF0C;container&#x4E3A;render&#x4E2D;&#x7684;&#x7B2C;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"渲染流程2","level":"1.2.2","depth":2,"next":{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]},"previous":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc2.md","mtime":"2020-11-03T17:56:49.153Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T07:43:50.932Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"渲染流程2","level":"1.2.2","depth":2,"next":{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]},"previous":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc2.md","mtime":"2020-11-05T18:23:15.231Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T18:24:27.898Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

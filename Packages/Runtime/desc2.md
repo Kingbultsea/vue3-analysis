@@ -9,8 +9,16 @@ const prodEffectOptions = {
 }
 instance.update = effect(componentEffect, prodEffectOptions)
 ```
+
+### renderComponentRoot
+如果组件是ShapeFlags.STATEFUL_COMPONENT，调用instance.render(instance.withProxy || instance.proxy, instance.renderCache)生成subTree，检测instance.type.inheritAttrs是否不为false，inheriAttrs的初始默认值为undefided，再次检测subTree.shapeFlag是否属于ShapeFlags.ELEMENT类型
+或者ShapeFlags.COMPONENT类型，如果是则通过cloneVNode内部调用mergeProps把subTree.props与subTree.attrs合并，是不是忘记了attrs是什么东西？在initProps中，根据当前组件vnode.props所遍历得到的，本质上是vnode.props。
+
+如果组件是ShapeFlage.FUNCTIONAL_COMPONENT，调用instance.vnode.type生成，和ShapeFlags.STATEFUL_COMPONENT的合并subTree.props行为一致，
+但是attrs = instance.type.props ? instance.attrs : getFallthroughAttrs(instance.attrs)。getFallthroughAttrs在API DOC中有描述，这里主要是筛选key为class、style和on开头的key。attrs是用来与subTree.props合并的。
+
 componentUpdate，根据instance.isMounted来判断是否已经挂载，如果没有挂载则调用instance.render，
-调用instance.render的过程中，如果有响应式数据，将会track到当前instance.update的effect，最终生成subVnode，把subVnode.props与instance.attrs合并。
+调用instance.render的过程中，如果有响应式数据，将会track到当前instance.update的effect，最终生成subTree，把subTrree.props与instance.attrs合并。
 看渲染流程1中的测试用例：
 ```typescript
 const node = root.children[0] as HTMLElement
@@ -18,14 +26,27 @@ expect(node.getAttribute('class')).toBe('c2 c0')
 ```
 c2 和c0合并了，就是基于这一行代码。
 ```typescript
-subVnode = cloneVNode(subVnode, instance.attrs) // subVnode.props与instance.attrs的合并
+subTree = cloneVNode(subTree, instance.attrs) // subTree.props与instance.attrs的合并
 ```
 
-接着
+如果有父parent.type.parentScopeId，则拓展到subTree.props
+```typescript
+const parentScopeId = parent && parent.type.__scopeId
+    if (parentScopeId) {
+      root = cloneVNode(root, { [parentScopeId]: '' })
+    }
+```
+
+
+接着触发API中的beforeMounted，与vnode.
 ```typescript
 invokeArrayFnc(instance.bm) // 触发使用composition API创建的beforeMount事件。
 
-invokeVNodeHook(vnode.props, instance.parent, vnode) // vnode.props中的钩子
+
+// onVnodeBeforeMount
+if ((vnodeHook = props && props.onVnodeBeforeMount)) { // vnode.props.onVnodeBeforeMount
+  invokeVNodeHook(vnodeHook, parent, initialVNode)
+}
 ```
 
 再次进行patch：

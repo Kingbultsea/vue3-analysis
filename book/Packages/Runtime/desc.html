@@ -192,6 +192,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.4" data-path="../API_DOC/index.html">
+            
+                <span>
+            
+                    
+                    API DOC
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -540,9 +553,15 @@ resolvePropValue(
     }
 <span class="hljs-keyword">return</span> value
 </code></pre>
-<p>&#x770B;&#x4E0D;&#x61C2;&#x6709;&#x4EC0;&#x4E48;&#x7528;&#x662F;&#x5427;&#xFF1F;<strong>&#x5C31;&#x8FD9;&#x4E48;&#x8BF4;&#x5427;&#xFF0C;&#x73B0;&#x5728;&#x6709;&#x4E24;&#x4E2A;&#x6570;&#x7EC4;&#x4E00;&#x4E2A;&#x4E3A;props&#x4E00;&#x4E2A;&#x4E3A;attrs&#xFF0C;&#x7136;&#x540E;&#x7ECF;&#x8FC7;setFullProps&#xFF0C;&#x8FD9;&#x4E2A;&#x4E1C;&#x897F;&#x628A;&#x6211;&#x4EEC;&#x7EC4;&#x4EF6;&#x4E2D;&#x7684;props&#x7684;&#x952E;&#x503C;&#x7D66;&#x8BBE;&#x7F6E;&#x4E3A;&#x9A7C;&#x5CF0;&#x5F0F;&#xFF0C;&#x7136;&#x540E;&#x904D;&#x5386;vnode.props&#xFF0C;
-&#x4F46;&#x662F;&#x8DF3;&#x8FC7;&#x952E;&#x4E3A;&apos;key&apos;&#x548C;&apos;ref&apos;&#xFF0C;&#x5982;&#x679C;&#x9700;&#x8981;&#x9A7C;&#x5CF0;&#x5F62;&#x5F0F;&#x7684;&#x5219;&#x8D4B;&#x503C;&#x7D66;props&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x5B58;&#x5728;instance.type.emits&#x6216;&#x8005;&#x6CA1;&#x6709;&#x88AB;&#x5B50;&#x7EC4;&#x4EF6;&#x89E6;&#x53D1;emits&#x5219;&#x8D4B;&#x503C;&#x7D66;attrs&#x3002;&#x904D;&#x5386;needCastKeys
-&#xFF0C;props&#x7ECF;&#x8FC7;resolvePropValue&#x7684;&#x5904;&#x7406;&#xFF0C;&#x7ED9;&#x4E0A;&#x9ED8;&#x8BA4;&#x503C;&#xFF0C;&#x5C31;&#x662F;&#x7D66;&#x9ED8;&#x8BA4;&#x503C;&#x800C;&#x5DF2;&#xFF0C;&#x53EA;&#x5BF9;props&#x7684;&#x5904;&#x7406;&#x3002;</strong></p>
+<p>&#x770B;&#x4E0D;&#x61C2;&#xFF1F;</p>
+<blockquote>
+<p>&#x5C31;&#x8FD9;&#x4E48;&#x8BF4;&#x5427;&#xFF0C;&#x73B0;&#x5728;&#x6709;&#x4E24;&#x4E2A;&#x6570;&#x7EC4;&#x4E00;&#x4E2A;&#x4E3A;props&#x4E00;&#x4E2A;&#x4E3A;attrs&#xFF0C;&#x901A;&#x8FC7;setFullProps&#xFF0C;&#x6839;&#x636E;vnode.type.props&#x8FDB;&#x884C;normalizePropsOptions&#x6807;&#x51C6;&#x5316;&#x751F;&#x6210;[options, needCastKeys]&#xFF0C;
+options&#x7684;&#x751F;&#x6210;&#x662F;&#x6839;&#x636E;&#x4E3A;Object&#x7684;&#x7C7B;&#x578B;&#x7684;vnode.type.props&#x800C;&#x5B9A;&#x7684;&#x3002;&#x5F53;vnode.type.props&#x7684;&#x7C7B;&#x578B;&#x4E3A;Object&#x65F6;&#xFF0C;needCastKeys = Object.keys(vnode.type.props)&#xFF0C;&#x5F53;vnode.type.props&#x7684;&#x7C7B;&#x578B;&#x4E3A;&#x6570;&#x7EC4;&#x65F6;&#xFF0C;needCastKeys = vnode.type.props&#xFF0C;&#x5F53;&#x7136;&#x8FD9;&#x91CC;&#x7684;key&#x7684;&#x540D;&#x79F0;&#x90FD;&#x662F;&#x4F1A;&#x8FDB;&#x884C;&#x9A7C;&#x5CF0;&#x5316;&#x3002;
+&#x5728;&#x5F97;&#x5230;options&#x548C;needCastKeys&#x540E;&#xFF0C;</p>
+<p>&#x5B58;&#x5728;options&#x65F6;&#xFF0C;&#x904D;&#x5386;vnode.props&#xFF0C;&#x4F46;&#x662F;&#x8DF3;&#x8FC7;&#x952E;key === &apos;key&apos; || key === &apos;ref&apos;&#x7684;&#x904D;&#x5386;&#xFF0C;&#x5F53;&#x952E;key&#x5B58;&#x5728;options&#x4E2D;&#xFF0C;&#x5219;camelKey = camelize(key)props[camelKey] = value&#x904D;&#x5386;&#x7684;&#x503C;&#xFF0C;
+&#x5426;&#x5219;&#x5F53;&#x4E0D;&#x5B58;&#x5728;instance.emit&#x6216;&#x8005;&#x8BE5;&#x952E;key&#x4E0D;&#x662F;instance.emit&#x7684;&#x53C2;&#x6570;&#x65F6;&#xFF0C;attrs[key] = value&#xFF0C;key&#x8FD8;&#x662F;&#x539F;&#x6765;&#x7684;&#x952E;key&#x3002;</p>
+<p>&#x5B58;&#x5728;needCastKeys&#x65F6;&#xFF0C;&#x904D;&#x5386;needCastKeys&#xFF0C;value&#x4F7F;&#x7528;resolvePropValue&#xFF0C;&#x6839;&#x636E;options&#x4E0E;value&#x662F;&#x5426;&#x4E3A;&#x7A7A;&#x3001;&#x662F;&#x5426;&#x4E3A;&#x7A7A;&#x5B57;&#x7B26;&#x4E32;&#x4E4B;&#x7C7B;&#x5904;&#x7406;&#x6210;&#x9ED8;&#x8BA4;&#x503C;&#x6216;&#x8005;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x90FD;&#x6CA1;&#x6709;&#x5C31;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x4E0D;&#x7ECF;&#x8FC7;&#x5904;&#x7406;&#x7684;value&#x3002;</p>
+</blockquote>
 <p><img src="https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_" alt="&#x718A;&#x732B;&#x7D27;&#x5F20;">&#x4EC0;&#x4E48;&#xFF1F;&#x4F60;&#x53C8;&#x60F3;&#x8BA9;&#x6211;&#x7D66;&#x4F60;&#x79D1;&#x666E;&#x4E00;&#x4E0B;emit&#xFF1F;&#x4E0B;&#x6B21;&#x4E00;&#x5B9A;&#x4E0B;&#x6B21;&#x4E00;&#x5B9A;&#xFF01;&#x884C;&#x4E86;&#xFF0C;&#x70B9;&#x5F00;emit&#x7AE0;&#x8282;&#xFF0C;&#x4F60;&#x5C31;&#x80FD;&#x4E86;&#x89E3;&#x6B38;&#x3002;</p>
 <p>&#x6700;&#x540E;&#x8BBE;&#x7F6E;instance&#x7684;&#x5F15;&#x7528;&#x3002;</p>
 <pre><code class="lang-typescript"><span class="hljs-keyword">if</span> (isStateful) {
@@ -560,14 +579,31 @@ resolvePropValue(
 instance.attrs = attrs
 </code></pre>
 <p><img src="https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_" alt="&#x718A;&#x732B;&#x7D27;&#x5F20;">&#x6D41;&#x7A0B;&#x56FE;&#x6709;... &#x5199;&#x5F97;&#x5F88;&#x660E;&#x767D;&#xFF0C;&#x5E0C;&#x671B;&#x4F60;&#x80FD;&#x53BB;&#x770B;&#x51E0;&#x773C;&#x3002;</p>
-<p>instance.attrs &#x5C06;&#x4F1A;&#x88AB;subTree.props&#x5408;&#x5E76;&#xFF0C;subTree&#x5C31;&#x662F;instance.render()&#x8FD4;&#x56DE;&#x7684;vnode&#x3002;
-instance.props &#x72B6;&#x6001;&#x7C7B;&#x578B;&#x7EC4;&#x4EF6;&#xFF08;STATEFUL_COMPONENT&#xFF09;&#x5728;&#x8FD0;&#x884C;instance.setup&#x4E2D;&#x4F20;&#x5165;&#x7684;&#x662F;instance.proxy&#xFF0C;&#x53EA;&#x4F1A;&#x5728;instance.render(instance.props)&#x5E94;&#x7528;&#x5230;&#x3002;
-&#x51FD;&#x6570;&#x7C7B;&#x578B;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x8C03;&#x7528;&#x7684;&#x65F6;&#x5019;&#x4E5F;&#x4F1A;&#x4F20;&#x5165;instance.props&#x3002;</p>
+<p>instance.attrs &#x5C06;&#x4F1A;&#x88AB;subTree.props&#x5408;&#x5E76;&#xFF0C;subTree&#x5C31;&#x662F;instance.render()&#x8FD4;&#x56DE;&#x7684;vnode&#x3002;</p>
+<p>instance.props &#x72B6;&#x6001;&#x7C7B;&#x578B;&#x7EC4;&#x4EF6;&#xFF08;ShapeFlags.STATEFUL_COMPONENT&#xFF09;&#x5728;&#x8FD0;&#x884C;instance.setup&#x4E2D;&#x4F20;&#x5165;&#x7684;&#x662F;instance.proxy&#xFF0C;&#x53EA;&#x4F1A;&#x5728;instance.render(instance.props)&#x5E94;&#x7528;&#x5230;&#x3002;
+&#x51FD;&#x6570;&#x7C7B;&#x578B;&#xFF08;ShapeFlags.FUNCTIONAL_COMPONENT&#xFF09;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x5728;setupRenderEffect&#x4E2D;&#x7684;renderComponentRoot&#x8C03;&#x7528;vnode.type&#x7684;&#x65F6;&#x5019;&#x4F20;&#x5165;instance.proxy&#x3002;</p>
+<p><strong>instance.attrs&#x7528;&#x4E8E;&#x4E0E;&#x5B57;vnode&#x5408;&#x5E76;&#x53C2;&#x6570;&#xFF0C;instance.props&#x7528;&#x4E8E;&#x4F20;&#x9012;&#xFF0C;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#x7684;render&#xFF0C;ShapeFlags.FUNCTIONAL_COMPONENT&#x7C7B;&#x578B;&#x7684;type&#x3002;
+&#x8C03;&#x7528;&#x7EC4;&#x4EF6;setup&#x7684;&#x53C2;&#x6570;&#x662F;instance.props, instance.setupContext&#x3002;
+&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x597D;&#x597D;&#x533A;&#x522B;&#x4E00;&#x4E0B;&#x3002;</strong></p>
+<blockquote>
+<p>attrs&#x548C;props&#x7684;&#x672C;&#x8D28;&#x533A;&#x522B;&#x662F;&#xFF0C;&#x5982;&#x679C;instance.type&#x6709;props&#x5B57;&#x6BB5;&#xFF0C;&#x5F53;&#x904D;&#x5386;vnode.props&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8D4B;&#x503C;&#x65B9;&#x5F0F;&#x4E3A;&#x952E;key&#x5B58;&#x5728;&#x4E8E;instance.type.props&#x4E2D;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x952E;key&#x4E0D;&#x5B58;&#x5728;&#x4E8E;instance.type.props
+&#x4E14;instance.emit&#x6CA1;&#x6709;&#x7528;&#x5230;&#x8BE5;&#x952E;key&#xFF0C;&#x5219;&#x8D4B;&#x503C;&#x7D66;attrs&#x3002;needCastKeys&#x662F;&#x7528;&#x6765;&#x7D66;props&#x8BBE;&#x7F6E;&#x4E00;&#x4E0B;&#x9ED8;&#x8BA4;&#x5B57;&#x6BB5;&#x548C;&#x5E03;&#x5C14;&#x5B57;&#x6BB5;&#x7684;&#xFF0C;&#x4F7F;&#x5176;&#x6807;&#x51C6;&#x5316;&#x4E00;&#x4E9B;&#x3002;
+&#x4E00;&#x53E5;&#x8BDD;&#xFF0C;attrs&#x662F;&#x88AB;instance.type.props&#x6240;&#x8FC7;&#x6EE4;&#x7684;vnode.props&#x3002;</p>
+</blockquote>
 <p><font color="#ff8000">initSlots</font>&#xFF1A;</p>
 <p>&#x8FD9;&#x91CC;&#x7684;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x6CA1;&#x6709;slots&#xFF0C;&#x76F8;&#x5173;&#x79FB;&#x6B65;&#x53BB;slots&#x7AE0;&#x8282;&#x3002;</p>
 <p><font color="#ff8000">setupStatefulComponent</font>&#xFF1A;
 ShapeFlags.STATEFUL_COMPONENT&#x624D;&#x4F1A;&#x6267;&#x884C;&#xFF0C;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;&#x4E3A;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#x3002;&#x8BBE;&#x7F6E;accessCache&#x548C;proxy&#xFF0C;proxy&#x5728;&#x5904;&#x7406;options&#xFF0C;&#x6216;&#x8005;&#x8BF4;options&#x4E2D;&#x4F7F;&#x7528;&#x7684;this&#xFF0C;&#x5C06;&#x6307;&#x5411;proxy&#x3002;
-&#x5C31;&#x662F;methods: { foo(){ console.log(this) } }&#xFF0C;&#x4F1A;&#x8F93;&#x51FA;instance.proxy&#x3002;</p>
+&#x5C31;&#x662F;</p>
+<pre><code class="lang-typescript">{
+  methods: { 
+      foo() { 
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>)
+     } 
+  }
+}
+</code></pre>
+<p>&#x4F1A;&#x8F93;&#x51FA;instance.proxy&#x3002;</p>
 <pre><code>instance.accessCache = {}
 instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
 </code></pre><p>&#x7EC4;&#x4EF6;&#x4E2D;setup&#x7684;&#x8FD0;&#x884C;&#xFF1A;</p>
@@ -651,7 +687,7 @@ hooks.push(wrappedHook)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"渲染流程","level":"1.2.1","depth":2,"next":{"title":"渲染流程2","level":"1.2.2","depth":2,"path":"Packages/Runtime/desc2.md","ref":"Packages/Runtime/desc2.md","articles":[]},"previous":{"title":"Runtime","level":"1.2","depth":1,"path":"Packages/Runtime/index.md","ref":"Packages/Runtime/index.md","articles":[{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},{"title":"渲染流程2","level":"1.2.2","depth":2,"path":"Packages/Runtime/desc2.md","ref":"Packages/Runtime/desc2.md","articles":[]},{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc.md","mtime":"2020-11-05T07:43:42.663Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T07:43:50.932Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"渲染流程","level":"1.2.1","depth":2,"next":{"title":"渲染流程2","level":"1.2.2","depth":2,"path":"Packages/Runtime/desc2.md","ref":"Packages/Runtime/desc2.md","articles":[]},"previous":{"title":"Runtime","level":"1.2","depth":1,"path":"Packages/Runtime/index.md","ref":"Packages/Runtime/index.md","articles":[{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},{"title":"渲染流程2","level":"1.2.2","depth":2,"path":"Packages/Runtime/desc2.md","ref":"Packages/Runtime/desc2.md","articles":[]},{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc.md","mtime":"2020-11-05T18:07:27.705Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T18:24:27.898Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

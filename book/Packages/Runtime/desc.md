@@ -342,9 +342,15 @@ const hasDefault = hasOwn(opt, 'default')
 return value
 ```
 
-看不懂有什么用是吧？**就这么说吧，现在有两个数组一个为props一个为attrs，然后经过setFullProps，这个东西把我们组件中的props的键值給设置为驼峰式，然后遍历vnode.props，
-但是跳过键为'key'和'ref'，如果需要驼峰形式的则赋值給props，如果不存在instance.type.emits或者没有被子组件触发emits则赋值給attrs。遍历needCastKeys
-，props经过resolvePropValue的处理，给上默认值，就是給默认值而已，只对props的处理。**
+看不懂？
+>就这么说吧，现在有两个数组一个为props一个为attrs，通过setFullProps，根据vnode.type.props进行normalizePropsOptions标准化生成\[options, needCastKeys\]，
+>options的生成是根据为Object的类型的vnode.type.props而定的。当vnode.type.props的类型为Object时，needCastKeys = Object.keys(vnode.type.props)，当vnode.type.props的类型为数组时，needCastKeys = vnode.type.props，当然这里的key的名称都是会进行驼峰化。
+>在得到options和needCastKeys后，
+>
+>存在options时，遍历vnode.props，但是跳过键key === 'key' || key === 'ref'的遍历，当键key存在options中，则camelKey = camelize(key)props\[camelKey\] = value遍历的值，
+>否则当不存在instance.emit或者该键key不是instance.emit的参数时，attrs\[key\] = value，key还是原来的键key。
+>
+>存在needCastKeys时，遍历needCastKeys，value使用resolvePropValue，根据options与value是否为空、是否为空字符串之类处理成默认值或者布尔值，都没有就直接返回不经过处理的value。
 
 ![熊猫紧张](https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_)什么？你又想让我給你科普一下emit？下次一定下次一定！行了，点开emit章节，你就能了解欸。
 
@@ -367,9 +373,18 @@ instance.attrs = attrs
 ![熊猫紧张](https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_)流程图有... 写得很明白，希望你能去看几眼。
 
 instance.attrs 将会被subTree.props合并，subTree就是instance.render()返回的vnode。
-instance.props 状态类型组件（STATEFUL_COMPONENT）在运行instance.setup中传入的是instance.proxy，只会在instance.render(instance.props)应用到。
-函数类型的组件，调用的时候也会传入instance.props。
 
+
+instance.props 状态类型组件（ShapeFlags.STATEFUL_COMPONENT）在运行instance.setup中传入的是instance.proxy，只会在instance.render(instance.props)应用到。
+函数类型（ShapeFlags.FUNCTIONAL_COMPONENT）的组件，在setupRenderEffect中的renderComponentRoot调用vnode.type的时候传入instance.proxy。
+
+**instance.attrs用于与字vnode合并参数，instance.props用于传递，ShapeFlags.STATEFUL_COMPONENT类型的render，ShapeFlags.FUNCTIONAL_COMPONENT类型的type。
+调用组件setup的参数是instance.props, instance.setupContext。
+这里需要好好区别一下。**
+
+>attrs和props的本质区别是，如果instance.type有props字段，当遍历vnode.props的时候，赋值方式为键key存在于instance.type.props中的，如果键key不存在于instance.type.props
+>且instance.emit没有用到该键key，则赋值給attrs。needCastKeys是用来給props设置一下默认字段和布尔字段的，使其标准化一些。
+>一句话，attrs是被instance.type.props所过滤的vnode.props。
 
 <font color=#ff8000>initSlots</font>：
 
@@ -377,7 +392,17 @@ instance.props 状态类型组件（STATEFUL_COMPONENT）在运行instance.setup
 
 <font color=#ff8000>setupStatefulComponent</font>：
 ShapeFlags.STATEFUL_COMPONENT才会执行，当前组件为ShapeFlags.STATEFUL_COMPONENT类型。设置accessCache和proxy，proxy在处理options，或者说options中使用的this，将指向proxy。
-就是methods: { foo(){ console.log(this) } }，会输出instance.proxy。
+就是
+```typescript
+{
+  methods: { 
+      foo() { 
+          console.log(this)
+     } 
+  }
+}
+```
+会输出instance.proxy。
 ```
 instance.accessCache = {}
 instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
