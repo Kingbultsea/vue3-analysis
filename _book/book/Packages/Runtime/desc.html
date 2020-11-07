@@ -1,0 +1,726 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>渲染流程 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="desc2.html" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Runtime
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.2.1" data-path="desc.html">
+            
+                <a href="desc.html">
+            
+                    
+                    渲染流程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="desc2.html">
+            
+                <a href="desc2.html">
+            
+                    
+                    渲染流程2
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="question.html">
+            
+                <a href="question.html">
+            
+                    
+                    一些问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../Reactivity/">
+            
+                <a href="../Reactivity/">
+            
+                    
+                    Reactivity
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../Reactivity/diff.html">
+            
+                <a href="../Reactivity/diff.html">
+            
+                    
+                    diff算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../API_DOC/">
+            
+                <a href="../API_DOC/">
+            
+                    
+                    API DOC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >渲染流程</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="vue3&#x6E32;&#x67D3;&#x6D41;&#x7A0B;">vue3&#x6E32;&#x67D3;&#x6D41;&#x7A0B;</h2>
+<h3 id="&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;">&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</h3>
+<pre><code class="lang-typescript">it(<span class="hljs-string">&apos;should allow attrs to fallthrough&apos;</span>, async () =&gt; {
+    debugger
+    <span class="hljs-keyword">const</span> click = jest.fn()
+    <span class="hljs-keyword">const</span> childUpdated = jest.fn()
+
+    <span class="hljs-keyword">const</span> Hello = {
+      setup() { <span class="hljs-comment">// &#x5982;&#x679C;&#x6709;render &#x5C31;&#x4F18;&#x5148;&#x6E32;&#x67D3;render&#x4E86;</span>
+        <span class="hljs-keyword">const</span> count = ref(<span class="hljs-number">0</span>)
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inc</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// &#x9700;&#x8981;&#x4E86;&#x89E3;onClick&#x4E8B;&#x4EF6;&#x7CFB;&#x7EDF;</span>
+          count.value++
+          click()
+        }
+
+        <span class="hljs-comment">// &#x8FD9;&#x91CC;&#x7684;&#x4EFB;&#x4F55;&#x4E1C;&#x897F; &#x90FD;&#x4E0D;&#x4F1A;&#x88AB;&#x672C;&#x8EAB;effect&#x6536;&#x96C6; &#x53EA;&#x6709;return &#x540E;&#x7684;&#x65B9;&#x6CD5; &#x624D;&#x4F1A;</span>
+
+        <span class="hljs-keyword">return</span> () =&gt; <span class="hljs-comment">// &#x8FD9;&#x91CC;&#x8FD8;&#x53EF;&#x4EE5;&#x5F53;redner&#x6765;&#x4F7F;&#x7528; &#x6211;&#x5E73;&#x65F6;&#x4F1A;&#x7684;&#x53EA;&#x662F; return {}  template&#x6240;&#x9700;&#x8981;&#x7684;&#x4E8B;&#x4EF6;&#x6216;&#x5C5E;&#x6027; &#x6240;&#x4EE5;&#x662F;&#x68C0;&#x67E5;function &#x8FD8;&#x662F; object&#x6765;&#x5224;&#x65AD;&#x7684;&#x5427;</span>
+          h(Child, { <span class="hljs-comment">// &#x90A3;&#x662F;&#x4E0D;&#x662F;&#x6709;&#x4E00;&#x4E2A;props effect? &#x6807;&#x8BB0;&#x4E5F;&#x8981;&#x6CE8;&#x610F;&#x4E0B;</span>
+            foo: count.value + <span class="hljs-number">1</span>,
+            id: <span class="hljs-string">&apos;test&apos;</span>,
+            <span class="hljs-keyword">class</span>: <span class="hljs-string">&apos;c&apos;</span> + count.value,
+            style: { color: count.value ? <span class="hljs-string">&apos;red&apos;</span> : <span class="hljs-string">&apos;green&apos;</span> },
+            onClick: inc,
+            <span class="hljs-string">&apos;data-id&apos;</span>: count.value + <span class="hljs-number">1</span>
+          })
+      },
+      mounted() {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;?&apos;</span>)
+      }
+    }
+
+    <span class="hljs-keyword">const</span> Child = { <span class="hljs-comment">// &#x539F;&#x6765;&#x662F;&#x8FD9;&#x6837;&#x4F20;&#x53C2;&#x6570;&#x7684; &#x90A3;&#x4E48;&#x5C31;&#x4E0D;&#x9700;&#x8981;this &#x4EC0;&#x4E48;&#x7684;&#x4E86;</span>
+      setup(props: <span class="hljs-built_in">any</span>) {
+        onUpdated(childUpdated)
+        <span class="hljs-keyword">return</span> () =&gt;
+          h(
+            <span class="hljs-string">&apos;div&apos;</span>,
+            {
+              <span class="hljs-keyword">class</span>: <span class="hljs-string">&apos;c2&apos;</span>,
+              style: { fontWeight: <span class="hljs-string">&apos;bold&apos;</span> }
+            },
+            props.foo <span class="hljs-comment">// &#x8FD9;&#x4E2A;&#x4E3A;&#x4EC0;&#x4E48;&#x662F;undefinded&#x5462; &#x56E0;&#x4E3A;setFullProps&#x6267;&#x884C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5224;&#x65AD;&#x5230;&#x7684;&#x8D4B;&#x503C;Props&#x65B9;&#x5F0F;&#x4E3A;attrs&#xFF0C;&#x6240;&#x4EE5;instance.props&#x4E3A;&#x7A7A;</span>
+         )
+      }
+    }
+
+    <span class="hljs-keyword">const</span> root = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&apos;div&apos;</span>)
+    <span class="hljs-built_in">document</span>.body.appendChild(root)
+    render(h(Hello), root) <span class="hljs-comment">// &#x8FD9;&#x4E2A;render &#x662F;&apos;@vue/runtime-dom&apos; &#x6211;&#x4EEC;&#x4E4B;&#x524D;&#x7528;&#x7684; &#x662F;&apos;@vue/runtime-test&apos; &#x91CC;&#x9762;&#x7684; &#x6D4B;&#x8BD5;&#x7528;&#x7684;... &#x4F46;&#x662F;&#x533A;&#x522B;&#x4E0D;&#x4E00;&#x6837;&#x7684;&#x5C31;&#x662F; &#x4F1A;&#x4E0D;&#x4F1A;&#x521D;&#x59CB;&#x5316;&#x800C;&#x5DF2;</span>
+
+    <span class="hljs-keyword">const</span> node = root.children[<span class="hljs-number">0</span>] as HTMLElement
+
+    expect(node.getAttribute(<span class="hljs-string">&apos;id&apos;</span>)).toBe(<span class="hljs-string">&apos;test&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;foo&apos;</span>)).toBe(<span class="hljs-string">&apos;1&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).toBe(<span class="hljs-string">&apos;c2 c0&apos;</span>)
+    expect(node.style.color).toBe(<span class="hljs-string">&apos;green&apos;</span>)
+    expect(node.style.fontWeight).toBe(<span class="hljs-string">&apos;bold&apos;</span>)
+    expect(node.dataset.id).toBe(<span class="hljs-string">&apos;1&apos;</span>)
+
+    node.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&apos;click&apos;</span>)) <span class="hljs-comment">// &#x4E8B;&#x4EF6;&#x89E6;&#x53D1;a</span>
+    node.dispatchEvent(<span class="hljs-keyword">new</span> CustomEvent(<span class="hljs-string">&apos;click&apos;</span>)) <span class="hljs-comment">// &#x4E8B;&#x4EF6;&#x89E6;&#x53D1;a</span>
+    expect(click).toHaveBeenCalled()
+
+    await nextTick()
+    expect(childUpdated).toHaveBeenCalled()
+    expect(node.getAttribute(<span class="hljs-string">&apos;id&apos;</span>)).toBe(<span class="hljs-string">&apos;test&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;foo&apos;</span>)).toBe(<span class="hljs-string">&apos;2&apos;</span>)
+    expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).toBe(<span class="hljs-string">&apos;c2 c1&apos;</span>)
+    expect(node.style.color).toBe(<span class="hljs-string">&apos;red&apos;</span>)
+    expect(node.style.fontWeight).toBe(<span class="hljs-string">&apos;bold&apos;</span>)
+    expect(node.dataset.id).toBe(<span class="hljs-string">&apos;2&apos;</span>)
+  })
+</code></pre>
+<p>&#x8BF7;&#x4F7F;&#x7528;&#x8BE5;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x8FDB;&#x884C;&#x5355;&#x6B65;&#x8C03;&#x8BD5;&#x3002;<a href="https://www.processon.com/view/link/5f85c9321e085307a0892f7e" target="_blank">processComponent&#x6D41;&#x7A0B;&#x56FE;</a></p>
+<p><strong>&#x4EC0;&#x4E48;&#x662F;vnode&#xFF1F;</strong>&#x7F51;&#x4E0A;&#x641C;&#x7D22;&#x5230;&#x7684;&#x90FD;&#x662F;&#x8BF4;visual dom&#x7528;&#x6765;&#x63CF;&#x8FF0;&#x771F;&#x5B9E;&#x7684;DOM&#x6807;&#x7B7E;&#xFF0C;&#x4F5C;&#x7528;&#x662F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;render&#x6E32;&#x67D3;&#x6210;DOM&#xFF0C;&#x7136;&#x540E;&#x6302;&#x8F7D;&#x3002;
+&#x8FD9;&#x4E9B;&#x5BF9;&#x4E8E;&#x5165;&#x95E8;&#x7684;&#x4EBA;&#xFF0C;&#x80AF;&#x5B9A;&#x4E00;&#x8138;&#x61F5;&#x903C;&#xFF0C;&#x5176;&#x5B9E;vnode&#x5C31;&#x662F;&#x4E00;&#x4E2A;object&#x8BB0;&#x5F55;&#x4E86;&#x6E32;&#x67D3;&#x8FC7;&#x7A0B;&#x6240;&#x9700;&#x8981;&#x7528;&#x5230;&#x7684;&#x6570;&#x636E;&#x800C;&#x5DF2;&#xFF0C;&#x5BF9;&#x4E8E;&#x6BCF;&#x4E00;&#x4E2A;&#x5B57;&#x6BB5;&#x7684;&#x4F5C;&#x7528;&#xFF0C;&#x6DF1;&#x5165;&#x4E0B;&#x53BB;&#xFF0C;&#x4E00;&#x4E2A;&#x4E00;&#x4E2A;&#x6162;&#x6162;&#x8BA4;&#x8BC6;&#x3002;
+&#x8FD9;&#x91CC;&#x9644;&#x5E26;&#x4E0A;<a href="https://www.processon.com/view/link/5f963f37f346fb06e1ec35b2" target="_blank">vnode&#x5B57;&#x6BB5;&#x56FE;</a></p>
+<p><strong>&#x4EC0;&#x4E48;&#x662F;instance&#xFF1F;</strong>
+&#x548C;vnode&#x4E00;&#x6837;&#x7684;&#x884C;&#x4E3A;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x53EA;&#x5E94;&#x7528;&#x4E8E;Component&#x7C7B;&#x578B;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x6240;&#x4EE5;&#x548C;vnode&#x5206;&#x5F00;&#xFF0C;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;vnode&#x7684;&#x62D3;&#x5C55;&#xFF0C;&#x5F53;&#x7136;vnode.component&#x5B57;&#x6BB5;&#x5C31;&#x5305;&#x542B;&#x5BF9;&#x5E94;&#x7684;instance&#x3002;
+<a href="https://www.processon.com/view/link/5f963f5fe401fd06fda22681" target="_blank">instance</a></p>
+<p><strong>&#x4EC0;&#x4E48;&#x662F;h&#xFF1F;</strong><a href="https://cn.vuejs.org/v2/guide/render-function.html" target="_blank">&#x6E32;&#x67D3;&#x51FD;&#x6570;&amp;JSX</a>
+&#x4F60;&#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x4E86;&#x89E3;&#x8FD9;&#x4E2A;&#xFF1F;&#x6BD4;&#x5982;&#x4F60;&#x7684;template&#x662F;</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;1&quot;</span>&gt;</span>123<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+<p>&#x4F1A;&#x88AB;compiler&#x8F6C;&#x6362;&#x6210;h(&apos;div&apos;, { id: 1 }, 123)&#xFF0C;&#x8FD9;&#x91CC;&#x4E0D;&#x53BB;&#x4F1A;&#x53BB;&#x8BF4;compiler&#x7684;&#x8F6C;&#x6362;&#xFF0C;&#x5355;&#x7EAF;&#x7684;&#x8BB2;render&#x6D41;&#x7A0B;&#xFF0C;
+compiler&#x505A;&#x7684;&#x4E1C;&#x897F;&#x8FD8;&#x6709;&#x9759;&#x6001;&#x6807;&#x8BB0;&#x4E4B;&#x7C7B;&#x7684;&#xFF0C;&#x8FD9;&#x91CC;&#x53EA;&#x662F;&#x4E3E;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;&#xFF0C;&#x5C06;&#x4F1A;&#x5728;compiler&#x7AE0;&#x8282;&#x8BE6;&#x7EC6;&#x8BF4;&#x3002;</p>
+<h3 id="&#x6E32;&#x67D3;&#x8FC7;&#x7A0B;">&#x6E32;&#x67D3;&#x8FC7;&#x7A0B;</h3>
+<p><img src="https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_" alt="&#x718A;&#x732B;&#x7D27;&#x5F20;">&#x524D;&#x6392;&#x63D0;&#x793A;&#x591A;&#x559D;&#x70ED;&#x6C34;&#xFF0C;&#x8BF7;&#x6253;&#x5F00;
+<a href="https://www.processon.com/view/link/5f85c9321e085307a0892f7e" target="_blank">&#x6E32;&#x67D3;&#x6D41;&#x7A0B;&#x56FE;</a>&#x3001;
+<a href="https://www.processon.com/view/link/5f963f5fe401fd06fda22681" target="_blank">instance</a>&#x3001;
+<a href="https://www.processon.com/view/link/5f963f37f346fb06e1ec35b2" target="_blank">vnode</a>
+&#x548C;&#x5355;&#x6B65;&#x8C03;&#x8BD5;&#x6765;&#x98DF;&#x7528;&#xFF0C;
+&#x5982;&#x679C;&#x4F60;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x7535;&#x8111;&#xFF0C;&#x65E0;&#x6CD5;&#x8FDB;&#x884C;&#x5355;&#x6B65;&#x8C03;&#x8BD5;&#xFF0C;&#x6CA1;&#x5173;&#x7CFB;&#xFF0C;&#x770B;&#x7740;&#x6211;&#x7684;&#x56FE;&#x4E5F;&#x4E0D;&#x662F;&#x4E0D;&#x884C;&#xFF0C;&#x6211;&#x4F1A;&#x4EE5;&#x6587;&#x5B57;&#x548C;&#x6982;&#x5FF5;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x5C3D;&#x91CF;&#x548C;&#x4F60;&#x79D1;&#x666E;&#x660E;&#x767D;&#x3002;<font color="#ff8000">&#x8FD9;&#x4E2A;&#x989C;&#x8272;&#x662F;&#x8FD0;&#x884C;&#x7684;&#x4EE3;&#x7801;</font>&#x3002;</p>
+<h4 id="render">render</h4>
+<p>&#x5165;&#x53E3;<font color="#ff8000">render(&#x2460;vnode&#xFF0C;&#x2461;HtmlElement)</font>&#xFF0C;&#x2460;&#x53C2;&#x6570;&#x662F;vnode&#xFF0C;&#x2461;&#x53C2;&#x6570;&#x662F;&#x4F60;&#x5B9E;&#x9645;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x7684;DOM&#xFF0C;&#x8FD9;&#x4E00;&#x6574;&#x4E2A;&#x4E1C;&#x897F;&#x5C31;&#x662F;&#x628A;vnode&#xFF0C;&#x53D8;&#x6210;&#x4E00;&#x4E2A;&#x771F;&#x7684;DOM&#xFF0C;&#x7136;&#x540E;&#x63D2;&#x5165;&#x5230;&#x2461;&#x53C2;&#x6570;DOM&#x4E2D;&#x3002;
+&#x6211;&#x4EEC;&#x5148;&#x6765;&#x4E86;&#x89E3;&#x4E00;&#x4E0B;&#x8FD9;&#x4E2A;&#x2460;&#xFF0C;&#x8FD9;&#x4E2A;&#x2460;&#x5728;&#x5F53;&#x524D;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x4E2D;&#x4F7F;&#x7528;<font color="#ff8000">h(Hello)</font>&#x5236;&#x4F5C;&#x51FA;&#x6765;&#x7684;&#xFF0C;&#x8FD9;&#x505A;&#x4E86;&#x5565;&#xFF1F;&#x8BBE;&#x7F6E;<font color="#ff8000">vnode.type = Hello</font>&#xFF0C;&#x8BBE;&#x7F6E;vnode.shapeFlag&#xFF0C;
+&#x68C0;&#x6D4B;&#x5230;&#x4F20;&#x5165;&#x7684;&#x53C2;&#x6570;Hello&#x662F;Object&#x7C7B;&#x578B;&#x7684;&#xFF0C;&#x6240;&#x4EE5;<font color="#ff8000">vnode.shapeFlag = ShapeFlags.STATEFUL_COMPONENT</font>&#xFF0C;&#x987A;&#x4FBF;&#x8BF4;&#x4E00;&#x4E0B;normalizeChildren&#xFF0C;&#x5982;&#x679C;&#x6709;chlidren&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x662F;&#x7528;&#x6765;&#x52A0;&#x5BC6;vnode.shapeFlag&#x7684;
+&#xFF0C;&#x8FD9;&#x91CC;&#x6709;&#x6CA1;&#x6709;chlidren&#x7684;&#x4F20;&#x5165;&#xFF0C;&#x53EF;&#x4EE5;&#x5FFD;&#x7565;&#xFF0C;&#x5565;&#xFF1F;&#x5565;&#x53C8;&#x662F;chlidren&#x7684;&#x4F20;&#x5165;&#xFF1F;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> testVnode = h(<span class="hljs-string">&apos;span&apos;</span>, { id: <span class="hljs-number">1</span> }, <span class="hljs-string">&apos;nihao&apos;</span>)
+render(testVnode, HTMLDivElement)
+<span class="hljs-comment">// &#x6700;&#x7EC8;&#x751F;&#x6210;&lt;div&gt;&lt;span id=&quot;1&quot;&gt;nihao&lt;/span&gt;&lt;/div&gt;</span>
+</code></pre>
+<p>&#x8FD9;&#x4E0B;&#x4E86;&#x89E3;&#x4E86;&#x5427;&#xFF0C;&#x8FD9;&#x4E2A;nihao&#x5C31;&#x662F;chldren&#x3002;</p>
+<p><img src="https://res.psy-1.com/FimJsXIrCCMb7NhhduJbEBUPD2tF" alt="wocao">&#x4EC0;&#x4E48;&#xFF0C;&#x8FD8;&#x4E0D;&#x61C2;&#xFF1F;&#x90A3;&#x4ECE;&#x5934;&#x770B;&#x4E00;&#x904D;&#xFF0C;&#x61C2;&#x4E86;&#x7684;&#x53EF;&#x4EE5;&#x7EE7;&#x7EED;&#x5F80;&#x4E0B;&#x770B;<font color="#ff8000">render</font>&#x5230;&#x5E95;&#x505A;&#x4E86;&#x5565;&#x3002;</p>
+<h4 id="shapeflage">shapeFlage</h4>
+<p>&#x628A;&#x2461;&#x53C2;&#x6570;&#x547D;&#x540D;&#x4E3A;container&#xFF0C;&#x4F20;&#x5165;render&#x7684;&#x2460;vnode&#x79F0;&#x4E3A;n2&#xFF0C;container.vnode&#x79F0;&#x4E3A;n1&#x3002;</p>
+<p>&#x5224;&#x65AD;&#x5230;n2&#x4E0D;&#x4E3A;&#x7A7A;&#xFF0C;&#x8FDB;&#x884C;<font color="#ff8000">patch</font>&#xFF0C;&#x5224;&#x65AD;&#x5230;n1 == null&#xFF0C;&#x4E14;n2.shapeFlag&#x8FDB;&#x884C;decode&#xFF0C;&#x4E3A;ShapeFlags.COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x6267;&#x884C;processComponent&#x3002;
+&#x8FD9;&#x91CC;&#x7684;decode&#x548C;encode&#x662F;&#x4EC0;&#x4E48;&#x6765;&#x7684;&#xFF1F;
+&#x6211;&#x4EEC;&#x5728;&#x751F;&#x6210;vnode&#x7684;&#x65F6;&#x5019;&#xFF0C;vnode.type&#x6570;&#x636E;&#x88AB;<font color="#ff8000">normalizeChildren</font>&#x52A0;&#x5BC6;&#x8FC7;&#xFF0C;&#x56E0;&#x4E3A;&#x5F53;&#x524D;children&#x4E3A;null,&#x6240;&#x4EE5;type&#x4E3A;0&#xFF0C;&#x52A0;&#x5BC6;&#x65B9;&#x5F0F;&#x4E3A;<font color="#ff8000">vnode.shapeFlag |= type</font>
+&#x89E3;&#x5BC6;&#x65B9;&#x5F0F;&#x4E3A;<font color="#ff8000">const a = vnode.shapeFlag &amp; ShapeFlags.COMPONENT</font>&#xFF0C;&#x53EA;&#x8981;a &gt; 0&#x5C31;&#x4E3A;true&#xFF0C;ShapeFlags.COMPONENT&#x4E3A;&#x4E00;&#x4E2A;&#x5E38;&#x6570;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">declare</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">enum</span> ShapeFlags {
+    ELEMENT = <span class="hljs-number">1</span>, <span class="hljs-comment">// 1</span>
+    FUNCTIONAL_COMPONENT = <span class="hljs-number">2</span>, <span class="hljs-comment">// 10</span>
+    STATEFUL_COMPONENT = <span class="hljs-number">4</span>, <span class="hljs-comment">// 100</span>
+    TEXT_CHILDREN = <span class="hljs-number">8</span>, <span class="hljs-comment">// 1000</span>
+    ARRAY_CHILDREN = <span class="hljs-number">16</span>, <span class="hljs-comment">// 10000</span>
+    SLOTS_CHILDREN = <span class="hljs-number">32</span>, <span class="hljs-comment">// 100000</span>
+    TELEPORT = <span class="hljs-number">64</span>, <span class="hljs-comment">// 1000000</span>
+    SUSPENSE = <span class="hljs-number">128</span>, <span class="hljs-comment">// 10000000</span>
+    COMPONENT_SHOULD_KEEP_ALIVE = <span class="hljs-number">256</span>, <span class="hljs-comment">// 100000000</span>
+    COMPONENT_KEPT_ALIVE = <span class="hljs-number">512</span>, <span class="hljs-comment">// 1000000000</span>
+    COMPONENT = <span class="hljs-number">6</span> <span class="hljs-comment">// 110</span>
+}
+</code></pre>
+<p><img src="https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR" alt="&#x6258;&#x8138;">&#x60F3;&#x4E86;&#x89E3;&#x8FD9;&#x5957;&#x8FD0;&#x884C;&#x673A;&#x5236;&#x9EBD;&#xFF1F;&#x4E0A;&#x9762;&#x88AB;normalizeChildren&#x8FC7;&#x7684;&#xFF0C;
+&#x662F;&#x6309;&#x4F4D;&#x4E0E;&#x7684;&#x610F;&#x601D;&#xFF0C;&#x6BD4;&#x5982;&#x4E8C;&#x8FDB;&#x5236;&#x4E2D;</p>
+<pre><code class="lang-typescript"><span class="hljs-number">01</span> | <span class="hljs-number">01</span> === <span class="hljs-number">01</span>
+<span class="hljs-number">01</span> | <span class="hljs-number">10</span> === <span class="hljs-number">11</span>
+<span class="hljs-number">10</span> | <span class="hljs-number">10</span> === <span class="hljs-number">10</span>
+</code></pre>
+<p>&#x5BF9;&#x5E94;&#x4F4D;&#x7F6E;0 | 1 === 1, 0 | 0 === 0&#xFF0C;&#x5C31;&#x50CF;||&#x7684;&#x903B;&#x8F91;&#xFF0C;&#x53EA;&#x8981;&#x6EE1;&#x8DB3;&#x5176;&#x4E2D;&#x4E00;&#x4E2A;&#x4E3A;&#x771F;&#x503C;&#x3002;</p>
+<p>&#x5224;&#x65AD;&#x7C7B;&#x578B;&#x7684;&#x6309;&#x4F4D;&#x4E14;</p>
+<pre><code class="lang-typescript"><span class="hljs-number">11</span> &amp; <span class="hljs-number">11</span> === <span class="hljs-number">11</span>
+<span class="hljs-number">01</span> &amp; <span class="hljs-number">10</span> === <span class="hljs-number">00</span>
+<span class="hljs-number">10</span> &amp; <span class="hljs-number">10</span> === <span class="hljs-number">10</span>
+</code></pre>
+<p>&#x5BF9;&#x5E94;&#x4F4D;&#x7F6E;1 &amp; 1 === 1, 1 | 0 === 0&#xFF0C;&#x5C31;&#x50CF;&amp;&amp;&#x7684;&#x903B;&#x8F91;&#xFF0C;&#x8981;&#x6EE1;&#x8DB3;&#x6240;&#x6709;&#x4E3A;&#x771F;&#x503C;&#x3002;</p>
+<p>&#x6709;&#x6CA1;&#x6709;&#x6CE8;&#x610F;&#x5230;&#x4E0A;&#x9762;typescript&#x7684;ShapeFlags&#x7684;&#x679A;&#x4E3E;,&#x540E;&#x9762;&#x6709;&#x4E8C;&#x8FDB;&#x5236;&#x6CE8;&#x91CA;,&#x6709;&#x6CA1;&#x6709;&#x6CE8;&#x610F;&#x5230;&#x5224;&#x65AD;&#x7C7B;&#x578B;&#x6E32;&#x67D3;&#xFF0C;&#x90FD;&#x662F;&#x4F7F;&#x7528;if&#x6765;&#x5224;&#x65AD;&#x7684;&#xFF0C;&#x5C31;&#x662F;&#x8BF4;&#x53EA;&#x8981;&#x5927;&#x4E8E;0&#x5C31;&#x884C;&#x3002;
+&#x6709;&#x6CA1;&#x6709;&#x53D1;&#x73B0;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;&#x518D;&#x63D0;&#x9192;&#x4E00;&#x70B9;&#xFF0C;&#x4E8C;&#x8FDB;&#x5236;&#x6807;&#x8BB0;&#x6CD5;&#xFF1F;&#x6CA1;&#x9519;<font color="#ff8000">normalizeChildren</font>&#x4E2D;&#xFF0C;
+&#x53EA;&#x4E0D;&#x8FC7;&#x662F;&#x4E24;&#x4E2A;&#x7C7B;&#x578B;&#x5229;&#x7528;&#x4E8C;&#x8FDB;&#x5236;&#x6807;&#x8BB0;&#x7684;&#x5408;&#x5E76;&#xFF0C;&#x6BD4;&#x5982;100&#x4EE3;&#x8868;STATEFUL_COMPONENT&#x7C7B;&#x578B;&#xFF0C;10000&#x4EE3;&#x8868;ARRAY_CHILDREN&#x7C7B;&#x578B;&#xFF0C;&#x4E24;&#x4E2A;&#x4F7F;&#x7528;100 | 10000&#x662F;&#x4E0D;&#x662F;&#x7B49;&#x4E8E;10100&#xFF0C;&#x800C;&#x5728;</p>
+<p><font color="#ff8000">patch</font>&#x4E2D;<font color="#ff8000">if(vnode.shapeFlag &amp; ShapeFlags.COMPONENT)</font>&#xFF0C;</p>
+<p><font color="#ff8000">ShapeFlags.COMPONENT</font>&#x4E3A;110&#xFF0C;&#x518D;&#x770B;&#x770B;&#x90A3;&#x4E2A;&#x8868;&#xFF0C;&#x662F;&#x4E0D;&#x662F;FUNCTIONAL_COMPONENT | STATEFUL_COMPONENT&#x53EF;&#x4EE5;&#x5F97;&#x5230;110&#xFF1F;
+&#x6240;&#x4EE5;10100 &amp; 110&#x4E3A;true&#xFF0C;&#x4EE5;&#x4E0A;&#x65B9;&#x6CD5;&#x5C31;&#x662F;&#x901A;&#x8FC7;|&#x6765;&#x8FDB;&#x884C;&#x4E24;&#x79CD;&#x7C7B;&#x578B;&#x4E8C;&#x8FDB;&#x5236;&#x5360;&#x4F4D;&#x7B26;&#x6765;&#x5408;&#x5E76;&#xFF0C;&#x901A;&#x8FC7;&amp;&#x5224;&#x65AD;&#x8BE5;&#x4F4D;&#x7F6E;&#x7684;&#x503C;&#x662F;&#x5426;&#x5B58;&#x5728;&#x3002;</p>
+<p><img src="https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW" alt="bailefolun">&#x662F;&#x4E0D;&#x662F;&#x987F;&#x65F6;&#x5927;&#x609F;&#xFF0C;&#x611F;&#x89C9;&#x81EA;&#x5DF1;&#x7684;&#x4EE3;&#x7801;&#x8D28;&#x91CF;&#x5927;&#x5347;&#xFF0C;&#x4E0B;&#x6B21;&#x5199;&#x4EE3;&#x7801;&#x4E5F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E8C;&#x8FDB;&#x5236;&#x6807;&#x8BB0;&#x6765;&#x8FDB;&#x884C;&#x7C7B;&#x578B;&#x5224;&#x65AD;&#x4E86;&#xFF01;&#x5B66;&#x5E9F;&#x4E86;&#x6CA1;&#xFF1F;&#x90A3;&#x7EE7;&#x7EED;&#x4E0B;&#x9762;&#x7684;&#x4E1C;&#x897F;&#x3002;</p>
+<h4 id="processcomponent">processComponent</h4>
+<p><font color="#ff8000">processComponent</font>&#xFF0C;&#x5224;&#x65AD;&#x5230;<font color="#ff8000">n1 == null &amp;&amp; n2.shapeFlag &amp; ShapeFlags.COMPONENT_KEPT_ALIVE</font>
+&#x5219;&#x6267;&#x884C;<font color="#ff8000">mountComponent</font>&#xFF0C;&#x8FD9;&#x4E2A;&#x4E1C;&#x897F;&#x4F5C;&#x7528;&#x662F;&#x6302;&#x8F7D;&#x7EC4;&#x4EF6;&#xFF0C;&#x8FD9;&#x91CC;&#x6302;&#x8F7D;&#x7EC4;&#x4EF6;&#x5206;&#x4E09;&#x6B65;&#x8D70;&#xFF1A;</p>
+<ul>
+<li>createComponentInstance &#x521B;&#x5EFA;instance&#xFF0C;&#x4E00;&#x4E2A;&#x7EC4;&#x4EF6;&#x76F8;&#x5173;&#x7684;Object&#x3002;</li>
+<li>setupComponent&#xFF0C;&#x5BF9;attrs&#x7684;&#x4E00;&#x4E9B;&#x5904;&#x7406; &#x8FD8;&#x6709;setup&#x7684;&#x5904;&#x7406; instance.type&#x4E2D;&#x7684;&#x6240;&#x6709;&#x5173;&#x952E;&#x8BCD;&#x5B57;&#x6BB5;&#x7684;&#x5904;&#x7406;&#x3002;</li>
+<li>setupRenderEffect&#xFF0C;&#x5904;&#x7406;instance.render&#x3002;</li>
+</ul>
+<h4 id="createcomponentinstance">createComponentInstance</h4>
+<p>&#x6CA1;&#x6709;&#x505A;&#x4EC0;&#x4E48;&#xFF0C;&#x5C31;&#x662F;&#x50CF;vnode&#x4E00;&#x6837;&#xFF0C;&#x751F;&#x6210;&#x4E86;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;<font color="#ff8000">instance</font>&#xFF0C;&#x8BE5;&#x5BF9;&#x8C61;&#x8BB0;&#x5F55;&#x4E86;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x6BD4;&#x5982;parent&#x5B57;&#x6BB5;&#x4E3A;&#x7236;&#x7EC4;&#x4EF6;&#x7684;instance&#xFF0C;
+root&#x6839;&#x7EC4;&#x4EF6;&#x7684;instance&#xFF0C;render&#x6839;&#x636E;STATEFUL_COMPONENT&#x3001;FUNCTIONAL_COMPONENT&#x6240;&#x751F;&#x6210;&#x7684;&#x4E00;&#x4E2A;&#x8FD4;&#x56DE;vnode&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x4E5F;&#x4F1A;&#x8BB0;&#x5F55;&#x4E00;&#x4E9B;&#x751F;&#x547D;&#x5468;&#x671F;&#x7684;&#x94A9;&#x5B50;&#x76F8;&#x5173;&#x5B57;&#x6BB5;&#x3002;</p>
+<h4 id="setupcomponent">setupComponent</h4>
+<p><font color="#ff8000">initProps</font>:</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// &#x521B;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;props&#x548C;attrs&#x7684;&#x6570;&#x7EC4;:</span>
+<span class="hljs-keyword">const</span> props = []
+<span class="hljs-keyword">const</span> attrs = []
+</code></pre>
+<p><font color="#ff8000">setFullProps(instance, instance.vnode.props, props, attrs)</font>&#xFF0C;&#x5C31;&#x662F;&#x5904;&#x7406;props&#x5566;&#xFF0C;&#x4EC0;&#x4E48;&#xFF0C;&#x4F60;&#x95EE;&#x8FD9;&#x4E2A;&#x4E1C;&#x897F;&#x505A;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;</p>
+<p><img src="https://res.psy-1.com/FsnFrGmMvgD_GI9YnZeJuc8-xTbk" alt="&#x718A;&#x732B;&#x7D27;&#x5F20;"></p>
+<p><strong>1</strong>.normalizePropsOptions&#xFF0C;&#x6211;&#x4EEC;&#x7EC4;&#x4EF6;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x5B58;&#x5728;props&#x5B57;&#x6BB5;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> a = {
+  props: [<span class="hljs-string">&apos;a-b&apos;</span>, <span class="hljs-string">&apos;c-d&apos;</span>]
+}
+<span class="hljs-keyword">const</span> b = {
+  props: { 
+    foo: <span class="hljs-built_in">Boolean</span>,
+    test: {
+        <span class="hljs-keyword">type</span>: <span class="hljs-built_in">Number</span>,
+        <span class="hljs-keyword">default</span>: <span class="hljs-number">0</span>
+    }
+  }
+}
+
+<span class="hljs-keyword">const</span> normalized = {}
+<span class="hljs-keyword">const</span> needCastKeys = []
+</code></pre>
+<p>&#x5982;&#x679C;&#x62FF;a&#x505A;&#x4E3E;&#x4F8B;&#xFF0C;&#x68C0;&#x6D4B;&#x5230;props&#x662F;&#x4E00;&#x4E2A;&#x6570;&#x7EC4;&#xFF0C;&#x770B;&#x4EE3;&#x7801;&#x4F60;&#x5C31;&#x660E;&#x767D;&#x4E86;&#xFF0C;&#x4E0D;&#x7528;&#x6587;&#x5B57;&#x89E3;&#x91CA;&#x4E86;<img src="https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR" alt="&#x6258;&#x8138;"></p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> EMPTY_OBJ: { readonly [key: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span> } = __DEV__
+  ? <span class="hljs-built_in">Object</span>.freeze({})
+  : {}
+
+normalized = {
+    <span class="hljs-string">&apos;aB&apos;</span>: EMPTY_OBJ,
+    <span class="hljs-string">&apos;cD&apos;</span>: EMPTY_OBJ
+}
+needCastKeys = <span class="hljs-literal">undefined</span>
+</code></pre>
+<p>b&#x505A;&#x4E3E;&#x4F8B;&#xFF0C;&#x68C0;&#x6D4B;&#x5230;&#x662F;&#x5BF9;&#x8C61;&#xFF0C;&#x904D;&#x5386;props&#xFF0C;&#x628A;key&#x8F6C;&#x6362;&#x4E3A;&#x9A7C;&#x5CF0;&#x5F0F;&#x5199;&#x6CD5;&#xFF0C;
+&#x68C0;&#x6D4B;&#x5230;key&#x4E3A;foo&#x7684;type&#x4E3A;Boolean&#x7C7B;&#x578B;&#xFF0C;<font color="#ff8000">needCastKeys.push(key)</font>&#xFF0C;&#x68C0;&#x6D4B;&#x5230;test&#x62E5;&#x6709;default&#x5B57;&#x6BB5;&#xFF0C;</p>
+<p><font color="#ff8000">needCastKeys.push(key)</font>&#x3002;&#x4E0B;&#x9762;&#x8FD9;&#x4E2A;&#x4EE3;&#x7801;&#x53EF;&#x4EE5;&#x4E0D;&#x770B;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> instance.props) {
+  <span class="hljs-keyword">const</span> opt = raw[key]
+  <span class="hljs-keyword">const</span> prop: NormalizedProp = (normalized[normalizedKey] =
+          isArray(opt) || isFunction(opt) ? { <span class="hljs-keyword">type</span>: opt } : opt)
+  <span class="hljs-keyword">if</span> (prop) {
+    <span class="hljs-keyword">const</span> booleanIndex = getTypeIndex(<span class="hljs-built_in">Boolean</span>, prop.type) <span class="hljs-comment">// &#x68C0;&#x6D4B;boolean&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x6570;&#x7EC4;&#x8FD4;&#x56DE;&#x7B2C;&#x4E00;&#x4E2A;index&#x5426;&#x5219;&#x8FD4;&#x56DE;0</span>
+    <span class="hljs-keyword">const</span> stringIndex = getTypeIndex(<span class="hljs-built_in">String</span>, prop.type) <span class="hljs-comment">// &#x68C0;&#x6D4B;string&#x7C7B;&#x578B;</span>
+    prop[BooleanFlags.shouldCast] = booleanIndex &gt; <span class="hljs-number">-1</span>
+    prop[BooleanFlags.shouldCastTrue] =
+      stringIndex &lt; <span class="hljs-number">0</span> || booleanIndex &lt; stringIndex
+    <span class="hljs-comment">// if the prop needs boolean casting or default value</span>
+    <span class="hljs-keyword">if</span> (booleanIndex &gt; <span class="hljs-number">-1</span> || hasOwn(prop, <span class="hljs-string">&apos;default&apos;</span>)) {
+      needCastKeys.push(normalizedKey)
+    }
+  }
+}
+</code></pre>
+<p>&#x6700;&#x7EC8;&#x8F93;&#x51FA;&#xFF1A;</p>
+<pre><code class="lang-typescript">normalized = {
+  foo: {
+    <span class="hljs-keyword">type</span>: <span class="hljs-built_in">Boolean</span>
+  },
+  test: {
+    <span class="hljs-keyword">type</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-keyword">default</span>: <span class="hljs-number">0</span>
+  }
+}
+normalized.foo[BooleanFlags.shouldCast] = <span class="hljs-literal">true</span>
+normalized.foo[BooleanFlags.shouldCastTrue] = <span class="hljs-literal">true</span>
+
+normalized.test[BooleanFlags.shouldCast] = <span class="hljs-literal">true</span>
+normalized.test[BooleanFlags.shouldCastTrue] = <span class="hljs-literal">true</span>
+needCastKeys = [<span class="hljs-string">&apos;foo&apos;</span>, <span class="hljs-string">&apos;test&apos;</span>]
+</code></pre>
+<p>&#x8FD9;&#x91CC;&#x6709;&#x4E00;&#x4E2A;&#x662F;instance.type.mixins&#x3001;instance.type.mixins&#x548C;&#x5168;&#x5C40;minxins&#x7684;&#x5FAA;&#x73AF;&#x8C03;&#x7528;normalizePropsOptions&#xFF0C;&#x6700;&#x7EC8;&#x662F;&#x4F1A;&#x5408;&#x5E76;&#x6210;&#x4E00;&#x6574;&#x4E2A;:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> normalizedEntry: NormalizedPropsOptions = [normalized, needCastKeys]
+<span class="hljs-keyword">return</span> normalizedEntry
+</code></pre>
+<p><strong>2</strong>.&#x7ECF;&#x8FC7;1&#x5F97;&#x5230;[<font color="#ff8000">normalized</font>, <font color="#ff8000">needCastKeys</font>]</p>
+<p><img src="https://res.psy-1.com/Fg7cLitiSUiz-V6wR9ogC5-N4F-B" alt="setFullProps"></p>
+<p>&#x6700;&#x540E;&#x6839;&#x636E;[<font color="#ff8000">normalized</font>, <font color="#ff8000">needCastKeys</font>]
+&#x904D;&#x5386;vnode.props&#x6765;&#x8D4B;&#x503C;&#x7D66;props&#x6216;&#x662F;attrs&#x3002;
+&#x8FD8;&#x8BB0;&#x5F97;&#x4E00;&#x5F00;&#x59CB;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x7684;props,attrs&#x9EBD;&#xFF1F;&#x4EE5;&#x4E0A;&#x90FD;&#x662F;&#x4E3A;&#x4E86;&#x8BBE;&#x7F6E;&#x8FD9;&#x4E24;&#x4E2A;&#x7684;&#x3002;</p>
+<p><strong>3</strong>.&#x5982;&#x679C;&#x6709;<font color="#ff8000">needCastKeys</font>&#xFF0C;&#x8FD9;&#x91CC;<font color="#ff8000">normalized</font>&#x6539;&#x4E00;&#x4E2A;&#x540D;&#x79F0;&#x4E3A;<font color="#ff8000">options</font></p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">if</span> (needCastKeys) {
+    <span class="hljs-keyword">const</span> rawCurrentProps = toRaw(props) <span class="hljs-comment">// &#x907F;&#x514D;&#x6709;&#x5F15;&#x7528;&#x5C5E;&#x6027;&#x7684;&#x54CD;&#x5E94;&#x5F0F;&#x7684;&#x5E72;&#x6270;</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; needCastKeys.length; i++) {
+      <span class="hljs-keyword">const</span> key = needCastKeys[i]
+      props[key] = resolvePropValue(
+        options!,
+        rawCurrentProps,
+        key,
+        rawCurrentProps[key]
+      )
+    }
+  }
+</code></pre>
+<p>&#x6211;&#x4EEC;&#x73B0;&#x5728;&#x8FD8;&#x662F;&#x7528;&#x4E0A;&#x9762;&#x7684;1&#x4E2D;&#x7684;b&#x505A;&#x4F8B;&#x5B50;&#xFF0C;&#x8FD9;&#x91CC;&#x5148;&#x8BF4;Boolean&#x7684;&#x3002;&#x8FD9;&#x91CC;&#x7684;&#x4F8B;&#x5B50;&#x56E0;&#x4E3A;props&#x6CA1;&#x6709;test&#x8FD9;&#x4E2A;&#x5B57;&#x6BB5;&#xFF0C;&#x6240;&#x4EE5;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;false&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// &#x53C2;&#x6570;&#x540D;&#x79F0;&#xFF1A;</span>
+resolvePropValue(
+  options: NormalizedPropsOptions[<span class="hljs-number">0</span>],
+  props: Data,
+  key: <span class="hljs-built_in">string</span>,
+  value: unknown
+)
+
+
+<span class="hljs-keyword">const</span> opt = options[key] as <span class="hljs-built_in">any</span>
+<span class="hljs-keyword">const</span> hasDefault = hasOwn(opt, <span class="hljs-string">&apos;default&apos;</span>)
+
+<span class="hljs-comment">// boolean casting</span>
+    <span class="hljs-keyword">if</span> (opt[BooleanFlags.shouldCast]) {
+      <span class="hljs-keyword">if</span> (!hasOwn(props, key) &amp;&amp; !hasDefault) {
+        value = <span class="hljs-literal">false</span>
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (
+        opt[BooleanFlags.shouldCastTrue] &amp;&amp;
+        (value === <span class="hljs-string">&apos;&apos;</span> || value === hyphenate(key))
+      ) {
+        value = <span class="hljs-literal">true</span>
+      }
+    }
+<span class="hljs-keyword">return</span> value <span class="hljs-comment">// &#x6267;&#x884C;&#x5230;&#x8FD9;&#x91CC;</span>
+</code></pre>
+<p>&#x518D;&#x8BF4;&#x4E00;&#x4E0B;default&#x7684;&#xFF0C;&#x6CA1;&#x6709;value&#x4E14;&#x6709;&#x9ED8;&#x8BA4;&#x8FD9;&#x4E2A;&#x5B57;&#x6BB5;&#xFF0C;&#x68C0;&#x6D4B;&#x5230;default&#x4E0D;&#x662F;function&#x800C;&#x662F;&#x4E00;&#x4E2A;&#x503C;&#xFF0C;&#x6240;&#x4EE5;&#x76F4;&#x63A5;&#x9632;&#x62A4;default&#x7684;&#x503C;0.</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// &#x53C2;&#x6570;&#x540D;&#x79F0;&#xFF1A;</span>
+resolvePropValue(
+  options: NormalizedPropsOptions[<span class="hljs-number">0</span>],
+  props: Data,
+  key: <span class="hljs-built_in">string</span>,
+  value: unknown
+)
+
+<span class="hljs-keyword">const</span> opt = options[key] as <span class="hljs-built_in">any</span>
+<span class="hljs-keyword">const</span> hasDefault = hasOwn(opt, <span class="hljs-string">&apos;default&apos;</span>)
+
+<span class="hljs-comment">// default values</span>
+    <span class="hljs-keyword">if</span> (hasDefault &amp;&amp; value === <span class="hljs-literal">undefined</span>) {
+      <span class="hljs-keyword">const</span> defaultValue = opt.default
+      value =
+        opt.type !== <span class="hljs-built_in">Function</span> &amp;&amp; isFunction(defaultValue)
+          ? defaultValue()
+          : defaultValue
+    }
+<span class="hljs-keyword">return</span> value
+</code></pre>
+<p>&#x770B;&#x4E0D;&#x61C2;&#xFF1F;</p>
+<blockquote>
+<p>&#x5C31;&#x8FD9;&#x4E48;&#x8BF4;&#x5427;&#xFF0C;&#x73B0;&#x5728;&#x6709;&#x4E24;&#x4E2A;&#x6570;&#x7EC4;&#x4E00;&#x4E2A;&#x4E3A;props&#x4E00;&#x4E2A;&#x4E3A;attrs&#xFF0C;&#x901A;&#x8FC7;setFullProps&#xFF0C;&#x6839;&#x636E;vnode.type.props&#x8FDB;&#x884C;normalizePropsOptions&#x6807;&#x51C6;&#x5316;&#x751F;&#x6210;[options, needCastKeys]&#xFF0C;
+options&#x7684;&#x751F;&#x6210;&#x662F;&#x6839;&#x636E;&#x4E3A;Object&#x7684;&#x7C7B;&#x578B;&#x7684;vnode.type.props&#x800C;&#x5B9A;&#x7684;&#x3002;&#x5F53;vnode.type.props&#x7684;&#x7C7B;&#x578B;&#x4E3A;Object&#x65F6;&#xFF0C;needCastKeys = Object.keys(vnode.type.props)&#xFF0C;&#x5F53;vnode.type.props&#x7684;&#x7C7B;&#x578B;&#x4E3A;&#x6570;&#x7EC4;&#x65F6;&#xFF0C;needCastKeys = vnode.type.props&#xFF0C;&#x5F53;&#x7136;&#x8FD9;&#x91CC;&#x7684;key&#x7684;&#x540D;&#x79F0;&#x90FD;&#x662F;&#x4F1A;&#x8FDB;&#x884C;&#x9A7C;&#x5CF0;&#x5316;&#x3002;
+&#x5728;&#x5F97;&#x5230;options&#x548C;needCastKeys&#x540E;&#xFF0C;</p>
+<p>&#x5B58;&#x5728;options&#x65F6;&#xFF0C;&#x904D;&#x5386;vnode.props&#xFF0C;&#x4F46;&#x662F;&#x8DF3;&#x8FC7;&#x952E;key === &apos;key&apos; || key === &apos;ref&apos;&#x7684;&#x904D;&#x5386;&#xFF0C;&#x5F53;&#x952E;key&#x5B58;&#x5728;options&#x4E2D;&#xFF0C;&#x5219;camelKey = camelize(key)props[camelKey] = value&#x904D;&#x5386;&#x7684;&#x503C;&#xFF0C;
+&#x5426;&#x5219;&#x5F53;&#x4E0D;&#x5B58;&#x5728;instance.emit&#x6216;&#x8005;&#x8BE5;&#x952E;key&#x4E0D;&#x662F;instance.emit&#x7684;&#x53C2;&#x6570;&#x65F6;&#xFF0C;attrs[key] = value&#xFF0C;key&#x8FD8;&#x662F;&#x539F;&#x6765;&#x7684;&#x952E;key&#x3002;</p>
+<p>&#x5B58;&#x5728;needCastKeys&#x65F6;&#xFF0C;&#x904D;&#x5386;needCastKeys&#xFF0C;value&#x4F7F;&#x7528;resolvePropValue&#xFF0C;&#x6839;&#x636E;options&#x4E0E;value&#x662F;&#x5426;&#x4E3A;&#x7A7A;&#x3001;&#x662F;&#x5426;&#x4E3A;&#x7A7A;&#x5B57;&#x7B26;&#x4E32;&#x4E4B;&#x7C7B;&#x5904;&#x7406;&#x6210;&#x9ED8;&#x8BA4;&#x503C;&#x6216;&#x8005;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x90FD;&#x6CA1;&#x6709;&#x5C31;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x4E0D;&#x7ECF;&#x8FC7;&#x5904;&#x7406;&#x7684;value&#x3002;</p>
+</blockquote>
+<p><img src="https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_" alt="&#x718A;&#x732B;&#x7D27;&#x5F20;">&#x4EC0;&#x4E48;&#xFF1F;&#x4F60;&#x53C8;&#x60F3;&#x8BA9;&#x6211;&#x7D66;&#x4F60;&#x79D1;&#x666E;&#x4E00;&#x4E0B;emit&#xFF1F;&#x4E0B;&#x6B21;&#x4E00;&#x5B9A;&#x4E0B;&#x6B21;&#x4E00;&#x5B9A;&#xFF01;&#x884C;&#x4E86;&#xFF0C;&#x70B9;&#x5F00;emit&#x7AE0;&#x8282;&#xFF0C;&#x4F60;&#x5C31;&#x80FD;&#x4E86;&#x89E3;&#x6B38;&#x3002;</p>
+<p>&#x6700;&#x540E;&#x8BBE;&#x7F6E;instance&#x7684;&#x5F15;&#x7528;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">if</span> (isStateful) {
+  <span class="hljs-comment">// stateful</span>
+  instance.props = isSSR ? props : shallowReactive(props) <span class="hljs-comment">// &#x6240;&#x4EE5;props&#x4E00;&#x5C42;&#x54CD;&#x5E94;</span>
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">if</span> (!instance.type.props) {
+    <span class="hljs-comment">// functional w/ optional props, props === attrs</span>
+    instance.props = attrs
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// functional w/ declared props</span>
+    instance.props = props
+  }
+}
+instance.attrs = attrs
+</code></pre>
+<p><img src="https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_" alt="&#x718A;&#x732B;&#x7D27;&#x5F20;">&#x6D41;&#x7A0B;&#x56FE;&#x6709;... &#x5199;&#x5F97;&#x5F88;&#x660E;&#x767D;&#xFF0C;&#x5E0C;&#x671B;&#x4F60;&#x80FD;&#x53BB;&#x770B;&#x51E0;&#x773C;&#x3002;</p>
+<p>instance.attrs &#x5C06;&#x4F1A;&#x88AB;subTree.props&#x5408;&#x5E76;&#xFF0C;subTree&#x5C31;&#x662F;instance.render()&#x8FD4;&#x56DE;&#x7684;vnode&#x3002;</p>
+<p>instance.props &#x72B6;&#x6001;&#x7C7B;&#x578B;&#x7EC4;&#x4EF6;&#xFF08;ShapeFlags.STATEFUL_COMPONENT&#xFF09;&#x5728;&#x8FD0;&#x884C;instance.setup&#x4E2D;&#x4F20;&#x5165;&#x7684;&#x662F;instance.proxy&#xFF0C;&#x53EA;&#x4F1A;&#x5728;instance.render(instance.props)&#x5E94;&#x7528;&#x5230;&#x3002;
+&#x51FD;&#x6570;&#x7C7B;&#x578B;&#xFF08;ShapeFlags.FUNCTIONAL_COMPONENT&#xFF09;&#x7684;&#x7EC4;&#x4EF6;&#xFF0C;&#x5728;setupRenderEffect&#x4E2D;&#x7684;renderComponentRoot&#x8C03;&#x7528;vnode.type&#x7684;&#x65F6;&#x5019;&#x4F20;&#x5165;instance.proxy&#x3002;</p>
+<p><strong>instance.attrs&#x7528;&#x4E8E;&#x4E0E;&#x5B57;vnode&#x5408;&#x5E76;&#x53C2;&#x6570;&#xFF0C;instance.props&#x7528;&#x4E8E;&#x4F20;&#x9012;&#xFF0C;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#x7684;render&#xFF0C;ShapeFlags.FUNCTIONAL_COMPONENT&#x7C7B;&#x578B;&#x7684;type&#x3002;
+&#x8C03;&#x7528;&#x7EC4;&#x4EF6;setup&#x7684;&#x53C2;&#x6570;&#x662F;instance.props, instance.setupContext&#x3002;
+&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x597D;&#x597D;&#x533A;&#x522B;&#x4E00;&#x4E0B;&#x3002;</strong></p>
+<blockquote>
+<p>attrs&#x548C;props&#x7684;&#x672C;&#x8D28;&#x533A;&#x522B;&#x662F;&#xFF0C;&#x5982;&#x679C;instance.type&#x6709;props&#x5B57;&#x6BB5;&#xFF0C;&#x5F53;&#x904D;&#x5386;vnode.props&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8D4B;&#x503C;&#x65B9;&#x5F0F;&#x4E3A;&#x952E;key&#x5B58;&#x5728;&#x4E8E;instance.type.props&#x4E2D;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x952E;key&#x4E0D;&#x5B58;&#x5728;&#x4E8E;instance.type.props
+&#x4E14;instance.emit&#x6CA1;&#x6709;&#x7528;&#x5230;&#x8BE5;&#x952E;key&#xFF0C;&#x5219;&#x8D4B;&#x503C;&#x7D66;attrs&#x3002;needCastKeys&#x662F;&#x7528;&#x6765;&#x7D66;props&#x8BBE;&#x7F6E;&#x4E00;&#x4E0B;&#x9ED8;&#x8BA4;&#x5B57;&#x6BB5;&#x548C;&#x5E03;&#x5C14;&#x5B57;&#x6BB5;&#x7684;&#xFF0C;&#x4F7F;&#x5176;&#x6807;&#x51C6;&#x5316;&#x4E00;&#x4E9B;&#x3002;
+&#x4E00;&#x53E5;&#x8BDD;&#xFF0C;attrs&#x662F;&#x88AB;instance.type.props&#x6240;&#x8FC7;&#x6EE4;&#x7684;vnode.props&#x3002;</p>
+</blockquote>
+<p><font color="#ff8000">initSlots</font>&#xFF1A;</p>
+<p>&#x8FD9;&#x91CC;&#x7684;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x6CA1;&#x6709;slots&#xFF0C;&#x76F8;&#x5173;&#x79FB;&#x6B65;&#x53BB;slots&#x7AE0;&#x8282;&#x3002;</p>
+<p><font color="#ff8000">setupStatefulComponent</font>&#xFF1A;
+ShapeFlags.STATEFUL_COMPONENT&#x624D;&#x4F1A;&#x6267;&#x884C;&#xFF0C;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;&#x4E3A;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#x3002;&#x8BBE;&#x7F6E;accessCache&#x548C;proxy&#xFF0C;proxy&#x5728;&#x5904;&#x7406;options&#xFF0C;&#x6216;&#x8005;&#x8BF4;options&#x4E2D;&#x4F7F;&#x7528;&#x7684;this&#xFF0C;&#x5C06;&#x6307;&#x5411;proxy&#x3002;
+&#x5C31;&#x662F;</p>
+<pre><code class="lang-typescript">{
+  methods: { 
+      foo() { 
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>)
+     } 
+  }
+}
+</code></pre>
+<p>&#x4F1A;&#x8F93;&#x51FA;instance.proxy&#x3002;</p>
+<pre><code>instance.accessCache = {}
+instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
+</code></pre><p>&#x7EC4;&#x4EF6;&#x4E2D;setup&#x7684;&#x8FD0;&#x884C;&#xFF1A;</p>
+<pre><code class="lang-typescript">currentInstance = instance <span class="hljs-comment">// &#x4F7F;&#x7528;&#x94A9;&#x5B50;api&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x4F7F;&#x7528;&#x5230;&#x3002;</span>
+pauseTracking() <span class="hljs-comment">// &#x6682;&#x505C;track&#xFF0C;reactive&#x76F8;&#x5173;&#xFF0C;&#x8FD9;&#x91CC;&#x505C;&#x6B62;track&#x662F;&#x907F;&#x514D;&#x6267;&#x884C;setup&#x65B9;&#x6CD5;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x8FFD;&#x8E2A;&#x5230;&#x5176;&#x4ED6;&#x5730;&#x65B9;&#x7684;effect&#xFF0C;&#x6BD4;&#x5982;&#x5177;&#x6709;&#x7236;&#x7EC4;&#x4EF6;&#x8FDB;&#x884C;componentEffect&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x4F1A;patch&#x5B50;&#x7EC4;&#x4EF6;&#xFF0C;&#x5B50;&#x7EC4;&#x4EF6;&#x66F4;&#x65B0;&#xFF0C;&#x7236;&#x7EC4;&#x4EF6;&#x4E5F;&#x9700;&#x8981;&#x66F4;&#x65B0;&#xFF0C;&#x8FD9;&#x4E00;&#x6B65;&#x4EC5;&#x4EC5;&#x5728;componentEffect&#x4E2D;&#x5904;&#x7406;&#x3002;</span>
+setupResult = callWithErrorHandling <span class="hljs-comment">// &#x8C03;&#x7528;&#x7EC4;&#x4EF6;&#x7684;setup&#x65B9;&#x6CD5;&#xFF0C;&#x4F20;&#x5165;(instance.props, instance.setupConetxt)&#x3002;</span>
+resetTracking() <span class="hljs-comment">// &#x6062;&#x590D;&#x4E0A;&#x4E00;&#x4E2A;track&#x7684;&#x72B6;&#x6001;&#xFF0C;reactive&#x76F8;&#x5173;</span>
+currentInstance = <span class="hljs-literal">null</span> <span class="hljs-comment">// &#x6062;&#x590D;</span>
+</code></pre>
+<p>callWithErrorHandling&#x5305;&#x88F9;setup&#x65B9;&#x6CD5;&#xFF0C;&#x6267;&#x884C;<font color="#ff8000">setup(instance.props, instance.setupConetxt)</font>&#x3002;</p>
+<p>setup&#x5185;&#x90E8;&#x6709;&#x94A9;&#x5B50;&#xFF0C;&#x5F53;&#x524D;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x8C03;&#x7528;&#x4E86;onUpdated(CLICKEVENT)&#x94A9;&#x5B50;&#xFF0C;&#x8BBE;&#x7F6E;instance.u = []&#xFF0C;instance.u.push(CLICKEVENT)&#xFF0C;&#x53EF;&#x4EE5;&#x53BB;&#x770B;instance.u&#x5B57;&#x6BB5;&#x3002;</p>
+<pre><code class="lang-typescript">createHook(LifecycleHooks.UPDATED)
+
+<span class="hljs-comment">// createHook&#x5185;&#x90E8;&#xFF1A;</span>
+injectHook(LifecycleHooks.UPDATED, CLICKEVENT, currentInstance)
+
+<span class="hljs-comment">// injectHook&#x5185;&#x90E8;&#xFF1A;</span>
+<span class="hljs-keyword">const</span> hooks = target[<span class="hljs-keyword">type</span>] || (target[<span class="hljs-keyword">type</span>] = [])
+<span class="hljs-keyword">const</span> wrappedHook =
+hook.__weh || hook.__weh = (...args: unknown[]) =&gt; {
+      <span class="hljs-comment">// &#x6682;&#x4E0D;&#x8BA8;&#x8BBA;...</span>
+}
+hooks.push(wrappedHook)
+</code></pre>
+<p>&#x6700;&#x540E;&#x8FD4;&#x56DE;setup&#x7684;&#x7ED3;&#x679C;&#x7D66;setupResult&#x3002;&#x6267;&#x884C;<font color="#ff8000">handleSetupResult</font>&#xFF0C;setupResult&#x662F;&#x4E00;&#x4E2A;Function&#xFF0C;
+&#x6240;&#x4EE5;:</p>
+<pre><code class="lang-typescript">instance.render = setupResult
+</code></pre>
+<p>&#x5982;&#x679C;setupResult&#x662F;&#x4E00;&#x4E2A;Object&#x7C7B;&#x578B;&#xFF1A;</p>
+<pre><code class="lang-typescript">instance.setupState = reactive(setupResult) <span class="hljs-comment">// &#x8FDB;&#x884C;&#x54CD;&#x5E94;&#x5F0F;</span>
+</code></pre>
+<p>setupResult&#x4E3A;Object&#x7C7B;&#x578B;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8FDB;&#x884C;&#x54CD;&#x5E94;&#x5F0F;&#x5316;&#x6709;&#x4EC0;&#x4E48;&#x597D;&#x5904;&#xFF1F;&#xFF08;&#x5176;&#x5B9E;&#x6211;&#x662F;&#x611F;&#x89C9;&#x9632;&#x6B62;&#x65B0;&#x624B;&#x4E0D;&#x77E5;&#x9053;&#x600E;&#x4E48;&#x5904;&#x7406;&#x5427;&#xFF09;&#x6211;&#x4EEC;&#x5E73;&#x65F6;&#x4F1A;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5BF9;&#x8C61;&#x91CC;&#x9762;&#x5305;&#x88F9;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5BF9;&#x8C61;&#xFF0C;&#x5982;&#x679C;&#x518D;&#x5957;&#x4E00;&#x5C42;&#x54CD;&#x5E94;&#x5F0F;&#x5316;&#xFF0C;&#x53EF;&#x4EE5;&#x8BA9;&#x6211;&#x4EEC;&#x76F4;&#x63A5;&#x8BBE;&#x7F6E;&#x5B57;&#x6BB5;&#xFF0C;
+&#x8F93;&#x5165;&#x6570;&#x636E;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x518D;&#x8FDB;&#x884C;&#x4E00;&#x6B21;relative&#x6216;&#x8005;ref&#x7684;&#x8C03;&#x7528;&#xFF0C;&#x8FD9;&#x548C;&#x5904;&#x7406;instance.type.data&#x540C;&#x4E00;&#x4E2A;&#x539F;&#x7406;&#xFF0C;<strong>&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x4F60;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x5728;setup&#x4E2D;&#x7684;return&#x76F4;&#x63A5;&#x5F53;data(){}&#x90A3;&#x6837;&#x8FD4;&#x56DE;</strong>&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x518D;&#x63D0;&#x9192;&#x4E00;&#x4E0B;&#xFF0C;&#x4F60;&#x9700;&#x8981;&#x6253;&#x5F00;<a href="https://www.processon.com/view/link/5f85c9321e085307a0892f7e" target="_blank">&#x6E32;&#x67D3;&#x6D41;&#x7A0B;&#x56FE;</a>&#xFF0C;&#x624D;&#x80FD;&#x77E5;&#x9053;&#x6D41;&#x7A0B;&#x8D70;&#x5411;&#x5230;&#x5E95;&#x53BB;&#x54EA;&#x4E86;&#x3002;</p>
+<p>&#x6267;&#x884C;<font color="#ff8000">finishComponentSetup</font>&#xFF0C;&#x8FD9;&#x91CC;&#x5C31;&#x6D89;&#x53CA;&#x5230;options&#x7684;&#x8BBE;&#x7F6E;&#x4E86;&#x3002;&#x5177;&#x4F53;&#x53BB;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x8C03;&#x8BD5;&#x5427;&#xFF0C;&#x5982;&#x679C;&#x9700;&#x8981;&#x7279;&#x522B;&#x8BF4;&#x4E00;&#x4E0B;&#x53EF;&#x4EE5;&#x5728;Github&#x63D0;&#x4E00;&#x4E0B;issus&#xFF0C;&#x8FD9;&#x91CC;&#x8BF4;&#x51E0;&#x4E2A;&#x91CD;&#x70B9;&#x3002;</p>
+<p><strong>callSyncHook(&apos;beforeCreate&apos;, instance.type.options)&#xFF0C;&#x8C03;&#x7528;&#x5168;&#x5C40;mixin&#x3001;extends&#x3001;&#x672C;&#x8EAB;mixin&#xFF0C;&#x6700;&#x540E;&#x624D;&#x662F;&#x8C03;&#x7528;&#x81EA;&#x8EAB;&#x7684;&#x3002;
+&#x8FD9;&#x91CC;&#x4F1A;&#x6709;&#x4E24;&#x4E2A;&#x94A9;&#x5B50;&#x88AB;&#x6267;&#x884C;&apos;beforeCreate&apos;&#x548C;&apos;created&apos;&#xFF0C;&#x8FD9;&#x4E24;&#x4E2A;&#x94A9;&#x5B50;&#x662F;&#x4F7F;&#x7528;composition API&#x662F;&#x6CA1;&#x6709;&#x7684;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x94A9;&#x5B50;&#x6BD4;setup&#x4E2D;&#x4F7F;&#x7528;api&#x7684;&#x94A9;&#x5B50;&#x8981;&#x63D0;&#x65E9;&#x6267;&#x884C;&#x3002;
+&#x5982;&#x679C;&#x5185;&#x90E8;&#x65B9;&#x6CD5;&#x4F7F;&#x7528;this&#xFF0C;&#x90A3;&#x4E48;&#x90FD;&#x4F1A;&#x6307;&#x5411;instance.proxy&#xFF0C;&#x8BE6;&#x60C5;&#x53EF;&#x4EE5;&#x67E5;&#x770B;PublicInstanceProxyHandlers&#x3002;</strong></p>
+<h4 id="setuprendereffect">setupRenderEffect</h4>
+<p><img src="https://res.psy-1.com/Fn1AHqFf-NFtXHr6tO7AS30GVs-F" alt="sucide">&#x7EC8;&#x4E8E;&#x8981;&#x770B;&#x5230;&#x91CD;&#x70B9;&#x4E86;&#xFF0C;&#x8FD9;&#x4E2A;&#x5C31;&#x5206;&#x5F00;&#x8BF4;&#x5427;&#xFF0C;&#x56E0;&#x4E3A;&#x6D89;&#x53CA;&#x5230;&#x7684;&#x4E1C;&#x897F;&#x5F88;&#x591A;&#x4E86;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Runtime">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="desc2.html" class="navigation navigation-next " aria-label="Next page: 渲染流程2">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"渲染流程","level":"1.2.1","depth":2,"next":{"title":"渲染流程2","level":"1.2.2","depth":2,"path":"Packages/Runtime/desc2.md","ref":"Packages/Runtime/desc2.md","articles":[]},"previous":{"title":"Runtime","level":"1.2","depth":1,"path":"Packages/Runtime/index.md","ref":"Packages/Runtime/index.md","articles":[{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},{"title":"渲染流程2","level":"1.2.2","depth":2,"path":"Packages/Runtime/desc2.md","ref":"Packages/Runtime/desc2.md","articles":[]},{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc.md","mtime":"2020-11-05T18:07:27.705Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-05T18:27:04.135Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -4,6 +4,7 @@
     * [渲染流程](Packages/Runtime/desc.md)
     * [渲染流程2](Packages/Runtime/desc2.md)
     * [一些问题](Packages/Runtime/question.md)
+    * [事件队列](Packages/Runtime/事件队列.md)
 * [Reactivity](Packages/Reactivity/index.md)
     * [diff算法](Packages/Reactivity/diff.md)
 * [API DOC](Packages/API_DOC/index.md)
