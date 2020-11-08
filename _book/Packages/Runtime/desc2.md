@@ -1,8 +1,8 @@
-## vue3渲染流程2（setupRenderEffect）
+# vue3渲染流程2（setupRenderEffect）
 ![托脸](https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR)setupRenderEffect，
-涉及到响应式数据的东西的，建议先去看去看Reactivity的响应式数据包再来看。
+涉及到响应式数据的东西的，建议先去看去看Reactivity的响应式数据包再来。
 
-setupRenderEffect中实际用到的是一个叫componentUpdate的方法，并使用effect添加响应式，最后赋值給instance.update。
+setupRenderEffect中实际用到的是一个叫componentUpdate的方法，传递給effect，创建响应，赋值給instance.update。
 ```typescript
 const prodEffectOptions = {
   scheduler: queueJob
@@ -10,8 +10,11 @@ const prodEffectOptions = {
 instance.update = effect(componentEffect, prodEffectOptions)
 ```
 
-### renderComponentRoot
-如果组件是ShapeFlags.STATEFUL_COMPONENT，调用instance.render(instance.withProxy || instance.proxy, instance.renderCache)生成subTree，检测instance.type.inheritAttrs是否不为false，inheriAttrs的初始默认值为undefided，再次检测subTree.shapeFlag是否属于ShapeFlags.ELEMENT类型
+## componentEffect
+当前测试用例instance.mounted === undefinded，利用<font color=#ff8000>renderComponentRoot</font>，生成subTree，subTree是根据instance.type来生成的。
+
+## renderComponentRoot
+如果组件是ShapeFlags.STATEFUL_COMPONENT类型，调用instance.render(instance.withProxy || instance.proxy, instance.renderCache)生成subTree，检测instance.type.inheritAttrs是否不为false，inheriAttrs的初始默认值为undefided，再次检测subTree.shapeFlag是否属于ShapeFlags.ELEMENT类型
 或者ShapeFlags.COMPONENT类型，如果是则通过cloneVNode内部调用mergeProps把subTree.props与subTree.attrs合并，是不是忘记了attrs是什么东西？在initProps中，根据当前组件vnode.props所遍历得到的，本质上是vnode.props。
 
 如果组件是ShapeFlage.FUNCTIONAL_COMPONENT，调用instance.vnode.type生成，和ShapeFlags.STATEFUL_COMPONENT的合并subTree.props行为一致，

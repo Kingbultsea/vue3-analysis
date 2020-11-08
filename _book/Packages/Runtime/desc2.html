@@ -155,6 +155,32 @@
             
         </li>
     
+        <li class="chapter " data-level="1.2.4" data-path="事件队列.html">
+            
+                <a href="事件队列.html">
+            
+                    
+                    事件队列
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="类型标记.html">
+            
+                <a href="类型标记.html">
+            
+                    
+                    类型标记
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -250,17 +276,19 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="vue3&#x6E32;&#x67D3;&#x6D41;&#x7A0B;2&#xFF08;setuprendereffect&#xFF09;">vue3&#x6E32;&#x67D3;&#x6D41;&#x7A0B;2&#xFF08;setupRenderEffect&#xFF09;</h2>
+                                <h1 id="vue3&#x6E32;&#x67D3;&#x6D41;&#x7A0B;2&#xFF08;setuprendereffect&#xFF09;">vue3&#x6E32;&#x67D3;&#x6D41;&#x7A0B;2&#xFF08;setupRenderEffect&#xFF09;</h1>
 <p><img src="https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR" alt="&#x6258;&#x8138;">setupRenderEffect&#xFF0C;
-&#x6D89;&#x53CA;&#x5230;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x7684;&#x4E1C;&#x897F;&#x7684;&#xFF0C;&#x5EFA;&#x8BAE;&#x5148;&#x53BB;&#x770B;&#x53BB;&#x770B;Reactivity&#x7684;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5305;&#x518D;&#x6765;&#x770B;&#x3002;</p>
-<p>setupRenderEffect&#x4E2D;&#x5B9E;&#x9645;&#x7528;&#x5230;&#x7684;&#x662F;&#x4E00;&#x4E2A;&#x53EB;componentUpdate&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;effect&#x6DFB;&#x52A0;&#x54CD;&#x5E94;&#x5F0F;&#xFF0C;&#x6700;&#x540E;&#x8D4B;&#x503C;&#x7D66;instance.update&#x3002;</p>
+&#x6D89;&#x53CA;&#x5230;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x7684;&#x4E1C;&#x897F;&#x7684;&#xFF0C;&#x5EFA;&#x8BAE;&#x5148;&#x53BB;&#x770B;&#x53BB;&#x770B;Reactivity&#x7684;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5305;&#x518D;&#x6765;&#x3002;</p>
+<p>setupRenderEffect&#x4E2D;&#x5B9E;&#x9645;&#x7528;&#x5230;&#x7684;&#x662F;&#x4E00;&#x4E2A;&#x53EB;componentUpdate&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x4F20;&#x9012;&#x7D66;effect&#xFF0C;&#x521B;&#x5EFA;&#x54CD;&#x5E94;&#xFF0C;&#x8D4B;&#x503C;&#x7D66;instance.update&#x3002;</p>
 <pre><code class="lang-typescript"><span class="hljs-keyword">const</span> prodEffectOptions = {
   scheduler: queueJob
 }
 instance.update = effect(componentEffect, prodEffectOptions)
 </code></pre>
-<h3 id="rendercomponentroot">renderComponentRoot</h3>
-<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlags.STATEFUL_COMPONENT&#xFF0C;&#x8C03;&#x7528;instance.render(instance.withProxy || instance.proxy, instance.renderCache)&#x751F;&#x6210;subTree&#xFF0C;&#x68C0;&#x6D4B;instance.type.inheritAttrs&#x662F;&#x5426;&#x4E0D;&#x4E3A;false&#xFF0C;inheriAttrs&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;undefided&#xFF0C;&#x518D;&#x6B21;&#x68C0;&#x6D4B;subTree.shapeFlag&#x662F;&#x5426;&#x5C5E;&#x4E8E;ShapeFlags.ELEMENT&#x7C7B;&#x578B;
+<h2 id="componenteffect">componentEffect</h2>
+<p>&#x5F53;&#x524D;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;instance.mounted === undefinded&#xFF0C;&#x5229;&#x7528;<font color="#ff8000">renderComponentRoot</font>&#xFF0C;&#x751F;&#x6210;subTree&#xFF0C;subTree&#x662F;&#x6839;&#x636E;instance.type&#x6765;&#x751F;&#x6210;&#x7684;&#x3002;</p>
+<h2 id="rendercomponentroot">renderComponentRoot</h2>
+<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x8C03;&#x7528;instance.render(instance.withProxy || instance.proxy, instance.renderCache)&#x751F;&#x6210;subTree&#xFF0C;&#x68C0;&#x6D4B;instance.type.inheritAttrs&#x662F;&#x5426;&#x4E0D;&#x4E3A;false&#xFF0C;inheriAttrs&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;undefided&#xFF0C;&#x518D;&#x6B21;&#x68C0;&#x6D4B;subTree.shapeFlag&#x662F;&#x5426;&#x5C5E;&#x4E8E;ShapeFlags.ELEMENT&#x7C7B;&#x578B;
 &#x6216;&#x8005;ShapeFlags.COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x5219;&#x901A;&#x8FC7;cloneVNode&#x5185;&#x90E8;&#x8C03;&#x7528;mergeProps&#x628A;subTree.props&#x4E0E;subTree.attrs&#x5408;&#x5E76;&#xFF0C;&#x662F;&#x4E0D;&#x662F;&#x5FD8;&#x8BB0;&#x4E86;attrs&#x662F;&#x4EC0;&#x4E48;&#x4E1C;&#x897F;&#xFF1F;&#x5728;initProps&#x4E2D;&#xFF0C;&#x6839;&#x636E;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;vnode.props&#x6240;&#x904D;&#x5386;&#x5F97;&#x5230;&#x7684;&#xFF0C;&#x672C;&#x8D28;&#x4E0A;&#x662F;vnode.props&#x3002;</p>
 <p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlage.FUNCTIONAL_COMPONENT&#xFF0C;&#x8C03;&#x7528;instance.vnode.type&#x751F;&#x6210;&#xFF0C;&#x548C;ShapeFlags.STATEFUL_COMPONENT&#x7684;&#x5408;&#x5E76;subTree.props&#x884C;&#x4E3A;&#x4E00;&#x81F4;&#xFF0C;
 &#x4F46;&#x662F;attrs = instance.type.props ? instance.attrs : getFallthroughAttrs(instance.attrs)&#x3002;getFallthroughAttrs&#x5728;API DOC&#x4E2D;&#x6709;&#x63CF;&#x8FF0;&#xFF0C;&#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x662F;&#x7B5B;&#x9009;&#x51FA;key&#x4E3A;class&#x3001;style&#x548C;on&#x5F00;&#x5934;&#x7684;key&#x3002;attrs&#x662F;&#x7528;&#x6765;&#x4E0E;subTree.props&#x5408;&#x5E76;&#x7684;&#x3002;</p>
@@ -341,7 +369,7 @@ subTree.props&#xFF09;&#x3002;</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"渲染流程2","level":"1.2.2","depth":2,"next":{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]},"previous":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc2.md","mtime":"2020-11-06T07:28:25.687Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-06T07:34:55.292Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"渲染流程2","level":"1.2.2","depth":2,"next":{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]},"previous":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc2.md","mtime":"2020-11-08T11:47:51.023Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-08T07:34:58.199Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

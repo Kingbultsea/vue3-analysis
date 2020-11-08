@@ -169,8 +169,8 @@ export declare const enum ShapeFlags {
 则执行<font color=#ff8000>mountComponent</font>，这个东西作用是挂载组件，这里挂载组件分三步走：
 
 * createComponentInstance 创建instance，一个组件相关的Object。
-* setupComponent，对attrs的一些处理 还有setup的处理 instance.type中的所有关键词字段的处理。
-* setupRenderEffect，处理instance.render。
+* setupComponent，对instance.attrs、vnode.type.setup和vnode.type中的所有关键OPTIONS字段的处理。
+* setupRenderEffect，处理instance.render、instance.vnode.type、instance.subTree、更新组件的effect和instance.subTree.props合并instance.attrs。
 
 #### createComponentInstance
 没有做什么，就是像vnode一样，生成了一个对象<font color=#ff8000>instance</font>，该对象记录了当前组件的信息，比如parent字段为父组件的instance，
@@ -207,21 +207,25 @@ const normalized = {}
 const needCastKeys = []
 ```
 
-如果拿a做举例，检测到props是一个数组，看代码你就明白了，不用文字解释了![托脸](https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR)
+如果拿a做举例，检测到props是一个数组，看代码输出的结果你就明白了。
+
+![托脸](https://res.psy-1.com/FkYnyYqXEj0EDfF5IlRr5L2dz5zR)以下是normalized和needCastKeys，拿a做例子，输出的结果：
 ```typescript
 const EMPTY_OBJ: { readonly [key: string]: any } = __DEV__
   ? Object.freeze({})
   : {}
-
+  
+// 输出的结果
 normalized = {
     'aB': EMPTY_OBJ,
     'cD': EMPTY_OBJ
 }
+// 输出的结果
 needCastKeys = undefined
 ```
 
-b做举例，检测到是对象，遍历props，把key转换为驼峰式写法，
-检测到key为foo的type为Boolean类型，<font color=#ff8000>needCastKeys.push(key)</font>，检测到test拥有default字段，
+b做举例，检测到是对象，遍历props，把遍历键key转换为驼峰式写法，
+检测到当遍历键key为'foo'时，遍历值value为Boolean类型，<font color=#ff8000>needCastKeys.push(key)</font>，检测到test拥有default字段，
 <font color=#ff8000>needCastKeys.push(key)</font>。下面这个代码可以不看。
 ```typescript
 for(const key in instance.props) {
@@ -374,11 +378,10 @@ instance.attrs = attrs
 
 instance.attrs 将会被subTree.props合并，subTree就是instance.render()返回的vnode。
 
-
 instance.props 状态类型组件（ShapeFlags.STATEFUL_COMPONENT）在运行instance.setup中传入的是instance.proxy，只会在instance.render(instance.props)应用到。
 函数类型（ShapeFlags.FUNCTIONAL_COMPONENT）的组件，在setupRenderEffect中的renderComponentRoot调用vnode.type的时候传入instance.proxy。
 
-**instance.attrs用于与字vnode合并参数，instance.props用于传递，ShapeFlags.STATEFUL_COMPONENT类型的render，ShapeFlags.FUNCTIONAL_COMPONENT类型的type。
+**instance.attrs用于与子(instance.subTree)vnode合并参数，instance.props用于传递，ShapeFlags.STATEFUL_COMPONENT类型的render，ShapeFlags.FUNCTIONAL_COMPONENT类型的type。
 调用组件setup的参数是instance.props, instance.setupContext。
 这里需要好好区别一下。**
 
