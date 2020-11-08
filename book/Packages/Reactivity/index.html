@@ -276,7 +276,220 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p>&#x6682;&#x65E0;&#x7EAF;&#x6587;&#x5B57;&#x7248;&#x672C;&#xFF0C;&#x53EF;&#x4EE5;&#x53BB;&#x770B;&#x6E32;&#x67D3;&#x6D41;&#x7A0B;&#x56FE;&#xFF0C;&#x6D41;&#x7A0B;&#x56FE;&#x4E2D;&#x6709;&#x6240;&#x6709;&#x7684;&#x6587;&#x5B57;&#x89E3;&#x91CA;&#x3002;</p>
+                                <h1 id="&#x54CD;&#x5E94;&#x5F0F;">&#x54CD;&#x5E94;&#x5F0F;</h1>
+<p>&#x5148;&#x770B;&#x4EE5;&#x4E0B;&#x4E0E;&#x54CD;&#x5E94;&#x5F0F;&#x76F8;&#x5173;&#x5E38;&#x7528;API&#x6709;&#x54EA;&#x4E9B;&#x3002;</p>
+<pre><code class="lang-typescript">// effect
+export declare function effect&lt;T = any&gt;(fn: () =&gt; T, options?: ReactiveEffectOptions): ReactiveEffect&lt;T&gt;;
+
+// &#x662F;&#x4E0D;&#x662F;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;
+export declare function isReactive(value: unknown): boolean;
+
+// &#x662F;&#x4E0D;&#x662F;&#x53EA;&#x8BFB;&#x5C5E;&#x6027;
+export declare function isReadonly(value: unknown): boolean;
+
+// &#x662F;&#x4E0D;&#x662F;Ref
+export declare function isRef&lt;T&gt;(r: Ref&lt;T&gt; | unknown): r is Ref&lt;T&gt;;
+
+// &#x6807;&#x8BB0;&#xFF0C;&#x8868;&#x793A;&#x4E0D;&#x8FDB;&#x884C;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x5316;
+export declare function markRaw&lt;T extends object&gt;(value: T): T;
+
+// &#x5BF9;&#x8C61;&#x7C7B;&#x578B;&#x7684;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;
+export declare function reactive&lt;T extends object&gt;(target: T): UnwrapNestedRefs&lt;T&gt;;
+
+// &#x57FA;&#x672C;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x7684;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;
+export declare function ref&lt;T&gt;(value: T): Ref&lt;UnwrapRef&lt;T&gt;&gt;;
+</code></pre>
+<h2 id="&#x521B;&#x5EFA;&#x8FC7;&#x7A0B;">&#x521B;&#x5EFA;&#x8FC7;&#x7A0B;</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> a = reactive({ foo: <span class="hljs-number">1</span> })
+<span class="hljs-keyword">const</span> rf = ref(<span class="hljs-string">&apos;hello&apos;</span>)
+<span class="hljs-keyword">const</span> ef = effect(() =&gt; {
+  <span class="hljs-built_in">console</span>.log(a.foo) <span class="hljs-comment">// &#x56E0;&#x4E3A;a&#x662F;Proxy&#x7C7B;&#x578B;&#xFF0C;&#x53EF;&#x4EE5;&#x8FFD;&#x8E2A;getter&#x7684;&#x52A8;&#x4F5C;&#x3002;</span>
+  <span class="hljs-built_in">console</span>.log(rf.value)  <span class="hljs-comment">// &#x540C;&#x4E0A;</span>
+})
+</code></pre>
+<h3 id="reactive">reactive:</h3>
+<p>&#x4F20;&#x5165;&#x7684;&#x662F;&#x5BF9;&#x8C61;&#xFF0C;&#x4F46;&#x4F60;&#x4F20;&#x57FA;&#x672C;&#x6570;&#x636E;&#x4F1A;&#x76F4;&#x63A5;&#x4E0D;&#x5BF9;target&#x8FDB;&#x884C;&#x5904;&#x7406;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reactive</span>(<span class="hljs-params">target: object</span>) </span>{ 
+  <span class="hljs-comment">// { msg: 1, __v_isReadonly: true } &#x8FD9;&#x6837;&#x5C31;&#x4F1A;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;target&#x4EC0;&#x4E48;&#x90FD;&#x4E0D;&#x505A;,ReactiveFlags.isReadonly&#x6807;&#x8BB0;</span>
+  <span class="hljs-keyword">if</span> (target &amp;&amp; (target as Target)[ReactiveFlags.isReadonly]) {
+    <span class="hljs-keyword">return</span> target
+  }
+
+  <span class="hljs-comment">// setup&#x6267;&#x884C;</span>
+  <span class="hljs-keyword">return</span> createReactiveObject(
+    target,
+    <span class="hljs-literal">false</span>, <span class="hljs-comment">// &#x8BBE;&#x7F6E;isReadonly&#x4E3A;false</span>
+    mutableHandlers, <span class="hljs-comment">// &#x8BBE;&#x7F6E;proxy&#x7684;hander</span>
+    mutableCollectionHandlers <span class="hljs-comment">// &#x8BBE;&#x7F6E;Map Set WeakMap WeackSet&#x7C7B;&#x578B;&#x7684;hander</span>
+  )
+}
+</code></pre>
+<h3 id="createreactiveobject">createReactiveObject:</h3>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createReactiveObject</span>(<span class="hljs-params">
+  target: Target,
+  isReadonly: <span class="hljs-built_in">boolean</span>,
+  baseHandlers: ProxyHandler&lt;<span class="hljs-built_in">any</span>&gt;,
+  collectionHandlers: ProxyHandler&lt;<span class="hljs-built_in">any</span>&gt;
+</span>) </span>{
+  <span class="hljs-comment">// &#x68C0;&#x67E5;&#x662F;&#x4E0D;&#x662F;Object &#x5982;&#x679C;&#x4E0D;&#x662F;obejct &#x62A5;&#x9519; &#x4E14;&#x5728;dev&#x73AF;&#x5883;&#x76F4;&#x63A5;&#x4E0D;&#x505A;&#x4EFB;&#x4F55;&#x5904;&#x7406; &#x8FD4;&#x56DE;target</span>
+  <span class="hljs-keyword">if</span> (!isObject(target)) {
+    <span class="hljs-keyword">if</span> (__DEV__) {
+      <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">`value cannot be made reactive: <span class="hljs-subst">${String(target)}</span>`</span>)
+    }
+    <span class="hljs-keyword">return</span> target
+  }
+  <span class="hljs-comment">// target is already a Proxy, return it.</span>
+  <span class="hljs-comment">// exception: calling readonly() on a reactive object</span>
+  <span class="hljs-comment">// &#x68C0;&#x6D4B;&#x5230;target&#x5DF2;&#x7ECF;&#x662F;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#xFF0C;&#x6216;&#x8005;&#x662F;readlyOnly&#x6570;&#x636E;</span>
+  <span class="hljs-comment">// &#x90FD;&#x4F1A;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;target    </span>
+  <span class="hljs-keyword">if</span> (
+    target[ReactiveFlags.raw] &amp;&amp;
+    !(isReadonly &amp;&amp; target[ReactiveFlags.isReactive])
+  ) {
+    <span class="hljs-keyword">return</span> target
+  }
+
+  <span class="hljs-comment">// target already has corresponding Proxy</span>
+  <span class="hljs-keyword">if</span> (
+    hasOwn(target, isReadonly ? ReactiveFlags.readonly : ReactiveFlags.reactive)
+  ) {
+    <span class="hljs-keyword">return</span> isReadonly
+      ? target[ReactiveFlags.readonly]
+      : target[ReactiveFlags.reactive]
+  }
+
+  <span class="hljs-comment">// &#x62E5;&#x6709;__v_skip &#x5C5E;&#x6027;&#x7684; &#x6216;&#x8005;&#x88AB;Object.frozen&#x5904;&#x7406;&#x8FC7;&#x7684;&#x90FD;&#x4E0D;&#x505A;&#x4EFB;&#x4F55;&#x5904;&#x7406;</span>
+  <span class="hljs-keyword">if</span> (!canObserve(target)) {
+    <span class="hljs-keyword">return</span> target
+  }
+
+  <span class="hljs-keyword">const</span> observed = <span class="hljs-keyword">new</span> Proxy(
+    target,
+    <span class="hljs-comment">// object&#x4E0D;&#x5C5E;&#x4E8E;Set Map WeakSetWeakMap&#xFF0C;&#x9009;&#x7528;baseHandlers&#x3002;</span>
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x5C5E;&#x4E8E;&#x5219;&#x9009;&#x7528;  collectionHandlers </span>
+    collectionTypes.has(target.constructor) ? collectionHandlers : baseHandlers
+  )
+
+  <span class="hljs-comment">// target[&apos;__v_reactive&apos;] = observed &#x4E92;&#x76F8;&#x6307;&#x5F15;</span>
+  def(
+    <span class="hljs-comment">// { msg, root } &#x7136;&#x540E;&#x505A;&#x4E00;&#x4E2A;&#x6574;&#x4F53;&#x89C2;&#x5BDF;&#x8005;proxy</span>
+    target,
+    <span class="hljs-comment">// &quot;__v_readonly&quot; /* readonly */ : &quot;__v_reactive&quot; /* reactive */</span>
+    isReadonly ? ReactiveFlags.readonly : ReactiveFlags.reactive,
+    <span class="hljs-comment">// proxy</span>
+    observed
+  )
+
+  <span class="hljs-keyword">return</span> observed
+}
+</code></pre>
+<h2 id="createref&#xFF0C;ref&#x7B49;&#x4E8E;createreftarget-false">createRef&#xFF0C;ref&#x7B49;&#x4E8E;createRef(target, false)</h2>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createRef</span>(<span class="hljs-params">rawValue: unknown, shallow = <span class="hljs-literal">false</span></span>) </span>{
+  <span class="hljs-comment">// __v_isRef === true&#xFF0C;&#x5219;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;  </span>
+  <span class="hljs-keyword">if</span> (isRef(rawValue)) {
+    <span class="hljs-keyword">return</span> rawValue
+  }
+
+  <span class="hljs-comment">// &#x5982;&#x679C;&#x4F20;&#x5165;&#x7684;&#x662F;&#x5BF9;&#x8C61;&#xFF0C;&#x5219;&#x76F4;&#x63A5;&#x8FDB;&#x884C;reactive(target),&#x5426;&#x5219;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;rawValue&#x3002;</span>
+  <span class="hljs-comment">// shallow &#x4E00;&#x5C42;&#x54CD;&#x5E94;&#x5F0F; shallowRef&#x7684;&#x65F6;&#x5019;&#x53EF;&#x4EE5;&#x7528;&#x5230;&#xFF0C;&#x53EA;&#x76D1;&#x542C;value&#x5C5E;&#x6027;</span>
+  <span class="hljs-keyword">let</span> value = shallow ? rawValue : convert(rawValue)
+
+  <span class="hljs-comment">// &#x5BF9;get&#x548C;set&#x884C;&#x4E3A;&#xFF0C;&#x8FDB;&#x884C;&#x76D1;&#x542C;</span>
+  <span class="hljs-keyword">const</span> r = {
+    __v_isRef: <span class="hljs-literal">true</span>,
+    <span class="hljs-keyword">get</span> value() {
+      <span class="hljs-comment">// &#x8FFD;&#x8E2A;</span>
+      track(r, TrackOpTypes.GET, <span class="hljs-string">&apos;value&apos;</span>)
+      <span class="hljs-keyword">return</span> value
+    },
+    <span class="hljs-keyword">set</span> value(newVal) {
+      <span class="hljs-comment">// toRow &#x4E3A;&#x4E86;&#x907F;&#x514D;&#x4F20;&#x5165;&#x7684;&#x8FD8;&#x662F;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x7ED3;&#x6784;</span>
+      <span class="hljs-keyword">if</span> (hasChanged(toRaw(newVal), rawValue)) {
+        <span class="hljs-comment">// &#x4FDD;&#x5B58;  </span>
+        rawValue = newVal
+
+        <span class="hljs-comment">// &#x518D;&#x6B21;&#x5224;&#x662F;&#x5426;&#x9700;&#x8981;&#x8F6C;&#x6362;  </span>
+        value = shallow ? newVal : convert(newVal)
+
+        <span class="hljs-comment">// &#x89E6;&#x53D1;&#x6240;&#x8FFD;&#x8E2A;&#x7684;effect  </span>
+        trigger(
+          r,
+          TriggerOpTypes.SET,
+          <span class="hljs-string">&apos;value&apos;</span>,
+          __DEV__ ? { newValue: newVal } : <span class="hljs-built_in">void</span> <span class="hljs-number">0</span>
+        )
+      }
+    }
+  }
+  <span class="hljs-keyword">return</span> r
+}
+</code></pre>
+<h2 id="effect">effect</h2>
+<pre><code class="lang-typescript">export function effect&lt;T = any&gt;(
+  fn: () =&gt; T,
+  options: ReactiveEffectOptions = EMPTY_OBJ // &#x9ED8;&#x8BA4;&#x4E3A;&#x7A7A; &#x66F4;&#x65B0;&#x7EC4;&#x4EF6;&#x7684;effect&#x4F1A;&#x7528;&#x5230;
+): ReactiveEffect&lt;T&gt; {
+  // computed -&gt; false
+  if (isEffect(fn)) {
+    fn = fn.raw
+  }
+  const effect = createReactiveEffect(fn, options)
+
+  // &#x7ACB;&#x5373;&#x6267;&#x884C;
+  if (!options.lazy) {
+    effect()
+  }
+
+  return effect
+}
+</code></pre>
+<h2 id="createreactiveeffect">createReactiveEffect</h2>
+<pre><code class="lang-typescript">function createReactiveEffect&lt;T = any&gt;(
+  fn: (...args: any[]) =&gt; T,
+  options: ReactiveEffectOptions
+): ReactiveEffect&lt;T&gt; {
+  const effect = function reactiveEffect(...args: unknown[]): unknown {
+
+    if (!effect.active) {
+      return options.scheduler ? undefined : fn(...args)
+    }
+
+    // effectStack&#x4E3A;effect&#x6587;&#x4EF6;&#x7684;&#x5168;&#x5C40;&#x5C5E;&#x6027;&#xFF0C;&#x5982;&#x679C;&#x8BE5;effect&#x5DF2;&#x7ECF;&#x5728;&#x6808;&#x4E2D;&#x7B49;&#x5F85;&#x6267;&#x884C;&#xFF0C;&#x90A3;&#x4E48;&#x8DF3;&#x8FC7; 
+    if (!effectStack.includes(effect)) {
+      cleanup(effect) // &#x6BCF;&#x6B21;&#x8FD0;&#x884C;effect &#x90FD;&#x4F1A;&#x6E05;&#x7A7A;&#x5BF9;&#x5E94;&#x7684;&#x6240;&#x6709;&#x8FFD;&#x8E2A; &#x4E3A;&#x4E86;&#x907F;&#x514D;&#x91CD;&#x590D;&#x8FFD;&#x8E2A;
+      try {
+        // &#x5141;&#x8BB8;&#x8FFD;&#x8E2A;&#x5F53;&#x524D;effect  
+        enableTracking()
+        // &#x5165;&#x6808;  
+        effectStack.push(effect)
+
+        // activeEffect&#x4E3A;effect&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x5168;&#x5C40;&#x5C5E;&#x6027;&#xFF0C;&#x8868;&#x793A;&#x5F53;&#x524D;&#x6B63;&#x5E38;&#x6267;&#x884C;&#x7684;effect
+        // &#x80FD;&#x591F;&#x4F7F;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x8FDB;&#x884C;track&#x8FFD;&#x8E2A;
+        activeEffect = effect
+
+        return fn(...args) // &#x8FD4;&#x56DE;&#x6267;&#x884C;&#x7684;&#x51FD;&#x6570;&#x7684;&#x7ED3;&#x679C;
+      } finally {
+        // &#x51FA;&#x6808;  
+        effectStack.pop()
+
+        // &#x6062;&#x590D;&#x4E0A;&#x4E00;&#x6B21;effect&#x4FE1;&#x606F;&#xFF0C;&#x5373;&#x672C;&#x6B21;&#x5141;&#x8BB8;&#x8FFD;&#x8E2A;&#x4FE1;&#x606F;&#x51FA;&#x6808; 
+        resetTracking()
+        activeEffect = effectStack[effectStack.length - 1]
+      }
+    }
+  } as ReactiveEffect
+
+  effect.id = uid++ // &#x7EC4;&#x4EF6;&#x66F4;&#x65B0;&#x7684;&#x65F6;&#x5019; &#x4F1A;&#x6839;&#x636E;id&#x4ECE;&#x5C0F;&#x5230;&#x5927;&#x6392;&#x5E8F;
+  effect._isEffect = true
+  effect.active = true
+  effect.raw = fn
+  effect.deps = []
+  effect.options = options
+  return effect
+}
+</code></pre>
+<h1 id="&#x8FFD;&#x8E2A;&#x8FC7;&#x7A0B;&#xFF08;track&#xFF09;">&#x8FFD;&#x8E2A;&#x8FC7;&#x7A0B;&#xFF08;track&#xFF09;</h1>
+<h1 id="&#x89E6;&#x53D1;&#x8FC7;&#x7A0B;&#xFF08;trigger&#xFF09;">&#x89E6;&#x53D1;&#x8FC7;&#x7A0B;&#xFF08;trigger&#xFF09;</h1>
 
                                 
                                 </section>
@@ -320,7 +533,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Reactivity","level":"1.3","depth":1,"next":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"previous":{"title":"类型标记","level":"1.2.5","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Reactivity/index.md","mtime":"2020-11-01T15:14:22.056Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-08T18:06:13.866Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Reactivity","level":"1.3","depth":1,"next":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"previous":{"title":"类型标记","level":"1.2.5","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Reactivity/index.md","mtime":"2020-11-08T18:23:15.568Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-08T18:23:29.600Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
