@@ -27,7 +27,7 @@ export declare function ref<T>(value: T): Ref<UnwrapRef<T>>;
 
 
 
-## 创建过程
+## 测试用例
 
 ```typescript
 const a = reactive({ foo: 1 })
@@ -249,6 +249,202 @@ function createReactiveEffect<T = any>(
 
 # 追踪过程（track）
 
+在创建effect的时候，createReactiveEffect会设置activeEffect = effect，表示当前执行的effect，运行传递进effect的Function：
+
+```ty
+// Function:
+() => {
+  console.log(a.foo)
+  console.log(rf.value)
+}
+```
+
+
+
+**a**被设置成Proxy，可以监听赋值和取值等操作的行为，此处取值键为foo，查看内部getter。（需要注意的是**track**方法）
+
+### getter：
+
+```typescript
+/*
+  @target 目标对象
+  @key 对象参数
+  @receiver 自身Proxy
+*/
+function get(target: object, key: string | symbol, receiver: object) {
+    // 特定Key相关s's
+    if (key === ReactiveFlags.isReactive) {
+      return !isReadonly
+    } else if (key === ReactiveFlags.isReadonly) {
+      return isReadonly
+    } else if (
+      key === ReactiveFlags.raw &&
+      receiver ===
+        (isReadonly
+          ? (target as any).__v_readonly
+          : (target as any).__v_reactive)
+    ) {
+      return target
+    }
+
+    // 数组相关
+    const targetIsArray = isArray(target)
+    if (targetIsArray && hasOwn(arrayInstrumentations, key)) {
+      // 拦截 ['includes', 'indexOf', 'lastIndexOf'] 方法 每一个遍历的 返回一个methods
+      return Reflect.get(arrssayInstrumentations, key, receiver)
+    } 
+
+    // 这个其实就相当于 new Proxy() 返回target[key]
+    const res = Reflect.get(target, key, receiver)
+
+    // 获取原型
+    if ((isSymbol(key) && builtInSymbols.has(key)) || key === '__proto__') {
+      return res
+    }
+
+    // 非readonly 初始创建的时候的值 进行追踪，这里的重点
+    if (!isReadonly) {
+      track(target, TrackOpTypes.GET, key)
+    }
+
+    // shallow 初始创建的时候的值
+    if (shallow) {
+      return res
+    }
+
+    // 转换
+    if (isRef(res)) {
+      // ref unwrapping, only for Objects, not for Arrays.
+      return targetIsArray ? res : res.value
+    }
+
+    if (isObject(res)) {
+      // Convert returned value into a proxy as well. we do the isObject check
+      // here to avoid invalid value warning. Also need to lazy access readonly
+      // and reactive here to avoid circular dependency.
+      // 如果是对象 那么递归 res
+      // 如果是链式调用 检查到__v_reactive 就跳过处理 track 也是会执行的
+      // readonly 就 readonly 递归循环
+      return isReadonly ? readonly(res) : reactive(res)
+    }
+
+    return res
+  }
+```
+
+
+
+### track：
+
+```typescript
+function track(target: object, type: TrackOpTypes, key: unknown) {
+  if (!shouldTrack || activeEffect === undefined) {
+    return
+  }
+  // WeakMap
+  let depsMap = targetMap.get(target)
+  if (!depsMap) {
+    targetMap.set(target, (depsMap = new Map()))
+  }
+  let dep = depsMap.get(key) // value
+  if (!dep) {
+    depsMap.set(key, (dep = new Set()))
+  }
+  // cleanup(effect) 每次执行trigger effect的时候 都会删除dep
+  if (!dep.has(activeEffect)) {
+    dep.add(activeEffect)
+    activeEffect.deps.push(dep)
+    }
+  }
+}
+```
+
+询问targetMap有没有该target（引用属性），没有则设置target为键，value为空的Map，depsMap。
+
+查看value存在不存在key，不存在则创建一个空的Set，dep。
+
+查看dep存在不存在effect，不存在则存放当前activeEffect，給当前activeEffect.deps.push(dep)。
+
+**一个全局收集器收集target，key，activeEffect，由于追踪响应行为的是key，所以在key的层级存放activeEffect。**
+
+```typescript
+// 如果用对象来描述Map 用数组描述Set，那么以下就是当前测试变量a得出的结果
+{ target: { key: [ activeEffect ] } }
+```
+
 
 
 # 触发过程（trigger）
+
+### setter:
+
+```typescript
+function createSetter(shallow = false) {
+  return function set(
+    target: object, // 目标
+    key: string | symbol, // Key
+    value: unknown, // 设置的值
+    receiver: object // receiver就是它的Proxy
+  ): boolean {
+    const oldValue = (target as any)[key]
+    if (!shallow) { // shallow 浅
+      value = toRaw(value)
+      if (!isArray(target) && isRef(oldValue) && !isRef(value)) {
+        oldValue.value = value
+        return true
+      }
+    } else {
+      // in shallow mode, objects are set as-is regardless of reactive or not
+    }
+
+    // 如果没有hasOwn 则调用的是TriggerOptypes.Add 标记是set还是add
+    const hadKey = hasOwn(target, key)
+
+    // target直接赋值 这个操作不会再次触发setter
+    const result = Reflect.set(target, key, value, receiver)
+    
+    // 如果target是原型链中的某个东西，就不要触发
+    if (target === toRaw(receiver)) {
+      if (!hadKey) {
+        // 触发器trigger
+        trigger(target, TriggerOpTypes.ADD, key, value)
+      } else if (hasChanged(value, oldValue)) {
+        // 触发器trigger  
+        trigger(target, TriggerOpTypes.SET, key, value, oldValue)
+      }
+    }
+    return result
+  }
+}
+```
+
+是不是看不懂为什么最后要target ===  toRaw(receiver) 才触发？
+
+```typescript
+// 来调试一下你就知道啦
+const ob1 = reactive({ foo: 2 })
+const ob2 = reactive({ foo: 2 })
+
+Object.setPrototypeOf(ob1, ob2)
+ob1.a = 99
+```
+
+ob1.a的第一次setter，跑到:
+
+```typescript
+ const result = Reflect.set(target, key, value, receiver)
+```
+
+这块其实我也不是很懂，MDN上查找不到Reflect相关，只能引用别人的一个例子：
+
+![blog](https://res.psy-1.com/Fupesc8bpq0Zf7qW4kXX1YHe0M7y)
+
+
+
+运行在浏览器上，由于receiver不一样导致parentProxy并没有改变：
+
+![blog-change](https://res.psy-1.com/FvN1wTA7YmQoBw9F4HqjELL-6wbu)
+
+
+
+### trigger

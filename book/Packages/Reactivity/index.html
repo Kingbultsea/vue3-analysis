@@ -299,7 +299,7 @@ export declare function reactive&lt;T extends object&gt;(target: T): UnwrapNeste
 // &#x57FA;&#x672C;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x7684;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;
 export declare function ref&lt;T&gt;(value: T): Ref&lt;UnwrapRef&lt;T&gt;&gt;;
 </code></pre>
-<h2 id="&#x521B;&#x5EFA;&#x8FC7;&#x7A0B;">&#x521B;&#x5EFA;&#x8FC7;&#x7A0B;</h2>
+<h2 id="&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;">&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</h2>
 <pre><code class="lang-typescript"><span class="hljs-keyword">const</span> a = reactive({ foo: <span class="hljs-number">1</span> })
 <span class="hljs-keyword">const</span> rf = ref(<span class="hljs-string">&apos;hello&apos;</span>)
 <span class="hljs-keyword">const</span> ef = effect(() =&gt; {
@@ -489,7 +489,165 @@ export declare function ref&lt;T&gt;(value: T): Ref&lt;UnwrapRef&lt;T&gt;&gt;;
 }
 </code></pre>
 <h1 id="&#x8FFD;&#x8E2A;&#x8FC7;&#x7A0B;&#xFF08;track&#xFF09;">&#x8FFD;&#x8E2A;&#x8FC7;&#x7A0B;&#xFF08;track&#xFF09;</h1>
+<p>&#x5728;&#x521B;&#x5EFA;effect&#x7684;&#x65F6;&#x5019;&#xFF0C;createReactiveEffect&#x4F1A;&#x8BBE;&#x7F6E;activeEffect = effect&#xFF0C;&#x8868;&#x793A;&#x5F53;&#x524D;&#x6267;&#x884C;&#x7684;effect&#xFF0C;&#x8FD0;&#x884C;&#x4F20;&#x9012;&#x8FDB;effect&#x7684;Function&#xFF1A;</p>
+<pre><code class="lang-ty">// Function:
+() =&gt; {
+  console.log(a.foo)
+  console.log(rf.value)
+}
+</code></pre>
+<p><strong>a</strong>&#x88AB;&#x8BBE;&#x7F6E;&#x6210;Proxy&#xFF0C;&#x53EF;&#x4EE5;&#x76D1;&#x542C;&#x8D4B;&#x503C;&#x548C;&#x53D6;&#x503C;&#x7B49;&#x64CD;&#x4F5C;&#x7684;&#x884C;&#x4E3A;&#xFF0C;&#x6B64;&#x5904;&#x53D6;&#x503C;&#x952E;&#x4E3A;foo&#xFF0C;&#x67E5;&#x770B;&#x5185;&#x90E8;getter&#x3002;&#xFF08;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;<strong>track</strong>&#x65B9;&#x6CD5;&#xFF09;</p>
+<h3 id="getter&#xFF1A;">getter&#xFF1A;</h3>
+<pre><code class="lang-typescript"><span class="hljs-comment">/*
+  @target &#x76EE;&#x6807;&#x5BF9;&#x8C61;
+  @key &#x5BF9;&#x8C61;&#x53C2;&#x6570;
+  @receiver &#x81EA;&#x8EAB;Proxy
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params">target: object, key: <span class="hljs-built_in">string</span> | symbol, receiver: object</span>) </span>{
+    <span class="hljs-comment">// &#x7279;&#x5B9A;Key&#x76F8;&#x5173;s&apos;s</span>
+    <span class="hljs-keyword">if</span> (key === ReactiveFlags.isReactive) {
+      <span class="hljs-keyword">return</span> !isReadonly
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key === ReactiveFlags.isReadonly) {
+      <span class="hljs-keyword">return</span> isReadonly
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (
+      key === ReactiveFlags.raw &amp;&amp;
+      receiver ===
+        (isReadonly
+          ? (target as <span class="hljs-built_in">any</span>).__v_readonly
+          : (target as <span class="hljs-built_in">any</span>).__v_reactive)
+    ) {
+      <span class="hljs-keyword">return</span> target
+    }
+
+    <span class="hljs-comment">// &#x6570;&#x7EC4;&#x76F8;&#x5173;</span>
+    <span class="hljs-keyword">const</span> targetIsArray = isArray(target)
+    <span class="hljs-keyword">if</span> (targetIsArray &amp;&amp; hasOwn(arrayInstrumentations, key)) {
+      <span class="hljs-comment">// &#x62E6;&#x622A; [&apos;includes&apos;, &apos;indexOf&apos;, &apos;lastIndexOf&apos;] &#x65B9;&#x6CD5; &#x6BCF;&#x4E00;&#x4E2A;&#x904D;&#x5386;&#x7684; &#x8FD4;&#x56DE;&#x4E00;&#x4E2A;methods</span>
+      <span class="hljs-keyword">return</span> Reflect.get(arrssayInstrumentations, key, receiver)
+    } 
+
+    <span class="hljs-comment">// &#x8FD9;&#x4E2A;&#x5176;&#x5B9E;&#x5C31;&#x76F8;&#x5F53;&#x4E8E; new Proxy() &#x8FD4;&#x56DE;target[key]</span>
+    <span class="hljs-keyword">const</span> res = Reflect.get(target, key, receiver)
+
+    <span class="hljs-comment">// &#x83B7;&#x53D6;&#x539F;&#x578B;</span>
+    <span class="hljs-keyword">if</span> ((isSymbol(key) &amp;&amp; builtInSymbols.has(key)) || key === <span class="hljs-string">&apos;__proto__&apos;</span>) {
+      <span class="hljs-keyword">return</span> res
+    }
+
+    <span class="hljs-comment">// &#x975E;readonly &#x521D;&#x59CB;&#x521B;&#x5EFA;&#x7684;&#x65F6;&#x5019;&#x7684;&#x503C; &#x8FDB;&#x884C;&#x8FFD;&#x8E2A;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x91CD;&#x70B9;</span>
+    <span class="hljs-keyword">if</span> (!isReadonly) {
+      track(target, TrackOpTypes.GET, key)
+    }
+
+    <span class="hljs-comment">// shallow &#x521D;&#x59CB;&#x521B;&#x5EFA;&#x7684;&#x65F6;&#x5019;&#x7684;&#x503C;</span>
+    <span class="hljs-keyword">if</span> (shallow) {
+      <span class="hljs-keyword">return</span> res
+    }
+
+    <span class="hljs-comment">// &#x8F6C;&#x6362;</span>
+    <span class="hljs-keyword">if</span> (isRef(res)) {
+      <span class="hljs-comment">// ref unwrapping, only for Objects, not for Arrays.</span>
+      <span class="hljs-keyword">return</span> targetIsArray ? res : res.value
+    }
+
+    <span class="hljs-keyword">if</span> (isObject(res)) {
+      <span class="hljs-comment">// Convert returned value into a proxy as well. we do the isObject check</span>
+      <span class="hljs-comment">// here to avoid invalid value warning. Also need to lazy access readonly</span>
+      <span class="hljs-comment">// and reactive here to avoid circular dependency.</span>
+      <span class="hljs-comment">// &#x5982;&#x679C;&#x662F;&#x5BF9;&#x8C61; &#x90A3;&#x4E48;&#x9012;&#x5F52; res</span>
+      <span class="hljs-comment">// &#x5982;&#x679C;&#x662F;&#x94FE;&#x5F0F;&#x8C03;&#x7528; &#x68C0;&#x67E5;&#x5230;__v_reactive &#x5C31;&#x8DF3;&#x8FC7;&#x5904;&#x7406; track &#x4E5F;&#x662F;&#x4F1A;&#x6267;&#x884C;&#x7684;</span>
+      <span class="hljs-comment">// readonly &#x5C31; readonly &#x9012;&#x5F52;&#x5FAA;&#x73AF;</span>
+      <span class="hljs-keyword">return</span> isReadonly ? readonly(res) : reactive(res)
+    }
+
+    <span class="hljs-keyword">return</span> res
+  }
+</code></pre>
+<h3 id="track&#xFF1A;">track&#xFF1A;</h3>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">track</span>(<span class="hljs-params">target: object, <span class="hljs-keyword">type</span>: TrackOpTypes, key: unknown</span>) </span>{
+  <span class="hljs-keyword">if</span> (!shouldTrack || activeEffect === <span class="hljs-literal">undefined</span>) {
+    <span class="hljs-keyword">return</span>
+  }
+  <span class="hljs-comment">// WeakMap</span>
+  <span class="hljs-keyword">let</span> depsMap = targetMap.get(target)
+  <span class="hljs-keyword">if</span> (!depsMap) {
+    targetMap.set(target, (depsMap = <span class="hljs-keyword">new</span> Map()))
+  }
+  <span class="hljs-keyword">let</span> dep = depsMap.get(key) <span class="hljs-comment">// value</span>
+  <span class="hljs-keyword">if</span> (!dep) {
+    depsMap.set(key, (dep = <span class="hljs-keyword">new</span> Set()))
+  }
+  <span class="hljs-comment">// cleanup(effect) &#x6BCF;&#x6B21;&#x6267;&#x884C;trigger effect&#x7684;&#x65F6;&#x5019; &#x90FD;&#x4F1A;&#x5220;&#x9664;dep</span>
+  <span class="hljs-keyword">if</span> (!dep.has(activeEffect)) {
+    dep.add(activeEffect)
+    activeEffect.deps.push(dep)
+    }
+  }
+}
+</code></pre>
+<p>&#x8BE2;&#x95EE;targetMap&#x6709;&#x6CA1;&#x6709;&#x8BE5;target&#xFF08;&#x5F15;&#x7528;&#x5C5E;&#x6027;&#xFF09;&#xFF0C;&#x6CA1;&#x6709;&#x5219;&#x8BBE;&#x7F6E;target&#x4E3A;&#x952E;&#xFF0C;value&#x4E3A;&#x7A7A;&#x7684;Map&#xFF0C;depsMap&#x3002;</p>
+<p>&#x67E5;&#x770B;value&#x5B58;&#x5728;&#x4E0D;&#x5B58;&#x5728;key&#xFF0C;&#x4E0D;&#x5B58;&#x5728;&#x5219;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x7A7A;&#x7684;Set&#xFF0C;dep&#x3002;</p>
+<p>&#x67E5;&#x770B;dep&#x5B58;&#x5728;&#x4E0D;&#x5B58;&#x5728;effect&#xFF0C;&#x4E0D;&#x5B58;&#x5728;&#x5219;&#x5B58;&#x653E;&#x5F53;&#x524D;activeEffect&#xFF0C;&#x7D66;&#x5F53;&#x524D;activeEffect.deps.push(dep)&#x3002;</p>
+<p><strong>&#x4E00;&#x4E2A;&#x5168;&#x5C40;&#x6536;&#x96C6;&#x5668;&#x6536;&#x96C6;target&#xFF0C;key&#xFF0C;activeEffect&#xFF0C;&#x7531;&#x4E8E;&#x8FFD;&#x8E2A;&#x54CD;&#x5E94;&#x884C;&#x4E3A;&#x7684;&#x662F;key&#xFF0C;&#x6240;&#x4EE5;&#x5728;key&#x7684;&#x5C42;&#x7EA7;&#x5B58;&#x653E;activeEffect&#x3002;</strong></p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// &#x5982;&#x679C;&#x7528;&#x5BF9;&#x8C61;&#x6765;&#x63CF;&#x8FF0;Map &#x7528;&#x6570;&#x7EC4;&#x63CF;&#x8FF0;Set&#xFF0C;&#x90A3;&#x4E48;&#x4EE5;&#x4E0B;&#x5C31;&#x662F;&#x5F53;&#x524D;&#x6D4B;&#x8BD5;&#x53D8;&#x91CF;a&#x5F97;&#x51FA;&#x7684;&#x7ED3;&#x679C;</span>
+{ target: { key: [ activeEffect ] } }
+</code></pre>
 <h1 id="&#x89E6;&#x53D1;&#x8FC7;&#x7A0B;&#xFF08;trigger&#xFF09;">&#x89E6;&#x53D1;&#x8FC7;&#x7A0B;&#xFF08;trigger&#xFF09;</h1>
+<h3 id="setter">setter:</h3>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSetter</span>(<span class="hljs-params">shallow = <span class="hljs-literal">false</span></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span>(<span class="hljs-params">
+    target: object, <span class="hljs-comment">// &#x76EE;&#x6807;</span>
+    key: <span class="hljs-built_in">string</span> | symbol, <span class="hljs-comment">// Key</span>
+    value: unknown, <span class="hljs-comment">// &#x8BBE;&#x7F6E;&#x7684;&#x503C;</span>
+    receiver: object <span class="hljs-comment">// receiver&#x5C31;&#x662F;&#x5B83;&#x7684;Proxy</span>
+  </span>): <span class="hljs-title">boolean</span> </span>{
+    <span class="hljs-keyword">const</span> oldValue = (target as <span class="hljs-built_in">any</span>)[key]
+    <span class="hljs-keyword">if</span> (!shallow) { <span class="hljs-comment">// shallow &#x6D45;</span>
+      value = toRaw(value)
+      <span class="hljs-keyword">if</span> (!isArray(target) &amp;&amp; isRef(oldValue) &amp;&amp; !isRef(value)) {
+        oldValue.value = value
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+      }
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// in shallow mode, objects are set as-is regardless of reactive or not</span>
+    }
+
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x6CA1;&#x6709;hasOwn &#x5219;&#x8C03;&#x7528;&#x7684;&#x662F;TriggerOptypes.Add &#x6807;&#x8BB0;&#x662F;set&#x8FD8;&#x662F;add</span>
+    <span class="hljs-keyword">const</span> hadKey = hasOwn(target, key)
+
+    <span class="hljs-comment">// target&#x76F4;&#x63A5;&#x8D4B;&#x503C; &#x8FD9;&#x4E2A;&#x64CD;&#x4F5C;&#x4E0D;&#x4F1A;&#x518D;&#x6B21;&#x89E6;&#x53D1;setter</span>
+    <span class="hljs-keyword">const</span> result = Reflect.set(target, key, value, receiver)
+
+    <span class="hljs-comment">// &#x5982;&#x679C;target&#x662F;&#x539F;&#x578B;&#x94FE;&#x4E2D;&#x7684;&#x67D0;&#x4E2A;&#x4E1C;&#x897F;&#xFF0C;&#x5C31;&#x4E0D;&#x8981;&#x89E6;&#x53D1;</span>
+    <span class="hljs-keyword">if</span> (target === toRaw(receiver)) {
+      <span class="hljs-keyword">if</span> (!hadKey) {
+        <span class="hljs-comment">// &#x89E6;&#x53D1;&#x5668;trigger</span>
+        trigger(target, TriggerOpTypes.ADD, key, value)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (hasChanged(value, oldValue)) {
+        <span class="hljs-comment">// &#x89E6;&#x53D1;&#x5668;trigger  </span>
+        trigger(target, TriggerOpTypes.SET, key, value, oldValue)
+      }
+    }
+    <span class="hljs-keyword">return</span> result
+  }
+}
+</code></pre>
+<p>&#x662F;&#x4E0D;&#x662F;&#x770B;&#x4E0D;&#x61C2;&#x4E3A;&#x4EC0;&#x4E48;&#x6700;&#x540E;&#x8981;target ===  toRaw(receiver) &#x624D;&#x89E6;&#x53D1;&#xFF1F;</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// &#x6765;&#x8C03;&#x8BD5;&#x4E00;&#x4E0B;&#x4F60;&#x5C31;&#x77E5;&#x9053;&#x5566;</span>
+<span class="hljs-keyword">const</span> ob1 = reactive({ foo: <span class="hljs-number">2</span> })
+<span class="hljs-keyword">const</span> ob2 = reactive({ foo: <span class="hljs-number">2</span> })
+
+<span class="hljs-built_in">Object</span>.setPrototypeOf(ob1, ob2)
+ob1.a = <span class="hljs-number">99</span>
+</code></pre>
+<p>ob1.a&#x7684;&#x7B2C;&#x4E00;&#x6B21;setter&#xFF0C;&#x8DD1;&#x5230;:</p>
+<pre><code class="lang-typescript"> <span class="hljs-keyword">const</span> result = Reflect.set(target, key, value, receiver)
+</code></pre>
+<p>&#x8FD9;&#x5757;&#x5176;&#x5B9E;&#x6211;&#x4E5F;&#x4E0D;&#x662F;&#x5F88;&#x61C2;&#xFF0C;MDN&#x4E0A;&#x67E5;&#x627E;&#x4E0D;&#x5230;Reflect&#x76F8;&#x5173;&#xFF0C;&#x53EA;&#x80FD;&#x5F15;&#x7528;&#x522B;&#x4EBA;&#x7684;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;</p>
+<p><img src="https://res.psy-1.com/Fupesc8bpq0Zf7qW4kXX1YHe0M7y" alt="blog"></p>
+<p>&#x8FD0;&#x884C;&#x5728;&#x6D4F;&#x89C8;&#x5668;&#x4E0A;&#xFF0C;&#x7531;&#x4E8E;receiver&#x4E0D;&#x4E00;&#x6837;&#x5BFC;&#x81F4;parentProxy&#x5E76;&#x6CA1;&#x6709;&#x6539;&#x53D8;&#xFF1A;</p>
+<p><img src="https://res.psy-1.com/FvN1wTA7YmQoBw9F4HqjELL-6wbu" alt="blog-change"></p>
+<h3 id="trigger">trigger</h3>
 
                                 
                                 </section>
@@ -533,7 +691,7 @@ export declare function ref&lt;T&gt;(value: T): Ref&lt;UnwrapRef&lt;T&gt;&gt;;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Reactivity","level":"1.3","depth":1,"next":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"previous":{"title":"类型标记","level":"1.2.5","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Reactivity/index.md","mtime":"2020-11-08T18:23:15.568Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-08T18:23:29.600Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Reactivity","level":"1.3","depth":1,"next":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"previous":{"title":"类型标记","level":"1.2.5","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Reactivity/index.md","mtime":"2020-11-10T02:37:24.146Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-10T02:37:26.890Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
