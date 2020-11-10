@@ -288,26 +288,180 @@ instance.update = effect(componentEffect, prodEffectOptions)
 <h2 id="componenteffect">componentEffect</h2>
 <p>&#x5F53;&#x524D;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;instance.mounted === undefinded&#xFF0C;&#x5229;&#x7528;<font color="#ff8000">renderComponentRoot</font>&#xFF0C;&#x751F;&#x6210;subTree&#xFF0C;subTree&#x662F;&#x6839;&#x636E;instance.type&#x6765;&#x751F;&#x6210;&#x7684;&#x3002;</p>
 <h2 id="rendercomponentroot">renderComponentRoot</h2>
-<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x8C03;&#x7528;instance.render(instance.withProxy || instance.proxy, instance.renderCache)&#x751F;&#x6210;subTree&#xFF0C;&#x68C0;&#x6D4B;instance.type.inheritAttrs&#x662F;&#x5426;&#x4E0D;&#x4E3A;false&#xFF0C;inheriAttrs&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;undefided&#xFF0C;&#x518D;&#x6B21;&#x68C0;&#x6D4B;subTree.shapeFlag&#x662F;&#x5426;&#x5C5E;&#x4E8E;ShapeFlags.ELEMENT&#x7C7B;&#x578B;
-&#x6216;&#x8005;ShapeFlags.COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x5219;&#x901A;&#x8FC7;cloneVNode&#x5185;&#x90E8;&#x8C03;&#x7528;mergeProps&#x628A;subTree.props&#x4E0E;subTree.attrs&#x5408;&#x5E76;&#xFF0C;&#x662F;&#x4E0D;&#x662F;&#x5FD8;&#x8BB0;&#x4E86;attrs&#x662F;&#x4EC0;&#x4E48;&#x4E1C;&#x897F;&#xFF1F;&#x5728;initProps&#x4E2D;&#xFF0C;&#x6839;&#x636E;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;vnode.props&#x6240;&#x904D;&#x5386;&#x5F97;&#x5230;&#x7684;&#xFF0C;&#x672C;&#x8D28;&#x4E0A;&#x662F;vnode.props&#x3002;</p>
-<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlage.FUNCTIONAL_COMPONENT&#xFF0C;&#x8C03;&#x7528;instance.vnode.type&#x751F;&#x6210;&#xFF0C;&#x548C;ShapeFlags.STATEFUL_COMPONENT&#x7684;&#x5408;&#x5E76;subTree.props&#x884C;&#x4E3A;&#x4E00;&#x81F4;&#xFF0C;
-&#x4F46;&#x662F;attrs = instance.type.props ? instance.attrs : getFallthroughAttrs(instance.attrs)&#x3002;getFallthroughAttrs&#x5728;API DOC&#x4E2D;&#x6709;&#x63CF;&#x8FF0;&#xFF0C;&#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x662F;&#x7B5B;&#x9009;&#x51FA;key&#x4E3A;class&#x3001;style&#x548C;on&#x5F00;&#x5934;&#x7684;key&#x3002;attrs&#x662F;&#x7528;&#x6765;&#x4E0E;subTree.props&#x5408;&#x5E76;&#x7684;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#xFF0C;&#x8C03;&#x7528;<font color="#ff8000">instance.render(instance.withProxy || instance.proxy, instance.renderCache)</font>&#x751F;&#x6210;subTree&#xFF0C;&#x68C0;&#x6D4B;<font color="#ff8000">instance.type.inheritAttrs !== false</font>&#xFF0C;inheriAttrs&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A;undefided&#xFF0C;&#x518D;&#x6B21;&#x68C0;&#x6D4B;<font color="#ff8000">subTree.shapeFlag&#x662F;&#x5426;&#x5C5E;&#x4E8E;ShapeFlags.ELEMENT&#x7C7B;&#x578B;
+&#x6216;&#x8005;ShapeFlags.COMPONENT&#x7C7B;&#x578B;</font>&#xFF0C;&#x5982;&#x679C;&#x662F;&#x5219;&#x901A;&#x8FC7;<font color="#ff8000">cloneVNode&#x5185;&#x90E8;&#x8C03;&#x7528;mergeProps&#x628A;subTree.props&#x4E0E;subTree.attrs&#x5408;&#x5E76;</font>&#xFF0C;&#x662F;&#x4E0D;&#x662F;&#x5FD8;&#x8BB0;&#x4E86;attrs&#x662F;&#x4EC0;&#x4E48;&#x4E1C;&#x897F;&#xFF1F;&#x5728;initProps&#x4E2D;&#xFF0C;&#x6839;&#x636E;&#x5F53;&#x524D;&#x7EC4;&#x4EF6;vnode.props&#x6240;&#x904D;&#x5386;&#x5F97;&#x5230;&#x7684;&#xFF0C;&#x672C;&#x8D28;&#x4E0A;&#x662F;vnode.props&#x3002;</p>
+<p>&#x5982;&#x679C;&#x7EC4;&#x4EF6;&#x662F;ShapeFlage.FUNCTIONAL_COMPONENT&#xFF0C;&#x8C03;&#x7528;instance.vnode.type&#x751F;&#x6210;&#xFF0C;&#x548C;ShapeFlags.STATEFUL_COMPONENT&#x7C7B;&#x578B;&#x4E2D;&#x7684;&#x5408;&#x5E76;subTree.props&#x4E0E;instance.attrs&#x884C;&#x4E3A;&#x4E00;&#x81F4;&#xFF0C;
+&#x4F46;&#x662F;<font color="#ff8000">attrs = instance.type.props ? instance.attrs : getFallthroughAttrs(instance.attrs)</font>&#x3002;getFallthroughAttrs&#x5728;API DOC&#x4E2D;&#x6709;&#x63CF;&#x8FF0;&#xFF0C;&#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x662F;&#x7B5B;&#x9009;&#x51FA;key&#x4E3A;class&#x3001;style&#x548C;on&#x5F00;&#x5934;&#x7684;key&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderComponentRoot</span>(<span class="hljs-params">
+  instance: ComponentInternalInstance
+</span>): <span class="hljs-title">VNode</span> </span>{
+  <span class="hljs-keyword">const</span> {
+    <span class="hljs-keyword">type</span>: Component, <span class="hljs-comment">// &#x5177;&#x540D;&#x5339;&#x914D; &#x4F20;&#x9012;&#x7D66;Component</span>
+    parent,
+    vnode, <span class="hljs-comment">// instance &#x4E5F;&#x4F20;&#x9012;&#x4E86;vnode &#x53EF;&#x4EE5;&#x8BF4;&#x662F;&#x4E00;&#x4E2A;component&#x7684;&#x6838;&#x5FC3;&#x4E86;&#x5427;</span>
+    proxy,
+    withProxy,
+    props,
+    slots,
+    attrs,
+    emit,
+    renderCache
+  } = instance
+
+  <span class="hljs-keyword">let</span> result
+  currentRenderingInstance = instance <span class="hljs-comment">// &#x5F53;&#x524D;&#x6B63;&#x5728;render&#x7684;&#x7EC4;&#x4EF6;</span>
+  <span class="hljs-keyword">if</span> (__DEV__) {
+    accessedAttrs = <span class="hljs-literal">false</span>
+  }
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">let</span> fallthroughAttrs
+    <span class="hljs-keyword">if</span> (vnode.shapeFlag &amp; ShapeFlags.STATEFUL_COMPONENT) { <span class="hljs-comment">// STATEFUL_COMPONENT&#x6E32;&#x67D3;subtree</span>
+      <span class="hljs-comment">// withProxy is a proxy with a different `has` trap only for</span>
+      <span class="hljs-comment">// runtime-compiled render functions using `with` block.</span>
+      <span class="hljs-keyword">const</span> proxyToUse = withProxy || proxy
+      result = normalizeVNode(
+        instance.render!.call(proxyToUse, proxyToUse!, renderCache)
+      )
+      fallthroughAttrs = attrs
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// FUNCTINAL</span>
+      <span class="hljs-keyword">const</span> render = Component as FunctionalComponent
+      <span class="hljs-comment">// in dev, mark attrs accessed if optional props (attrs === props)</span>
+      <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; attrs === props) {
+        markAttrsAccessed()
+      }
+      result = normalizeVNode(
+        render.length &gt; <span class="hljs-number">1</span>
+          ? render(
+              props,
+              __DEV__
+                ? {
+                    <span class="hljs-keyword">get</span> attrs() {
+                      markAttrsAccessed()
+                      <span class="hljs-keyword">return</span> attrs
+                    },
+                    slots,
+                    emit
+                  }
+                : { attrs, slots, emit }
+            )
+          : render(props, <span class="hljs-literal">null</span> as <span class="hljs-built_in">any</span> <span class="hljs-comment">/* we know it doesn&apos;t need it */</span>)
+      )
+      fallthroughAttrs = Component.props ? attrs : getFallthroughAttrs(attrs)
+    }
+
+    <span class="hljs-comment">// attr merging</span>
+    <span class="hljs-comment">// in dev mode, comments are preserved, and it&apos;s possible for a template</span>
+    <span class="hljs-comment">// to have comments along side the root element which makes it a fragment</span>
+    <span class="hljs-keyword">let</span> root = result <span class="hljs-comment">// &#x5148;&#x9ED8;&#x8BA4;&#x81EA;&#x8EAB;return&#x7684;vnode&#x4E3A;root&#x7EC4;&#x4EF6;</span>
+    <span class="hljs-keyword">let</span> setRoot: ((root: VNode) =&gt; <span class="hljs-built_in">void</span>) | <span class="hljs-literal">undefined</span> = <span class="hljs-literal">undefined</span>
+    <span class="hljs-keyword">if</span> (__DEV__) {
+      ;[root, setRoot] = getChildRoot(result) <span class="hljs-comment">// chilid1 undefinded</span>
+    }
+
+    <span class="hljs-keyword">if</span> ( <span class="hljs-comment">// undefined !== false</span>
+      Component.inheritAttrs !== <span class="hljs-literal">false</span> &amp;&amp; <span class="hljs-comment">// &#x9ED8;&#x8BA4;&#x4E3A;undefinded</span>
+      fallthroughAttrs &amp;&amp;
+      <span class="hljs-built_in">Object</span>.keys(fallthroughAttrs).length
+    ) {
+      <span class="hljs-keyword">if</span> (
+        root.shapeFlag &amp; ShapeFlags.ELEMENT ||
+        root.shapeFlag &amp; ShapeFlags.COMPONENT
+      ) {
+        root = cloneVNode(root, fallthroughAttrs)
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; !accessedAttrs &amp;&amp; root.type !== Comment) {
+        <span class="hljs-keyword">const</span> allAttrs = <span class="hljs-built_in">Object</span>.keys(attrs)
+        <span class="hljs-keyword">const</span> eventAttrs: <span class="hljs-built_in">string</span>[] = []
+        <span class="hljs-keyword">const</span> extraAttrs: <span class="hljs-built_in">string</span>[] = []
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>, l = allAttrs.length; i &lt; l; i++) {
+          <span class="hljs-keyword">const</span> key = allAttrs[i]
+          <span class="hljs-keyword">if</span> (isOn(key)) {
+            <span class="hljs-comment">// remove `on`, lowercase first letter to reflect event casing accurately</span>
+            eventAttrs.push(key[<span class="hljs-number">2</span>].toLowerCase() + key.slice(<span class="hljs-number">3</span>))
+          } <span class="hljs-keyword">else</span> {
+            extraAttrs.push(key)
+          }
+        }
+        <span class="hljs-keyword">if</span> (extraAttrs.length) {
+          warn(
+            <span class="hljs-string">`Extraneous non-props attributes (`</span> +
+              <span class="hljs-string">`<span class="hljs-subst">${extraAttrs.join(&apos;, &apos;)}</span>) `</span> +
+              <span class="hljs-string">`were passed to component but could not be automatically inherited `</span> +
+              <span class="hljs-string">`because component renders fragment or text root nodes.`</span>
+          )
+        }
+        <span class="hljs-keyword">if</span> (eventAttrs.length) {
+          warn(
+            <span class="hljs-string">`Extraneous non-emits event listeners (`</span> +
+              <span class="hljs-string">`<span class="hljs-subst">${eventAttrs.join(&apos;, &apos;)}</span>) `</span> +
+              <span class="hljs-string">`were passed to component but could not be automatically inherited `</span> +
+              <span class="hljs-string">`because component renders fragment or text root nodes. `</span> +
+              <span class="hljs-string">`If the listener is intended to be a component custom event listener only, `</span> +
+              <span class="hljs-string">`declare it using the &quot;emits&quot; option.`</span>
+          )
+        }
+      }
+    }
+
+    <span class="hljs-keyword">const</span> parentScopeId = parent &amp;&amp; parent.type.__scopeId
+    <span class="hljs-keyword">if</span> (parentScopeId) {
+      root = cloneVNode(root, { [parentScopeId]: <span class="hljs-string">&apos;&apos;</span> })
+    }
+
+    <span class="hljs-keyword">if</span> (vnode.dirs) {
+      <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; !isElementRoot(root)) {
+        warn(
+          <span class="hljs-string">`Runtime directive used on component with non-element root node. `</span> +
+            <span class="hljs-string">`The directives will not function as intended.`</span>
+        )
+      }
+      root.dirs = vnode.dirs
+    }
+
+    <span class="hljs-keyword">if</span> (vnode.transition) {
+      <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; !isElementRoot(root)) {
+        warn(
+          <span class="hljs-string">`Component inside &lt;Transition&gt; renders non-element root node `</span> +
+            <span class="hljs-string">`that cannot be animated.`</span>
+        )
+      }
+      root.transition = vnode.transition
+    }
+    <span class="hljs-comment">// inherit ref</span>
+    <span class="hljs-keyword">if</span> (Component.inheritRef &amp;&amp; vnode.ref != <span class="hljs-literal">null</span>) {
+      root.ref = vnode.ref
+    }
+
+    <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; setRoot) {
+      setRoot(root)
+    } <span class="hljs-keyword">else</span> {
+      result = root
+    }
+  } <span class="hljs-keyword">catch</span> (err) {
+    handleError(err, instance, ErrorCodes.RENDER_FUNCTION)
+    result = createVNode(Comment)
+  }
+  currentRenderingInstance = <span class="hljs-literal">null</span> <span class="hljs-comment">// &#x5B8C;&#x6210;&#x6574;&#x4E2A;render</span>
+
+  <span class="hljs-keyword">return</span> result
+}
+</code></pre>
 <p>componentUpdate&#xFF0C;&#x6839;&#x636E;instance.isMounted&#x6765;&#x5224;&#x65AD;&#x662F;&#x5426;&#x5DF2;&#x7ECF;&#x6302;&#x8F7D;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x6302;&#x8F7D;&#x5219;&#x8C03;&#x7528;instance.render&#xFF0C;
-&#x8C03;&#x7528;instance.render&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#xFF0C;&#x5C06;&#x4F1A;track&#x5230;&#x5F53;&#x524D;instance.update&#x7684;effect&#xFF0C;&#x6700;&#x7EC8;&#x751F;&#x6210;subTree&#xFF0C;&#x628A;subTrree.props&#x4E0E;instance.attrs&#x5408;&#x5E76;&#x3002;
-&#x770B;&#x6E32;&#x67D3;&#x6D41;&#x7A0B;1&#x4E2D;&#x7684;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;</p>
+&#x8C03;&#x7528;instance.render&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#xFF0C;&#x5C06;&#x4F1A;track&#x5230;&#x5F53;&#x524D;instance.update&#xFF08;effect&#xFF09;&#xFF0C;&#x6700;&#x7EC8;&#x751F;&#x6210;subTree&#xFF0C;&#x628A;subTrree.props&#x4E0E;instance.attrs&#x5408;&#x5E76;&#x3002;</p>
+<p>&#x770B;&#x6E32;&#x67D3;&#x6D41;&#x7A0B;1&#x4E2D;&#x7684;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF1A;</p>
 <pre><code class="lang-typescript"><span class="hljs-keyword">const</span> node = root.children[<span class="hljs-number">0</span>] as HTMLElement
 expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).toBe(<span class="hljs-string">&apos;c2 c0&apos;</span>)
 </code></pre>
-<p>c2 &#x548C;c0&#x5408;&#x5E76;&#x4E86;&#xFF0C;&#x5C31;&#x662F;&#x57FA;&#x4E8E;&#x8FD9;&#x4E00;&#x884C;&#x4EE3;&#x7801;&#x3002;</p>
+<p>c2 &#x548C;c0&#x5408;&#x5E76;&#x4E86;&#xFF0C;&#x5C31;&#x662F;&#x57FA;&#x4E8E;&#x8FD9;&#x4E00;&#x884C;&#x4EE3;&#x7801;&#xFF1A;</p>
 <pre><code class="lang-typescript">subTree = cloneVNode(subTree, instance.attrs) <span class="hljs-comment">// subTree.props&#x4E0E;instance.attrs&#x7684;&#x5408;&#x5E76;</span>
 </code></pre>
 <p>&#x5982;&#x679C;&#x6709;&#x7236;parent.type.parentScopeId&#xFF0C;&#x5219;&#x62D3;&#x5C55;&#x5230;subTree.props</p>
 <pre><code class="lang-typescript"><span class="hljs-keyword">const</span> parentScopeId = parent &amp;&amp; parent.type.__scopeId
-    <span class="hljs-keyword">if</span> (parentScopeId) {
-      root = cloneVNode(root, { [parentScopeId]: <span class="hljs-string">&apos;&apos;</span> })
-    }
+<span class="hljs-keyword">if</span> (parentScopeId) {
+   root = cloneVNode(root, { [parentScopeId]: <span class="hljs-string">&apos;&apos;</span> })
+}
 </code></pre>
-<p>&#x63A5;&#x7740;&#x89E6;&#x53D1;API&#x4E2D;&#x7684;beforeMounted&#xFF0C;&#x4E0E;vnode.</p>
+<p>&#x63A5;&#x7740;&#x89E6;&#x53D1;&#x4F7F;&#x7528;API&#x6240;&#x521B;&#x5EFA;&#x7684;beforeMounted&#xFF0C;&#x4E0E;vnode.props.onVnodeBeforeMount&#xFF08;&#x521B;&#x5EFA;vnode&#x7684;&#x65F6;&#x5019;&#x4F20;&#x5165;&#x7684;&#xFF09;&#xFF1A;</p>
 <pre><code class="lang-typescript">invokeArrayFnc(instance.bm) <span class="hljs-comment">// &#x89E6;&#x53D1;&#x4F7F;&#x7528;composition API&#x521B;&#x5EFA;&#x7684;beforeMount&#x4E8B;&#x4EF6;&#x3002;</span>
 
 <span class="hljs-comment">// onVnodeBeforeMount</span>
@@ -316,16 +470,17 @@ expect(node.getAttribute(<span class="hljs-string">&apos;class&apos;</span>)).to
 }
 </code></pre>
 <p>&#x518D;&#x6B21;&#x8FDB;&#x884C;patch&#xFF1A;</p>
-<pre><code class="lang-typescript">patch(<span class="hljs-literal">null</span>, instance.subTree, container) <span class="hljs-comment">// container &#x4E3A; render&#x4E2D;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x2461;</span>
+<pre><code class="lang-typescript">patch(<span class="hljs-literal">null</span>, instance.subTree, container) <span class="hljs-comment">// container &#x4E3A; render&#x4E2D;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x2461;&#xFF0C;&#x6CA1;&#x6709;&#x6539;&#x53D8;&#x3002;</span>
 </code></pre>
-<p>&#x518D;&#x6765;&#x4E00;&#x6B21;patch&#x5FAA;&#x73AF;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x6B21;&#x9700;&#x8981;patch&#x7684;&#x662F;Child&#xFF0C;&#x7ECF;&#x8FC7;&#x540C;&#x6837;&#x7684;&#x5FAA;&#x73AF;&#xFF0C;&#x4E0D;&#x540C;&#x7684;&#x662F;Child&#x7684;vnode&#x662F;&#x62E5;&#x6709;props&#x7684;&#xFF08;&#x6CE8;&#x610F;&#x533A;&#x5206;vnode.type.props&#xFF0C;&#x8FD9;&#x91CC;&#x6CA1;&#x6709;vnode.type.props&#xFF0C;&#x6240;&#x4EE5;&#x5168;&#x90E8;vnode.props&#x90FD;&#x4F1A;&#x8BBE;&#x7F6E;&#x5230;
-subTree.props&#xFF09;&#x3002;</p>
-<p>&#x7136;&#x540E;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x5230;&#x7B2C;&#x4E09;&#x6B21;patch&#xFF0C;&#x7B80;&#x79F0;patch3&#xFF0C;&#x9700;&#x8981;patch&#x7684;vnode&#xFF0C;&#x7B80;&#x79F0;vnode3&#xFF0C;vnode3&#x62E5;&#x6709;&#x4ECE;&#x6240;&#x6709;&#x4E0A;&#x7EA7;&#x6240;&#x4F20;&#x9012;&#x7684;props&#xFF0C;&#x56E0;&#x4E3A;vnode3.type === &apos;div&apos;&#xFF0C;&#x662F;&#x64CD;&#x4F5C;&#x771F;&#x5B9E;&#x7684;DOM&#xFF0C;
-&#x6240;&#x4EE5;shapeFlags&#x88AB;&#x6807;&#x8BB0;&#x6210;ELEMENT&#xFF0C;&#x6267;&#x884C;processElement&#xFF0C;&#x521B;&#x5EFA;&apos;div&apos;&#x7684;HTMLELEMENT&#xFF0C;&#x628A;vnode.props&#x690D;&#x5165;&#x8BE5;HTMLELEMENT&#xFF0C;&#x6267;&#x884C;vnode.props.onVnodeBeforeMount&#x94A9;&#x5B50;&#x3002;</p>
-<p>hostInsert(el, container)&#xFF0C;container&#x4E3A;render&#x4E2D;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x2461;&#xFF0C;&#x628A;&#x8BE5;HTMLELEMENT&#x63D2;&#x5165;&#x5230;container&#x4E2D;&#x3002;</p>
-<p>&#x6267;&#x884C;&#x6240;&#x6709;&#x7684;patch&#xFF0C;&#x5C31;&#x662F;&#x7C7B;&#x4F3C;&#x56DE;&#x6EAF;&#x7684;&#x5199;&#x6CD5;&#xFF0C;&#x4ECE;&#x5185;&#x5F80;&#x5916;&#xFF0C;&#x8BBE;&#x7F6E;vnode.el = instance.subTree&#xFF08;ShapeFlags.COMPONENT&#x90FD;&#x4F1A;&#x8D4B;&#x503C;&#xFF09;&#xFF0C;&#x89E6;&#x53D1;instance.m&#x7684;&#x94A9;&#x5B50;&#xFF0C;&#x5C31;&#x662F;&#x4F7F;&#x7528;composition API Mounted&#x65B9;&#x6CD5;&#x4F20;&#x9012;&#x8FDB;&#x7684;&#x4E8B;&#x4EF6;&#x3002;</p>
-<p>&#x6574;&#x4E2A;&#x521D;&#x59CB;&#x5316;&#x6E32;&#x67D3;&#x5C31;&#x5B8C;&#x6210;&#x4E86;&#x3002;</p>
-<p>&#x73B0;&#x5728;&#x9700;&#x8981;&#x8BF4;&#x7684;&#x662F;&#x66F4;&#x65B0;&#x7684;&#x8FC7;&#x7A0B;&#x3002;</p>
+<p>&#x518D;&#x6765;&#x4E00;&#x6B21;&#x540C;&#x6837;&#x7C7B;&#x578B;&#x7684;patch&#x5FAA;&#x73AF;&#xFF0C;<font color="#ff8000">Child</font>&#xFF0C;&#x7ECF;&#x8FC7;&#x540C;&#x6837;&#x7684;processComponent&#xFF0C;&#x4E0D;&#x540C;&#x7684;&#x662F;Child&#x7684;vnode&#x662F;&#x62E5;&#x6709;props&#x7684;&#x3002;</p>
+<blockquote>
+<p>&#x6CE8;&#x610F;&#x533A;&#x5206;vnode.type.props&#xFF0C;&#x8FD9;&#x91CC;&#x6CA1;&#x6709;vnode.type.props&#xFF0C;&#x6240;&#x4EE5;&#x5168;&#x90E8;vnode.props&#x90FD;&#x676F;&#x5408;&#x5E76;&#x5230;&#xFF0C;&#x7531;renderComponentRoot&#x521B;&#x5EFA;&#x7684;subTree.props</p>
+</blockquote>
+<p>&#x63A5;&#x4E0A;&#xFF0C;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x5230;&#x7B2C;&#x4E09;&#x6B21;patch&#xFF0C;&#x7B80;&#x79F0;patch3&#xFF0C;&#x6240;&#x9700;&#x8981;patch&#x7684;vnode&#xFF08;&#x4E0A;&#x9762;&#x7684;subTree&#xFF09;&#xFF0C;&#x7B80;&#x79F0;vnode3&#xFF0C;vnode3&#x62E5;&#x6709;&#x4ECE;&#x6240;&#x6709;&#x4E0A;&#x7EA7;&#x6240;&#x4F20;&#x9012;&#x7684;props&#xFF0C;&#x56E0;&#x4E3A;vnode3.type  ===  &apos;div&apos;&#xFF0C;&#x662F;&#x771F;&#x5B9E;&#x7684;DOM&#x6807;&#x7B7E;&#xFF0C;&#x6240;&#x4EE5;shapeFlags&#x88AB;&#x6807;&#x8BB0;&#x6210;ELEMENT&#xFF0C;&#x6267;&#x884C;<font color="#ff8000">processElement</font>&#xFF0C;&#x521B;&#x5EFA;&apos;div&apos;&#x7684;HTMLDivElement&#xFF0C;&#x628A;vnode.props&#x8D4B;&#x503C;&#x7D66;&#x5F53;&#x524D;HTMLDivElement&#x3002;</p>
+<p>&#x89E6;&#x53D1;vnode.props.onVnodeBeforeMount&#x94A9;&#x5B50;&#x3002;</p>
+<p><font color="#ff8000">hostInsert(el, container)</font>&#xFF0C;container&#x4E3A;render&#x4E2D;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x2461;&#xFF0C;&#x628A;&#x8BE5;HTMLELEMENT&#x63D2;&#x5165;&#x5230;container&#x4E2D;&#x3002;</p>
+<p>patch&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x7C7B;&#x4F3C;&#x56DE;&#x6EAF;&#x7684;&#x5199;&#x6CD5;&#xFF0C;&#x4ECE;&#x5185;&#x5F80;&#x5916;&#x4F9D;&#x6B21;&#x6267;&#x884C;&#xFF0C;&#x8BBE;&#x7F6E;vnode.el = instance.subTree&#xFF08;ShapeFlags.COMPONENT&#x90FD;&#x4F1A;&#x8D4B;&#x503C;&#xFF09;&#xFF0C;&#x89E6;&#x53D1;instance.m&#x7684;&#x94A9;&#x5B50;&#xFF08;&#x5728;&#x7EC4;&#x4EF6;setup&#x4E2D;&#x4F7F;&#x7528;composition API Mounted&#x65B9;&#x6CD5;&#x4F20;&#x9012;&#x8FDB;&#x7684;&#x4E8B;&#x4EF6;&#xFF09;</p>
+<p>&#x5F53;&#x524D;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x6574;&#x4E2A;&#x521D;&#x59CB;&#x5316;&#x6E32;&#x67D3;&#x5C31;&#x5B8C;&#x6210;&#x4E86;&#x3002;</p>
 
                                 
                                 </section>
@@ -369,7 +524,7 @@ subTree.props&#xFF09;&#x3002;</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"渲染流程2","level":"1.2.2","depth":2,"next":{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]},"previous":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc2.md","mtime":"2020-11-08T11:47:51.023Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-08T07:34:58.199Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"渲染流程2","level":"1.2.2","depth":2,"next":{"title":"一些问题","level":"1.2.3","depth":2,"path":"Packages/Runtime/question.md","ref":"Packages/Runtime/question.md","articles":[]},"previous":{"title":"渲染流程","level":"1.2.1","depth":2,"path":"Packages/Runtime/desc.md","ref":"Packages/Runtime/desc.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/desc2.md","mtime":"2020-11-08T15:06:08.070Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-10T10:31:06.437Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

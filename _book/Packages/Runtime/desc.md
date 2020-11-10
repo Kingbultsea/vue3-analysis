@@ -90,7 +90,7 @@ it('should allow attrs to fallthrough', async () => {
 <template>
   <div id="1">123</div>
 </template>
-```  
+```
 会被compiler转换成h('div', { id: 1 }, 123)，这里不去会去说compiler的转换，单纯的讲render流程，
 compiler做的东西还有静态标记之类的，这里只是举个简单的例子，将会在compiler章节详细说。
 
@@ -121,7 +121,7 @@ render(testVnode, HTMLDivElement)
 
 判断到n2不为空，进行<font color=#ff8000>patch</font>，判断到n1 == null，且n2.shapeFlag进行decode，为ShapeFlags.COMPONENT类型，执行processComponent。
 这里的decode和encode是什么来的？
-我们在生成vnode的时候，vnode.type数据被<font color=#ff8000>normalizeChildren</font>加密过，因为当前children为null,所以type为0，加密方式为<font color=#ff8000>vnode.shapeFlag |= type</font>
+我们在生成vnode的时候，vnode.type数据被<font color=#ff8000>normalizeChildren</font>加密过，因为当前children为null,所以type为0，加密方式为<font color=#ff8000>vnode.shapeFlag |= type</font>,
 解密方式为<font color=#ff8000>const a = vnode.shapeFlag & ShapeFlags.COMPONENT</font>，只要a > 0就为true，ShapeFlags.COMPONENT为一个常数。
 ```typescript
 export declare const enum ShapeFlags {
@@ -165,18 +165,18 @@ export declare const enum ShapeFlags {
 ![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？那继续下面的东西。
 
 #### processComponent 
-<font color=#ff8000>processComponent</font>，判断到<font color=#ff8000>n1 == null && n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE</font>
+<font color=#ff8000>processComponent</font>，判断到<font color=#ff8000>n1 == null && n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE</font>,
 则执行<font color=#ff8000>mountComponent</font>，这个东西作用是挂载组件，这里挂载组件分三步走：
 
 * createComponentInstance 创建instance，一个组件相关的Object。
 * setupComponent，对instance.attrs、vnode.type.setup和vnode.type中的所有关键OPTIONS字段的处理。
 * setupRenderEffect，处理instance.render、instance.vnode.type、instance.subTree、更新组件的effect和instance.subTree.props合并instance.attrs。
 
-#### createComponentInstance
+#### ①createComponentInstance 
 没有做什么，就是像vnode一样，生成了一个对象<font color=#ff8000>instance</font>，该对象记录了当前组件的信息，比如parent字段为父组件的instance，
 root根组件的instance，render根据STATEFUL_COMPONENT、FUNCTIONAL_COMPONENT所生成的一个返回vnode的函数，也会记录一些生命周期的钩子相关字段。
 
-#### setupComponent
+#### ②setupComponent 
 <font color=#ff8000>initProps</font>:
 
 ```typescript
@@ -189,6 +189,7 @@ const attrs = []
 ![熊猫紧张](https://res.psy-1.com/FsnFrGmMvgD_GI9YnZeJuc8-xTbk)
 
 **1**.normalizePropsOptions，我们组件中，如果存在props字段。
+
 ```typescript
 const a = {
   props: ['a-b', 'c-d']
@@ -271,6 +272,8 @@ const normalizedEntry: NormalizedPropsOptions = [normalized, needCastKeys]
 return normalizedEntry
 ```
 
+
+
 **2**.经过1得到\[<font color=#ff8000>normalized</font>, <font color=#ff8000>needCastKeys</font>\]
 
 ![setFullProps](https://res.psy-1.com/Fg7cLitiSUiz-V6wR9ogC5-N4F-B)
@@ -279,7 +282,10 @@ return normalizedEntry
 遍历vnode.props来赋值給props或是attrs。
 还记得一开始我们创建的props,attrs麽？以上都是为了设置这两个的。
 
-**3**.如果有<font color=#ff8000>needCastKeys</font>，这里<font color=#ff8000>normalized</font>改一个名称为<font color=#ff8000>options</font>
+
+
+**3**.如果有<font color=#ff8000>needCastKeys</font>，这里<font color=#ff8000>normalized</font>改一个名称为<font color=#ff8000>options</font>。
+
 ```typescript
 if (needCastKeys) {
     const rawCurrentProps = toRaw(props) // 避免有引用属性的响应式的干扰
@@ -381,22 +387,29 @@ instance.attrs 将会被subTree.props合并，subTree就是instance.render()返�
 instance.props 状态类型组件（ShapeFlags.STATEFUL_COMPONENT）在运行instance.setup中传入的是instance.proxy，只会在instance.render(instance.props)应用到。
 函数类型（ShapeFlags.FUNCTIONAL_COMPONENT）的组件，在setupRenderEffect中的renderComponentRoot调用vnode.type的时候传入instance.proxy。
 
-**instance.attrs用于与子(instance.subTree)vnode合并参数，instance.props用于传递，ShapeFlags.STATEFUL_COMPONENT类型的render，ShapeFlags.FUNCTIONAL_COMPONENT类型的type。
-调用组件setup的参数是instance.props, instance.setupContext。
+**instance.attrs用于与子(instance.subTree)vnode.props合并，instance.props用于传递，比如在ShapeFlags.STATEFUL_COMPONENT类型的render中作为参数，ShapeFlags.FUNCTIONAL_COMPONENT类型中的type作为参数。
+调用组件setup的参数是(instance.props, instance.setupContext)。
 这里需要好好区别一下。**
 
->attrs和props的本质区别是，如果instance.type有props字段，当遍历vnode.props的时候，赋值方式为键key存在于instance.type.props中的，如果键key不存在于instance.type.props
->且instance.emit没有用到该键key，则赋值給attrs。needCastKeys是用来給props设置一下默认字段和布尔字段的，使其标准化一些。
->一句话，attrs是被instance.type.props所过滤的vnode.props。
+attrs和props的本质区别是，如果instance.type.props存在，当遍历vnode.props的时候，赋值給propss得方式为键key存在于instance.type.props中的，如果键key不存在于instance.type.props
+且instance.type.emit没有用到该键key，则赋值給attrs。needCastKeys是用来給props设置一下默认字段和布尔字段的，使其标准化一些。
+
+>**一句话，attrs是被instance.type.props所过滤的vnode.props。**
 
 <font color=#ff8000>initSlots</font>：
 
 这里的测试用例没有slots，相关移步去slots章节。
 
 <font color=#ff8000>setupStatefulComponent</font>：
-ShapeFlags.STATEFUL_COMPONENT才会执行，当前组件为ShapeFlags.STATEFUL_COMPONENT类型。设置accessCache和proxy，proxy在处理options，或者说options中使用的this，将指向proxy。
-就是
+ShapeFlags.STATEFUL_COMPONENT才会执行，当前组件为ShapeFlags.STATEFUL_COMPONENT类型。设置instance.accessCache和instance.proxy，instance.proxy在处理options，或者说options中使用的this，将指向instance.proxy。
+
 ```typescript
+instance.accessCache = {}
+instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
+```
+
+```typescript
+// options:
 {
   methods: { 
       foo() { 
@@ -404,26 +417,41 @@ ShapeFlags.STATEFUL_COMPONENT才会执行，当前组件为ShapeFlags.STATEFUL_C
      } 
   }
 }
-```
-会输出instance.proxy。
-```
-instance.accessCache = {}
-instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
+
+// output: 
+// instance.proxy
 ```
 
-组件中setup的运行：
+
+<font color=#ff8000>instance.type.setup的运行</font>：
+
 ```typescript
 currentInstance = instance // 使用钩子api的时候会使用到。
 pauseTracking() // 暂停track，reactive相关，这里停止track是避免执行setup方法的时候，有响应式数据追踪到其他地方的effect，比如具有父组件进行componentEffect的过程中会patch子组件，子组件更新，父组件也需要更新，这一步仅仅在componentEffect中处理。
+
 setupResult = callWithErrorHandling // 调用组件的setup方法，传入(instance.props, instance.setupConetxt)。
+
 resetTracking() // 恢复上一个track的状态，reactive相关
 currentInstance = null // 恢复
 ```
 
-callWithErrorHandling包裹setup方法，执行<font color=#ff8000>setup(instance.props, instance.setupConetxt)</font>。
+callWithErrorHandling包裹setup方法，执行<font color=#ff8000>setup(instance.props, instance.setupContext)</font>。
 
-setup内部有钩子，当前测试用例调用了onUpdated(CLICKEVENT)钩子，设置instance.u = []，instance.u.push(CLICKEVENT)，可以去看instance.u字段。
+
+
+setup内部钩子相关：
+
+当前测试用例调用了<font color=#ff8000>onUpdated(CLICKEVENT)</font>钩子，onUpdated所做的事是:
+
+```ty
+instance.u = []
+instance.u.push(CLICKEVENT)
+```
+
+代码：
+
 ```typescript
+// 创建钩子:
 createHook(LifecycleHooks.UPDATED)
 
 // createHook内部：
@@ -438,10 +466,12 @@ hook.__weh || hook.__weh = (...args: unknown[]) => {
 hooks.push(wrappedHook)
 ```
 
-最后返回setup的结果給setupResult。执行<font color=#ff8000>handleSetupResult</font>，setupResult是一个Function，
-所以:
+运行以上后，返回setup的结果給setupResult。执行<font color=#ff8000>handleSetupResult</font>，
+
+setupResult是一个Function：
+
 ```typescript
-instance.render = setupResult
+instance.render = setupResult // 当前组件返回的是组件类型
 ```
 如果setupResult是一个Object类型：
 ```typescript
@@ -449,15 +479,21 @@ instance.setupState = reactive(setupResult) // 进行响应式
 ```
 
 setupResult为Object类型的时候，进行响应式化有什么好处？（其实我是感觉防止新手不知道怎么处理吧）我们平时会直接返回一个对象，对象里面包裹响应式数据对象，如果再套一层响应式化，可以让我们直接设置字段，
-输入数据，不需要再进行一次relative或者ref的调用，这和处理instance.type.data同一个原理，**也就是说你可以直接在setup中的return直接当data(){}那样返回**。
+输入数据，不需要再进行一次relative或者ref的调用，这和处理instance.type.data同一个原理，
+
+**也就是说你可以直接在setup中的return直接当data(){}那样返回**。
 
 这里再提醒一下，你需要打开[渲染流程图](https://www.processon.com/view/link/5f85c9321e085307a0892f7e)，才能知道流程走向到底去哪了。
 
-执行<font color=#ff8000>finishComponentSetup</font>，这里就涉及到options的设置了。具体去测试用例调试吧，如果需要特别说一下可以在Github提一下issus，这里说几个重点。
+
+
+执行<font color=#ff8000>finishComponentSetup</font>，这里就涉及到options（methids, props, data, mixin, watch, computed...）的设置了。具体去测试用例调试吧，如果需要特别说一下可以在Github提一下issus，这里说几个重点。
 
 **callSyncHook('beforeCreate', instance.type.options)，调用全局mixin、extends、本身mixin，最后才是调用自身的。
 这里会有两个钩子被执行'beforeCreate'和'created'，这两个钩子是使用composition API是没有的，这里的钩子比setup中使用api的钩子要提早执行。
 如果内部方法使用this，那么都会指向instance.proxy，详情可以查看PublicInstanceProxyHandlers。**
 
-#### setupRenderEffect
+
+
+#### ③setupRenderEffect
 ![sucide](https://res.psy-1.com/Fn1AHqFf-NFtXHr6tO7AS30GVs-F)终于要看到重点了，这个就分开说吧，因为涉及到的东西很多了。

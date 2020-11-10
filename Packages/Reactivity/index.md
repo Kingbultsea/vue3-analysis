@@ -451,17 +451,25 @@ ob1.a的第一次setter，跑到:
 
 ![img](https://res.psy-1.com/FoZDmo3zpR9ik3KM_yRmo7EZ0-Jt)
 
-虽然我不懂，但是这不影响我去分析它：
+![熊猫紧张](https://res.psy-1.com/Fr9pcXuMBigc_ofuRmebvi-XsUx_)啊这... 虽然我不懂，但是这不影响我去分析它：
 
-> 第一次触发Reflect.set的过程会调用到原型中的set，等于触发parentProxy的
->
-> set(原本的target, Reflect.set传入的key, Reflect.set传入的value，Reflect.set传入的receiver)
->
-> ，第二次的Reflect.set，如果我把这行代码去掉，那么childProxy将不会被设置成功，只有这行代码才是真正设置childProxy的，但是对parentProxy没有任何影响，继续分析。
->
-> 代码在set中，只返回true，或者在第二次Reflect中直接return true，也是不会有任何设置的成功，所以和返回的值无关。
->
-> 第一次和第二的Reflect只有target是不一样的
+第一次触发Reflect.set的过程会调用到原型中的set，等于触发parentProxy的
+
+set(原本的target, Reflect.set传入的key, Reflect.set传入的value，Reflect.set传入的receiver)
+
+第二次的Reflect.set，如果我把这行代码去掉，那么childProxy将不会被设置成功，只有这行代码才是真正设置childProxy的，但是对parentProxy没有任何影响，继续分析。
+
+代码在set中，只返回true，或者在第二次Reflect中直接return true，也是不会有任何设置的成功，所以和返回的值无关。
+
+第一次和第二的Reflect只有target是不一样的。
+
+
+
+![wocao](https://res.psy-1.com/FimJsXIrCCMb7NhhduJbEBUPD2tF)那我第一次的Reflect.set随便丢一个target是不是会设置成功？？
+
+![img](https://res.psy-1.com/Fj8d73bIc5gOieJIArlVG6AJUjgz)
+
+果真成功了....
 
 
 
