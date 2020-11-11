@@ -37,6 +37,20 @@
       <change beforePath="$PROJECT_DIR$/_book/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/book/search_index.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/_book/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/_book/search_index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/book/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/API_DOC/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/API_DOC/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/diff.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/diff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Reactivity/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Reactivity/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/desc2.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/desc2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/question.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/事件队列.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/事件队列.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/Packages/Runtime/类型标记.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/Packages/Runtime/类型标记.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/search_index.json" beforeDir="false" afterPath="$PROJECT_DIR$/book/search_index.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +128,7 @@
       <workItem from="1604590906862" duration="8557000" />
       <workItem from="1604628874366" duration="8040000" />
       <workItem from="1604733025245" duration="5364000" />
-      <workItem from="1605003530291" duration="711000" />
+      <workItem from="1605003530291" duration="1423000" />
     </task>
     <servers />
   </component>

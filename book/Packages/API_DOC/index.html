@@ -274,27 +274,106 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="api&#x8BE6;&#x89E3;">API&#x8BE6;&#x89E3;</h2>
-<h3 id="normalizevnode">normalizeVNode</h3>
+                                <h1 id="api&#x8BE6;&#x89E3;">API&#x8BE6;&#x89E3;</h1>
+<h2 id="normalizevnode">normalizeVNode</h2>
 <p>child == null &#x6216;&#x8005;child&#x662F;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FD4;&#x56DE;Comment&#x7C7B;&#x578B;VNode&#x3002;</p>
 <p>child&#x4E3A;&#x6570;&#x7EC4;&#x7C7B;&#x578B;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FD4;&#x56DE;Fragment&#x7C7B;&#x578B;VNnode&#xFF0C;child&#x4F5C;&#x4E3A;&#x5B50;VNode&#x3002;</p>
 <p>child&#x4E3A;&#x5176;&#x4ED6;&#x7C7B;&#x578B;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FD4;&#x56DE;Text&#x7C7B;&#x578B;VNode&#xFF0C;child&#x4F5C;&#x4E3A;&#x5B50;VNode&#x3002;</p>
 <h4 id="&#x8BED;&#x6CD5;">&#x8BED;&#x6CD5;</h4>
-<blockquote>
-<p>normalizeVNode(child as VNodeChild)</p>
-</blockquote>
+<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeVNode</span>(<span class="hljs-params">child: VNodeChild</span>): <span class="hljs-title">VNode</span> </span>{
+  <span class="hljs-keyword">if</span> (child == <span class="hljs-literal">null</span> || <span class="hljs-keyword">typeof</span> child === <span class="hljs-string">&apos;boolean&apos;</span>) {
+    <span class="hljs-comment">// empty placeholder</span>
+    <span class="hljs-keyword">return</span> createVNode(Comment)
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isArray(child)) { <span class="hljs-comment">// [h(&apos;div, &apos;one&apos;), two] &#x6570;&#x7EC4;&#x5C31;&#x662F;fragment&#x4E86; normalizeVnode &#x6765;&#x8FDB;&#x884C;vnode&#x7684;&#x8F6C;&#x6362; &#x5176;&#x5B9E;&#x4E5F;&#x5C31;&#x662F; type &#x4E3A; fragment child &#x4E3A;&#x90A3;&#x4E2A;&#x6570;&#x7EC4;&#x7F62;&#x4E86;</span>
+    <span class="hljs-comment">// fragment</span>
+    <span class="hljs-keyword">return</span> createVNode(Fragment, <span class="hljs-literal">null</span>, child)
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> child === <span class="hljs-string">&apos;object&apos;</span>) {
+    <span class="hljs-comment">// already vnode, this should be the most common since compiled templates</span>
+    <span class="hljs-comment">// always produce all-vnode children arrays</span>
+    <span class="hljs-keyword">return</span> child.el === <span class="hljs-literal">null</span> ? child : cloneVNode(child)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// strings and numbers</span>
+    <span class="hljs-keyword">return</span> createVNode(Text, <span class="hljs-literal">null</span>, <span class="hljs-built_in">String</span>(child))
+  }
+}
+</code></pre>
 <h4 id="&#x53C2;&#x6570;&#xFF08;&#x9009;&#x586B;&#xFF09;">&#x53C2;&#x6570;&#xFF08;&#x9009;&#x586B;&#xFF09;</h4>
-<p>child&#xFF0C;VNodeChild&#x7C7B;&#x578B;</p>
+<p>child&#xFF0C;VNodeChild</p>
 <h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
-<p>VNode</p>
-<h3 id="getfallthroughattrs">getFallthroughAttrs</h3>
+<p>VNode&#x7C7B;&#x578B;</p>
+<h2 id="getfallthroughattrs">getFallthroughAttrs</h2>
 <p>&#x904D;&#x5386;attrs&#xFF0C;&#x8FD4;&#x56DE;&#xFF0C;&#x8FC7;&#x6EE4;&#x6389;&#x952E;&#x4E0D;&#x4E3A;&apos;class&apos;&#x6216;&#x8005;&apos;style&apos;&#x6216;&#x8005;&#x6B63;&#x5219;&#x5339;&#x914D;&#x4E3A;on&#x5F00;&#x5934;&#x7684;&#x952E;&#x503C;&#x5BF9;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x3002;</p>
-<h4 id="&#x8BED;&#x6CD5;">&#x8BED;&#x6CD5;</h4>
-<blockquote>
-<p>getFallthroughAttrs(attrs: Data): Data | undefined</p>
-</blockquote>
+<h4 id="&#x4EE3;&#x7801;">&#x4EE3;&#x7801;</h4>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> Data = { [key: <span class="hljs-built_in">string</span>]: unknown }
+
+<span class="hljs-keyword">const</span> getFallthroughAttrs = (attrs: Data): Data | <span class="hljs-literal">undefined</span> =&gt; {
+  <span class="hljs-keyword">let</span> res: Data | <span class="hljs-literal">undefined</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> key <span class="hljs-keyword">in</span> attrs) {
+    <span class="hljs-keyword">if</span> (key === <span class="hljs-string">&apos;class&apos;</span> || key === <span class="hljs-string">&apos;style&apos;</span> || isOn(key)) {
+      ;(res || (res = {}))[key] = attrs[key]
+    }
+  }
+  <span class="hljs-keyword">return</span> res
+}
+</code></pre>
 <h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
-<p>undefined | Data&#x7C7B;&#x578B;</p>
+<p>undefined | Data</p>
+<h2 id="definecomponent">defineComponent</h2>
+<p>&#x5728;&#x521B;&#x5EFA;&#x7EC4;&#x4EF6;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F7F;&#x7528;&#x8BE5;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;typescript&#x7684;&#x7C7B;&#x578B;&#x68C0;&#x6D4B;&#xFF0C;&#x53C2;&#x6570;&#x8865;&#x5145;&#x3002;</p>
+<h4 id="&#x4EE3;&#x7801;">&#x4EE3;&#x7801;</h4>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defineComponent</span>(<span class="hljs-params">options: unknown</span>) </span>{
+  <span class="hljs-keyword">return</span> isFunction(options) ? { setup: options } : options
+}
+
+<span class="hljs-keyword">interface</span> LegacyOptions&lt;
+  Props,
+  D,
+  C <span class="hljs-keyword">extends</span> ComputedOptions,
+  M <span class="hljs-keyword">extends</span> MethodOptions,
+  Mixin <span class="hljs-keyword">extends</span> ComponentOptionsMixin,
+  Extends <span class="hljs-keyword">extends</span> ComponentOptionsMixin
+&gt; {
+  <span class="hljs-comment">// allow any custom options</span>
+  [key: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>
+
+  <span class="hljs-comment">// state</span>
+  <span class="hljs-comment">// Limitation: we cannot expose RawBindings on the `this` context for data</span>
+  <span class="hljs-comment">// since that leads to some sort of circular inference and breaks ThisType</span>
+  <span class="hljs-comment">// for the entire component.</span>
+  data?: (
+    <span class="hljs-keyword">this</span>: CreateComponentPublicInstance&lt;Props&gt;,
+    vm: CreateComponentPublicInstance&lt;Props&gt;
+  ) =&gt; D
+  computed?: C
+  methods?: M
+  watch?: ComponentWatchOptions
+  provide?: Data | <span class="hljs-built_in">Function</span>
+  inject?: ComponentInjectOptions
+
+  <span class="hljs-comment">// composition</span>
+  mixins?: Mixin[]
+  extends?: Extends
+
+  <span class="hljs-comment">// lifecycle</span>
+  beforeCreate?(): <span class="hljs-built_in">void</span>
+  created?(): <span class="hljs-built_in">void</span>
+  beforeMount?(): <span class="hljs-built_in">void</span>
+  mounted?(): <span class="hljs-built_in">void</span>
+  beforeUpdate?(): <span class="hljs-built_in">void</span>
+  updated?(): <span class="hljs-built_in">void</span>
+  activated?(): <span class="hljs-built_in">void</span>
+  deactivated?(): <span class="hljs-built_in">void</span>
+  beforeUnmount?(): <span class="hljs-built_in">void</span>
+  unmounted?(): <span class="hljs-built_in">void</span>
+  renderTracked?: DebuggerHook
+  renderTriggered?: DebuggerHook
+  errorCaptured?: ErrorCapturedHook
+}
+</code></pre>
+<h4 id="&#x53C2;&#x6570;">&#x53C2;&#x6570;</h4>
+<p>options&#xFF0C;Funtion&#x7C7B;&#x578B;&#x6216;&#x8005;LegacyOptions&#x7C7B;&#x578B;</p>
+<h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
+<p>LegacyOptions | { setup: Function }</p>
 
                                 
                                 </section>
@@ -334,7 +413,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"API DOC","level":"1.4","depth":1,"previous":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/API_DOC/index.md","mtime":"2020-11-05T10:07:33.264Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-10T10:32:36.706Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"API DOC","level":"1.4","depth":1,"previous":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/API_DOC/index.md","mtime":"2020-11-11T08:13:20.512Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-11T08:13:30.923Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
