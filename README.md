@@ -73,4 +73,6 @@ it('should create an element', () => {
 ```
 
 ## compiler
-待完善
+我们使用webpack的vue-loader插件，总是会帮我们把template标签转换成instance.render函数，如果没有该插件，在手写OPTION API中的template，将会在render渲染过程中的第二个步骤，检测当前使用的版本有没有使用compile，有则调用compile转换。
+
+这里compile所做的还有静态标记，静态dom的缓存，重复dom的内存收集。
