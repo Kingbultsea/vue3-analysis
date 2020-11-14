@@ -5,7 +5,7 @@
     * [渲染流程2](Packages/Runtime/desc2.md)
     * [一些问题](Packages/Runtime/question.md)
     * [Options-API](Packages/Runtime/OPTION-API.md)
-    * [事件队列](Packages/Runtime/事件队列.md)
+    * [事件队列](Packages/Runtime/事件队列与组件更新.md)
     * [类型标记](Packages/Runtime/类型标记.md)
 * [Reactivity](Packages/Reactivity/index.md)
     * [diff算法](Packages/Reactivity/diff.md)
