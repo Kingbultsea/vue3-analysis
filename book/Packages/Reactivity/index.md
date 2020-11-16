@@ -474,3 +474,100 @@ set(原本的target, Reflect.set传入的key, Reflect.set传入的value，Reflec
 
 
 ### trigger
+
+```typescript
+export function trigger(
+  target: object, // set的时候 参数 r {}
+  type: TriggerOpTypes, // 参数set
+  key?: unknown, // "value"
+  newValue?: unknown,
+  oldValue?: unknown,
+  oldTarget?: Map<unknown, unknown> | Set<unknown>
+) {
+  // 谁第一次添加进去的？ 根本找不到这个东西
+  const depsMap = targetMap.get(target)
+  if (!depsMap) {
+    // never been tracked 就是说 如果没有get过的话 就不会做任何处理 算是把性能给提升了吧
+    return
+  }
+
+  // effect收集 那也和set无关啊
+  const effects = new Set<ReactiveEffect>()
+  const computedRunners = new Set<ReactiveEffect>()
+  const add = (effectsToAdd: Set<ReactiveEffect> | undefined) => {
+    if (effectsToAdd) {
+      effectsToAdd.forEach(effect => {
+        if (effect !== activeEffect || !shouldTrack) {
+          if (effect.options.computed) {
+            // effect 分类吧 那么就是说明 不止computed用到effect
+            computedRunners.add(effect)
+          } else {
+            effects.add(effect)
+          }
+        } else {
+          // the effect mutated its own dependency during its execution.
+          // this can be caused by operations like foo.value++
+          // do not trigger or we end in an infinite loop
+        }
+      })
+    }
+  }
+
+  if (type === TriggerOpTypes.CLEAR) {
+    // collection being cleared
+    // trigger all effects for target
+    depsMap.forEach(add)
+  } else if (key === 'length' && isArray(target)) {
+    depsMap.forEach((dep, key) => {
+      if (key === 'length' || key >= (newValue as number)) {
+        add(dep)
+      }
+    })
+  } else {
+    // schedule runs for SET | ADD | DELETE
+    if (key !== void 0) {
+      // 这里无论relative 是 set 还是 add 都是执行的
+      // 然后跑到这里 把new Map() 含有value的 给丢进了add 但是不会执行任何东西了
+      add(depsMap.get(key))
+    }
+    // also run for iteration key on ADD | DELETE | Map.SET
+    const isAddOrDelete =
+      type === TriggerOpTypes.ADD ||
+      (type === TriggerOpTypes.DELETE && !isArray(target))
+    if (
+      isAddOrDelete ||
+      (type === TriggerOpTypes.SET && target instanceof Map) // 这里也不会等的 就是一个普通对象 r = {} 现在也还是搞不清楚 set 和 add的区别
+    ) {
+      add(depsMap.get(isArray(target) ? 'length' : ITERATE_KEY))
+    }
+    if (isAddOrDelete && target instanceof Map) {
+      add(depsMap.get(MAP_KEY_ITERATE_KEY))
+    }
+  }
+
+  const run = (effect: ReactiveEffect) => {
+    if (__DEV__ && effect.options.onTrigger) {
+      effect.options.onTrigger({
+        effect,
+        target,
+        key,
+        type,
+        newValue,
+        oldValue,
+        oldTarget
+      })
+    }
+    if (effect.options.scheduler) { // 渲染processComponent的时候在setupRenderEffect方法中，instance.update = effect(()=>{}, prodEffectOptions)
+      effect.options.scheduler(effect)
+    } else {
+      // 执行这个
+      effect()
+    }
+  }
+
+  // Important: computed effects must be run first so that computed getters
+  // can be invalidated before any normal effects that depend on them are run.
+  computedRunners.forEach(run)
+  effects.forEach(run)
+}
+```
