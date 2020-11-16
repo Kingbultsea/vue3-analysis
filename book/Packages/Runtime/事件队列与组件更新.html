@@ -392,8 +392,110 @@ function nextTick(fn?: () =&gt; void): Promise&lt;void&gt; { // &#x5367;&#x69FD;
 <p>&#x63A5;&#x7740;&#x6267;&#x884C;B-effect&#xFF0C;&#x68C0;&#x6D4B;&#x5230;&#x65E7;B.instance.next&#xFF0C;&#x8C03;&#x7528;updateComponentPreRender&#xFF0C;&#x53BB;&#x66F4;&#x65B0;&#x65E7;&#x7684;B-instance&#x4E3A;&#x65B0;&#x7684;B-instance&#xFF0C;&#x66F4;&#x65B0;B&#x7684;&#x5B50;vnode&#xFF08;&#x5047;&#x8BBE;B&#x7684;&#x5B50;vnode&#x4E3A;&#x666E;&#x901A;Element&#xFF09;&#xFF0C;&#x5B8C;&#x6210;B-update&#x7684;&#x94A9;&#x5B50;&#x3002;</p>
 <p>&#x6574;&#x4E2A;&#x66F4;&#x65B0;&#x5C31;&#x5B8C;&#x6210;&#x4E86;&#x3002;</p>
 <p><strong>&#x7EC4;&#x4EF6;&#x7684;&#x79FB;&#x9664;&#xFF1A;</strong></p>
+<p>&#x5047;&#x8BBE;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;Z&#xFF0C;A&#x7684;A-effect&#x88AB;Z&#x8FFD;&#x8E2A;&#x5230;&#xFF0C;&#x5F53;Z.value&#x4E3A;true&#xFF0C;A&#x7EC4;&#x4EF6;&#x7684;&#x5B50;&#x7EC4;&#x4EF6;&#x4E3A;B&#xFF0C;&#x5982;&#x679C;&#x4E3A;false&#xFF0C;A&#x7EC4;&#x4EF6;&#x7684;&#x5B50;&#x7EC4;&#x4EF6;&#x5C06;&#x4E3A;C&#x3002;</p>
+<p>&#x73B0;&#x5728;&#x628A;Z.value&#x8BBE;&#x7F6E;&#x4E3A;false&#xFF0C;&#x89E6;&#x53D1;A-effect&#xFF0C;&#x521B;&#x5EFA;&#x65B0;C-vnode&#xFF0C;patch(B-vnode, C-vnode)&#xFF0C;&#x5BF9;&#x6BD4;&#x53D1;&#x73B0;&#x4E24;&#x4E2A;vnode&#x4E0D;&#x76F8;&#x7B49;&#xFF0C;&#x4F7F;&#x7528;<strong>unmount</strong>&#x5378;&#x8F7D;B-vnode&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// unmount</span>
+<span class="hljs-keyword">const</span> unmount: UnmountFn = (
+    vnode, <span class="hljs-comment">// B-vnode</span>
+    parentComponent, <span class="hljs-comment">// &#x5F53;&#x524D;&#x4F8B;&#x5B50;&#x662F;&#x4F20;&#x5165;A-instance</span>
+    parentSuspense, <span class="hljs-comment">// suspense&#x7EC4;&#x4EF6;&#x7684;&#x7279;&#x6027;&#xFF0C;&#x5F53;&#x524D;&#x5E76;&#x6CA1;&#x6709;&#x6D89;&#x53CA;</span>
+    doRemove = <span class="hljs-literal">false</span> <span class="hljs-comment">// true</span>
+  ) =&gt; {
+    <span class="hljs-keyword">const</span> {
+      <span class="hljs-keyword">type</span>,
+      props,
+      ref,
+      children,
+      dynamicChildren,
+      shapeFlag,
+      patchFlag,
+      dirs
+    } = vnode
+    <span class="hljs-keyword">const</span> shouldInvokeDirs = shapeFlag &amp; ShapeFlags.ELEMENT &amp;&amp; dirs
+    <span class="hljs-keyword">const</span> shouldKeepAlive = shapeFlag &amp; ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE
+    <span class="hljs-keyword">let</span> vnodeHook: VNodeHook | <span class="hljs-literal">undefined</span> | <span class="hljs-literal">null</span>
+
+    <span class="hljs-comment">// &#x53BB;&#x9664;ref &#x60F3;&#x4E86;&#x89E3;ref&#x53BB;ref&#x7AE0;&#x8282;</span>
+    <span class="hljs-keyword">if</span> (ref != <span class="hljs-literal">null</span> &amp;&amp; parentComponent) {
+      setRef(ref, <span class="hljs-literal">null</span>, parentComponent, <span class="hljs-literal">null</span>)
+    }
+
+    <span class="hljs-comment">// keepAlive &#x5C31;&#x4E0D;&#x6267;&#x884C;props.beforeUnMount&#x94A9;&#x5B50;</span>
+    <span class="hljs-keyword">if</span> ((vnodeHook = props &amp;&amp; props.onVnodeBeforeUnmount) &amp;&amp; !shouldKeepAlive) {
+      invokeVNodeHook(vnodeHook, parentComponent, vnode)
+    }
+
+    <span class="hljs-keyword">if</span> (shapeFlag &amp; ShapeFlags.COMPONENT) { <span class="hljs-comment">// &#x7EC4;&#x4EF6;&#x76F8;&#x5173;</span>
+      <span class="hljs-keyword">if</span> (shouldKeepAlive) {
+        ;(parentComponent!.ctx as KeepAliveContext).deactivate(vnode)
+      } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// &#x79FB;&#x9664;&#x7EC4;&#x4EF6;</span>
+        unmountComponent(vnode.component!, parentSuspense, doRemove)
+      }
+    }
+  }
+
+<span class="hljs-comment">// unmountComponet</span>
+<span class="hljs-keyword">const</span> unmountComponent = (
+    instance: ComponentInternalInstance,
+    parentSuspense: SuspenseBoundary | <span class="hljs-literal">null</span>,
+    doRemove?: <span class="hljs-built_in">boolean</span>
+  ) =&gt; {
+    <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; instance.type.__hmrId) {
+      unregisterHMR(instance)
+    }
+
+    <span class="hljs-keyword">const</span> { bum, effects, update, subTree, um, da, isDeactivated } = instance
+    <span class="hljs-comment">// beforeUnmount hook</span>
+    <span class="hljs-keyword">if</span> (bum) {
+      invokeArrayFns(bum)
+    }
+    <span class="hljs-keyword">if</span> (effects) { <span class="hljs-comment">// &#x505C;&#x6B62;&#x88AB;&#x8FFD;&#x8E2A;</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; effects.length; i++) {
+        stop(effects[i]) <span class="hljs-comment">// &#x53EF;&#x4EE5;&#x624B;&#x52A8;&#x7528;stop&#x505C;&#x6B62;&#x67D0;&#x4E2A;&#x884C;&#x4E3A;&#x7684;&#x8FFD;&#x8E2A;</span>
+      }
+    }
+    <span class="hljs-comment">// update may be null if a component is unmounted before its async</span>
+    <span class="hljs-comment">// setup has resolved.</span>
+    <span class="hljs-keyword">if</span> (update) {
+      stop(update) <span class="hljs-comment">// updtae &#x662F; effect</span>
+      unmount(subTree, instance, parentSuspense, doRemove) <span class="hljs-comment">// &#x5378;&#x8F7D;&#x5B50;&#x7EC4;&#x4EF6;/&#x5176;&#x4ED6;</span>
+    }
+    <span class="hljs-comment">// unmounted hook &#x94A9;&#x5B50; unmounted</span>
+    <span class="hljs-keyword">if</span> (um) {
+      queuePostRenderEffect(um, parentSuspense)
+    }
+    <span class="hljs-comment">// deactivated hook &#x6307;&#x4EE4;</span>
+    <span class="hljs-keyword">if</span> (
+      da &amp;&amp;
+      !isDeactivated &amp;&amp;
+      instance.vnode.shapeFlag &amp; ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE
+    ) {
+      queuePostRenderEffect(da, parentSuspense)
+    }
+    queuePostRenderEffect(() =&gt; {
+      instance.isUnmounted = <span class="hljs-literal">true</span>
+    }, parentSuspense)
+
+    <span class="hljs-comment">// A component with async dep inside a pending suspense is unmounted before</span>
+    <span class="hljs-comment">// its async dep resolves. This should remove the dep from the suspense, and</span>
+    <span class="hljs-comment">// cause the suspense to resolve immediately if that was the last dep.</span>
+    <span class="hljs-keyword">if</span> (
+      __FEATURE_SUSPENSE__ &amp;&amp;
+      parentSuspense &amp;&amp;
+      !parentSuspense.isResolved &amp;&amp;
+      !parentSuspense.isUnmounted &amp;&amp;
+      instance.asyncDep &amp;&amp;
+      !instance.asyncResolved
+    ) {
+      parentSuspense.deps--
+      <span class="hljs-keyword">if</span> (parentSuspense.deps === <span class="hljs-number">0</span>) {
+        parentSuspense.resolve()
+      }
+    }
+  }
+</code></pre>
 <p><strong>&#x5982;&#x679C;&#x4E0D;&#x6392;&#x5E8F;&#x5BFC;&#x81F4;&#x7684;&#x540E;&#x679C;&#xFF1A;</strong></p>
-<p>B-effect&#x6267;&#x884C;&#xFF0C;&#x4F46;&#x662F;&#x672C;&#x8EAB;B-vnode&#x5E76;&#x672A;&#x66F4;&#x65B0;&#xFF0C;&#x5BFC;&#x81F4;&#x53C2;&#x6570;&#x7684;&#x4F20;&#x9012;&#x4E0D;&#x6B63;&#x786E;&#x3002;</p>
+<p>&#x6B63;&#x5728;&#x63A2;&#x7A76;....</p>
 
                                 
                                 </section>
@@ -437,7 +539,7 @@ function nextTick(fn?: () =&gt; void): Promise&lt;void&gt; { // &#x5367;&#x69FD;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"事件队列","level":"1.2.5","depth":2,"next":{"title":"类型标记","level":"1.2.6","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"previous":{"title":"Options-API","level":"1.2.4","depth":2,"path":"Packages/Runtime/OPTION-API.md","ref":"Packages/Runtime/OPTION-API.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/事件队列与组件更新.md","mtime":"2020-11-14T19:37:38.709Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-14T20:48:11.167Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"事件队列","level":"1.2.5","depth":2,"next":{"title":"类型标记","level":"1.2.6","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"previous":{"title":"Options-API","level":"1.2.4","depth":2,"path":"Packages/Runtime/OPTION-API.md","ref":"Packages/Runtime/OPTION-API.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/事件队列与组件更新.md","mtime":"2020-11-16T00:16:08.679Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-16T00:18:14.824Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
