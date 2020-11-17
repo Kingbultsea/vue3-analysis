@@ -1,11 +1,13 @@
 # Vue3源码流程图化解释
 
-（不懂的，想来学习的，或者是想交流的欢迎进群讨论。目前gitbook还没有整理，有些知识点可能比较乱，表述得不清楚，可以进群探讨）
-
 vue3做了最大的变化就是api的细分，适配typescript。給我一种感觉就是，vue3像乐高，一个个拼接起来成模块，
 模块之间的互相组合，来构成一个整体，
 这样更利于团队开发了，可以根据团队情况来定制合适的开发架构。composition-api的出现，如果想真正利用好，弄懂vue3源码是必须的。
 vue3中重要的包：Reactivity、runtime-x和 compiler-x。
+
+（不懂的，想来学习的，或者是想交流的欢迎进群讨论。目前gitbook还没有整理，有些知识点可能比较乱，表述得不清楚，可以进群探讨）
+
+![QQ群](https://res.psy-1.com/FiliFdZcSPATp8w3p9UJO71soIId)
 
 gitbook链接：https://kingbultsea.github.io/vue3-analysis/book/index.html
 
