@@ -28,7 +28,7 @@ export function normalizeVNode(child: VNodeChild): VNode {
 ```
 
 #### 参数（选填）
-child，VNodeChild
+**child**: VNodeChild
 
 #### 返回值
 VNode类型
@@ -117,8 +117,77 @@ interface LegacyOptions<
 
 #### 参数
 
-options，Funtion类型或者LegacyOptions类型
+**options**: Funtion | LegacyOptions
 
 #### 返回值
 
 LegacyOptions | { setup: Function }
+
+
+
+## withModifiers
+
+封装一个方法，比如onClick事件，传入$event，你想阻止冒泡，可以使用withModifiers(fn, ['stop'])。
+
+也可以生成一个当前页面满足按键才触发的方法。
+
+```typescript
+const withModifiers = (fn: Function, modifiers: string[]) => {
+  return (event: Event, ...args: unknown[]) => {
+    for (let i = 0; i < modifiers.length; i++) {
+      const guard = modifierGuards[modifiers[i]]
+      if (guard && guard(event, modifiers)) return
+    }
+    return fn(event, ...args)
+  }
+}
+```
+
+关于事件：
+
+```typescript
+const modifierGuards: Record<
+  string,
+  (e: Event, modifiers: string[]) => void | boolean
+> = {
+  stop: e => e.stopPropagation(),
+  prevent: e => e.preventDefault(),
+  self: e => e.target !== e.currentTarget,
+  ctrl: e => !(e as KeyedEvent).ctrlKey,
+  shift: e => !(e as KeyedEvent).shiftKey,
+  alt: e => !(e as KeyedEvent).altKey,
+  meta: e => !(e as KeyedEvent).metaKey,
+  left: e => 'button' in e && (e as MouseEvent).button !== 0,
+  middle: e => 'button' in e && (e as MouseEvent).button !== 1,
+  right: e => 'button' in e && (e as MouseEvent).button !== 2,
+  exact: (e, modifiers) =>
+    systemModifiers.some(m => (e as any)[`${m}Key`] && !modifiers.includes(m))
+}
+```
+
+#### 参数
+
+**fn**: Function
+
+**modifiers**: string[]
+
+#### 返回值
+
+Function
+
+## patchEvent
+
+
+
+```typescript
+export function patchEvent(
+  el: Element,
+  rawName: string,
+  prevValue: EventValueWithOptions | EventValue | null,
+  nextValue: EventValueWithOptions | EventValue | null,
+  instance: ComponentInternalInstance | null = null
+) {
+    // ...
+}
+```
+

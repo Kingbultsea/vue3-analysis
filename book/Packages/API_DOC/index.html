@@ -58,7 +58,7 @@
 
     
     
-    <link rel="prev" href="../Reactivity/diff.html" />
+    <link rel="prev" href="../compile-core/为什么在slot中事件没有更新.html" />
     
 
     </head>
@@ -229,7 +229,39 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4" data-path="./">
+        <li class="chapter " data-level="1.4" data-path="../compile-core/compile-core.html">
+            
+                <a href="../compile-core/compile-core.html">
+            
+                    
+                    Compile
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../compile-core/为什么在slot中事件没有更新.html">
+            
+                <a href="../compile-core/为什么在slot中事件没有更新.html">
+            
+                    
+                    为什么在slot中事件没有更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.5" data-path="./">
             
                 <a href="./">
             
@@ -311,7 +343,7 @@
 }
 </code></pre>
 <h4 id="&#x53C2;&#x6570;&#xFF08;&#x9009;&#x586B;&#xFF09;">&#x53C2;&#x6570;&#xFF08;&#x9009;&#x586B;&#xFF09;</h4>
-<p>child&#xFF0C;VNodeChild</p>
+<p><strong>child</strong>: VNodeChild</p>
 <h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
 <p>VNode&#x7C7B;&#x578B;</p>
 <h2 id="getfallthroughattrs">getFallthroughAttrs</h2>
@@ -384,9 +416,57 @@
 }
 </code></pre>
 <h4 id="&#x53C2;&#x6570;">&#x53C2;&#x6570;</h4>
-<p>options&#xFF0C;Funtion&#x7C7B;&#x578B;&#x6216;&#x8005;LegacyOptions&#x7C7B;&#x578B;</p>
+<p><strong>options</strong>: Funtion | LegacyOptions</p>
 <h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
 <p>LegacyOptions | { setup: Function }</p>
+<h2 id="withmodifiers">withModifiers</h2>
+<p>&#x5C01;&#x88C5;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x6BD4;&#x5982;onClick&#x4E8B;&#x4EF6;&#xFF0C;&#x4F20;&#x5165;$event&#xFF0C;&#x4F60;&#x60F3;&#x963B;&#x6B62;&#x5192;&#x6CE1;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;withModifiers(fn, [&apos;stop&apos;])&#x3002;</p>
+<p>&#x4E5F;&#x53EF;&#x4EE5;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x5F53;&#x524D;&#x9875;&#x9762;&#x6EE1;&#x8DB3;&#x6309;&#x952E;&#x624D;&#x89E6;&#x53D1;&#x7684;&#x65B9;&#x6CD5;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> withModifiers = (fn: <span class="hljs-built_in">Function</span>, modifiers: <span class="hljs-built_in">string</span>[]) =&gt; {
+  <span class="hljs-keyword">return</span> (event: Event, ...args: unknown[]) =&gt; {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; modifiers.length; i++) {
+      <span class="hljs-keyword">const</span> guard = modifierGuards[modifiers[i]]
+      <span class="hljs-keyword">if</span> (guard &amp;&amp; guard(event, modifiers)) <span class="hljs-keyword">return</span>
+    }
+    <span class="hljs-keyword">return</span> fn(event, ...args)
+  }
+}
+</code></pre>
+<p>&#x5173;&#x4E8E;&#x4E8B;&#x4EF6;&#xFF1A;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> modifierGuards: Record&lt;
+  <span class="hljs-built_in">string</span>,
+  (e: Event, modifiers: <span class="hljs-built_in">string</span>[]) =&gt; <span class="hljs-built_in">void</span> | <span class="hljs-built_in">boolean</span>
+&gt; = {
+  stop: e =&gt; e.stopPropagation(),
+  prevent: e =&gt; e.preventDefault(),
+  self: e =&gt; e.target !== e.currentTarget,
+  ctrl: e =&gt; !(e as KeyedEvent).ctrlKey,
+  shift: e =&gt; !(e as KeyedEvent).shiftKey,
+  alt: e =&gt; !(e as KeyedEvent).altKey,
+  meta: e =&gt; !(e as KeyedEvent).metaKey,
+  left: e =&gt; <span class="hljs-string">&apos;button&apos;</span> <span class="hljs-keyword">in</span> e &amp;&amp; (e as MouseEvent).button !== <span class="hljs-number">0</span>,
+  middle: e =&gt; <span class="hljs-string">&apos;button&apos;</span> <span class="hljs-keyword">in</span> e &amp;&amp; (e as MouseEvent).button !== <span class="hljs-number">1</span>,
+  right: e =&gt; <span class="hljs-string">&apos;button&apos;</span> <span class="hljs-keyword">in</span> e &amp;&amp; (e as MouseEvent).button !== <span class="hljs-number">2</span>,
+  exact: (e, modifiers) =&gt;
+    systemModifiers.some(m =&gt; (e as <span class="hljs-built_in">any</span>)[<span class="hljs-string">`<span class="hljs-subst">${m}</span>Key`</span>] &amp;&amp; !modifiers.includes(m))
+}
+</code></pre>
+<h4 id="&#x53C2;&#x6570;">&#x53C2;&#x6570;</h4>
+<p><strong>fn</strong>: Function</p>
+<p><strong>modifiers</strong>: string[]</p>
+<h4 id="&#x8FD4;&#x56DE;&#x503C;">&#x8FD4;&#x56DE;&#x503C;</h4>
+<p>Function</p>
+<h2 id="patchevent">patchEvent</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">patchEvent</span>(<span class="hljs-params">
+  el: Element,
+  rawName: <span class="hljs-built_in">string</span>,
+  prevValue: EventValueWithOptions | EventValue | <span class="hljs-literal">null</span>,
+  nextValue: EventValueWithOptions | EventValue | <span class="hljs-literal">null</span>,
+  instance: ComponentInternalInstance | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>
+</span>) </span>{
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
 
                                 
                                 </section>
@@ -414,7 +494,7 @@
 
             
                 
-                <a href="../Reactivity/diff.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: diff算法">
+                <a href="../compile-core/为什么在slot中事件没有更新.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 为什么在slot中事件没有更新">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -426,7 +506,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"API DOC","level":"1.4","depth":1,"previous":{"title":"diff算法","level":"1.3.1","depth":2,"path":"Packages/Reactivity/diff.md","ref":"Packages/Reactivity/diff.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/API_DOC/index.md","mtime":"2020-11-11T08:13:20.512Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-18T15:54:00.826Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"API DOC","level":"1.5","depth":1,"previous":{"title":"为什么在slot中事件没有更新","level":"1.4.1","depth":2,"path":"Packages/compile-core/为什么在slot中事件没有更新.md","ref":"Packages/compile-core/为什么在slot中事件没有更新.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/API_DOC/index.md","mtime":"2020-11-22T16:26:53.126Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-22T17:02:42.304Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
