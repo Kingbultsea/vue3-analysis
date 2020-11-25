@@ -477,66 +477,68 @@ set(原本的target, Reflect.set传入的key, Reflect.set传入的value，Reflec
 
 ```typescript
 export function trigger(
-  target: object, // set的时候 参数 r {}
-  type: TriggerOpTypes, // 参数set
-  key?: unknown, // "value"
+  target: object,
+  type: TriggerOpTypes,
+  key?: unknown,
   newValue?: unknown,
   oldValue?: unknown,
   oldTarget?: Map<unknown, unknown> | Set<unknown>
 ) {
-  // 谁第一次添加进去的？ 根本找不到这个东西
   const depsMap = targetMap.get(target)
   if (!depsMap) {
-    // never been tracked 就是说 如果没有get过的话 就不会做任何处理 算是把性能给提升了吧
     return
   }
 
-  // effect收集 那也和set无关啊
-  const effects = new Set<ReactiveEffect>()
+  const effects = new Set<ReactiveEffect>() // 收集当前target要触发的effect
   const computedRunners = new Set<ReactiveEffect>()
+
+  // 添加要触发的effect
   const add = (effectsToAdd: Set<ReactiveEffect> | undefined) => {
     if (effectsToAdd) {
       effectsToAdd.forEach(effect => {
+        // activeEffect 和 shouldTrack 都是effect.ts 的全局值
         if (effect !== activeEffect || !shouldTrack) {
           if (effect.options.computed) {
-            // effect 分类吧 那么就是说明 不止computed用到effect
-            computedRunners.add(effect)
+            computedRunners.add(effect) // computed相关
           } else {
             effects.add(effect)
           }
         } else {
-          // the effect mutated its own dependency during its execution.
-          // this can be caused by operations like foo.value++
-          // do not trigger or we end in an infinite loop
+          // 不能是运行中的effect 或者 当前effect不能追踪
+          // 因为 effect(() => { reactiveData.foo++ })
+          // 首先track，赋值操作trigger，再触发track，死循环  
         }
       })
     }
   }
 
   if (type === TriggerOpTypes.CLEAR) {
-    // collection being cleared
-    // trigger all effects for target
+    // 使用Map Set WeakMap WeakSet类型的响应式数据使用clear方法，才会触发
+    // 测试用例在reactivity/__test__/collections/Map.sepc.ts 
+    // 全局搜索 'should observe size mutations'
     depsMap.forEach(add)
   } else if (key === 'length' && isArray(target)) {
+    // taregt是数组的情况下 我们修改其length长度，是一种修改操作
     depsMap.forEach((dep, key) => {
+      // 缩短长度的操作等于删除元素 触发effect
+      // 追踪过length的effect 都需要触发
       if (key === 'length' || key >= (newValue as number)) {
         add(dep)
       }
     })
   } else {
-    // schedule runs for SET | ADD | DELETE
+    // 使用void 0 代替 undefinded 因为undefinded又可能被重写  
     if (key !== void 0) {
-      // 这里无论relative 是 set 还是 add 都是执行的
-      // 然后跑到这里 把new Map() 含有value的 给丢进了add 但是不会执行任何东西了
       add(depsMap.get(key))
     }
-    // also run for iteration key on ADD | DELETE | Map.SET
+      
+    // iteration key on ADD | DELETE | Map.SET
     const isAddOrDelete =
       type === TriggerOpTypes.ADD ||
       (type === TriggerOpTypes.DELETE && !isArray(target))
     if (
       isAddOrDelete ||
-      (type === TriggerOpTypes.SET && target instanceof Map) // 这里也不会等的 就是一个普通对象 r = {} 现在也还是搞不清楚 set 和 add的区别
+      (type === TriggerOpTypes.SET && target instanceof Map)
     ) {
       add(depsMap.get(isArray(target) ? 'length' : ITERATE_KEY))
     }
@@ -560,14 +562,18 @@ export function trigger(
     if (effect.options.scheduler) { // 渲染processComponent的时候在setupRenderEffect方法中，instance.update = effect(()=>{}, prodEffectOptions)
       effect.options.scheduler(effect)
     } else {
-      // 执行这个
       effect()
     }
   }
 
-  // Important: computed effects must be run first so that computed getters
-  // can be invalidated before any normal effects that depend on them are run.
+  // effect.options.computed 类型的优先级比较高
   computedRunners.forEach(run)
   effects.forEach(run)
 }
 ```
+
+
+
+# 总结
+
+![img](file:///C:\Users\MyPC\AppData\Roaming\Tencent\QQ\Temp\ZVZEBH@X$1Z]CIYS}8DSU[X.gif)不总结了，就这么简单。
