@@ -576,4 +576,4 @@ export function trigger(
 
 # 总结
 
-![img](file:///C:\Users\MyPC\AppData\Roaming\Tencent\QQ\Temp\ZVZEBH@X$1Z]CIYS}8DSU[X.gif)不总结了，就这么简单。
+![img](https://res.psy-1.com/FgI4CjHTomSP_-I8f2XafNpzLXMK)不总结了，就这么简单。
