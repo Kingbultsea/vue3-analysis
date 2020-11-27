@@ -1,0 +1,698 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>事件队列与组件更新 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="类型标记.html" />
+    
+    
+    <link rel="prev" href="OPTION-API.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    Runtime
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    runtime
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="desc.html">
+            
+                <a href="desc.html">
+            
+                    
+                    渲染流程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="desc2.html">
+            
+                <a href="desc2.html">
+            
+                    
+                    渲染流程(子组件)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="OPTION-API.html">
+            
+                <a href="OPTION-API.html">
+            
+                    
+                    Options-API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.5" data-path="事件队列与组件更新.html">
+            
+                <a href="事件队列与组件更新.html">
+            
+                    
+                    事件队列与组件更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="类型标记.html">
+            
+                <a href="类型标记.html">
+            
+                    
+                    类型标记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7" data-path="question.html">
+            
+                <a href="question.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    Reactivity
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../Reactivity/">
+            
+                <a href="../Reactivity/">
+            
+                    
+                    reactivity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../Reactivity/diff.html">
+            
+                <a href="../Reactivity/diff.html">
+            
+                    
+                    diff算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../Reactivity/问题集合.html">
+            
+                <a href="../Reactivity/问题集合.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    Compile
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../compile-core/compile-core.html">
+            
+                <a href="../compile-core/compile-core.html">
+            
+                    
+                    compile
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../compile-core/为什么在slot中事件没有更新.html">
+            
+                <a href="../compile-core/为什么在slot中事件没有更新.html">
+            
+                    
+                    为什么在slot中事件没有更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../compile-core/问题集合.html">
+            
+                <a href="../compile-core/问题集合.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    API DOC
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../API_DOC/">
+            
+                <a href="../API_DOC/">
+            
+                    
+                    API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >事件队列与组件更新</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x4E8B;&#x4EF6;&#x961F;&#x5217;">&#x4E8B;&#x4EF6;&#x961F;&#x5217;</h1>
+<p>&#x60F3;&#x4E86;&#x89E3;vue&#x4E2D;&#x7684;&#x4E8B;&#x4EF6;&#x961F;&#x5217;&#xFF0C;&#x8981;&#x5148;&#x61C2;&#x5B8F;&#x4EFB;&#x52A1;&#x548C;&#x5FAE;&#x4EFB;&#x52A1;&#x7684;&#x533A;&#x522B;&#x3002;</p>
+<p><a href="https://zhuanlan.zhihu.com/p/42117531" target="_blank">https://zhuanlan.zhihu.com/p/42117531</a></p>
+<p><img src="https://res.psy-1.com/FjsgeXcW5SEB3IN17igfLqDeqgZA" alt="img"></p>
+<p>&#x5728;&#x54CD;&#x5E94;&#x5F0F;&#x3001;&#x7F16;&#x8BD1;&#x548C;&#x6E32;&#x67D3;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x90FD;&#x6CA1;&#x6709;&#x89E6;&#x53D1;&#x8FC7;&#x5FAE;&#x4EFB;&#x52A1;&#x3002;&#x6211;&#x4EEC;&#x5728;&#x7EC4;&#x4EF6;&#x6E32;&#x67D3;instance.update&#x4E2D;&#xFF0C;&#x521B;&#x5EFA;&#x4E86;effect&#xFF0C;&#x5E76;&#x4E14;&#x4F20;&#x9012;&#x4E86;options&#xFF0C;&#x8FD9;&#x4E2A;options&#x662F;&#x544A;&#x8BC9;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;&#x89E6;&#x53D1;trigger&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F7F;&#x7528;options.scheduler(effect)&#x65B9;&#x6CD5;&#xFF0C;&#x800C;&#x4E0D;&#x4F1A;&#x76F4;&#x63A5;effect()&#x3002;</p>
+<p>trigger&#x4E2D;&#x89E6;&#x53D1;effect&#x7684;&#x65B9;&#x6CD5;run&#xFF1A;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> run = (effect: ReactiveEffect) =&gt; {
+    <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; effect.options.onTrigger) {
+      effect.options.onTrigger({
+        effect,
+        target,
+        key,
+        <span class="hljs-keyword">type</span>,
+        newValue,
+        oldValue,
+        oldTarget
+      })
+    }
+    <span class="hljs-keyword">if</span> (effect.options.scheduler) { <span class="hljs-comment">// &#x6E32;&#x67D3;processComponent&#x7684;&#x65F6;&#x5019;&#x5728;setupRenderEffect&#x65B9;&#x6CD5;&#x4E2D;&#xFF0C;instance.update = effect(()=&gt;{}, prodEffectOptions)</span>
+      effect.options.scheduler(effect)
+    } <span class="hljs-keyword">else</span> {
+      effect()
+    }
+  }
+</code></pre>
+<p>options:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> prodEffectOptions = {
+    scheduler: queueJob
+}
+<span class="hljs-comment">// &#x5F53;effect&#x88AB;trigger&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x6267;&#x884C;queueJob(effect)</span>
+</code></pre>
+<p>queue&#x76F8;&#x5173;:</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// queue</span>
+<span class="hljs-keyword">const</span> queue: (Job | <span class="hljs-literal">null</span>)[] = []
+
+<span class="hljs-comment">// queueJob</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queueJob</span>(<span class="hljs-params">job: Job</span>) </span>{
+  <span class="hljs-keyword">if</span> (!queue.includes(job)) {
+    queue.push(job)
+    queueFlush()
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queueFlush</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (!isFlushing &amp;&amp; !isFlushPending) {
+    isFlushPending = <span class="hljs-literal">true</span>
+    nextTick(flushJobs)
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flushJobs</span>(<span class="hljs-params">seen?: CountMap</span>) </span>{
+  debugger
+  isFlushPending = <span class="hljs-literal">false</span>
+  isFlushing = <span class="hljs-literal">true</span>
+  <span class="hljs-keyword">let</span> job
+  <span class="hljs-keyword">if</span> (__DEV__) {
+    seen = seen || <span class="hljs-keyword">new</span> Map()
+  }
+
+  <span class="hljs-comment">// Sort queue before flush.</span>
+  <span class="hljs-comment">// This ensures that:</span>
+  <span class="hljs-comment">// 1. Components are updated from parent to child. (because parent is always</span>
+  <span class="hljs-comment">//    created before the child so its render effect will have smaller</span>
+  <span class="hljs-comment">//    priority number)</span>
+  <span class="hljs-comment">// 2. If a component is unmounted during a parent component&apos;s update,</span>
+  <span class="hljs-comment">//    its update can be skipped.</span>
+  <span class="hljs-comment">// Jobs can never be null before flush starts, since they are only invalidated</span>
+  <span class="hljs-comment">// during execution of another flushed job. &#x4ECE;&#x5C0F;&#x5230;&#x5927;&#x6267;&#x884C; &#x4ECE;&#x7236;&#x7EC4;&#x4EF6;&#x5B50;&#x6267;&#x884C; &#x53CD;&#x6B63;&#x5F53;&#x524D;Effect&#x53EA;&#x5F71;&#x54CD;&#x5F53;&#x524D;&#x7684; &#x95EE;&#x9898;&#x4E0D;&#x5927;&#x5427; props&#x4E5F;&#x4E0D;&#x662F;</span>
+  queue.sort((a, b) =&gt; getId(a!) - getId(b!)) <span class="hljs-comment">// &#x5C0F;&#x5230;&#x5927; &#x5982;&#x679C;&#x4E3A;null &#x5219;&#x4E3A;Infinate effect&#x7684;id &#x4ECE;&#x5C0F;&#x5230;&#x5927;&#x6267;&#x884C; &#x56E0;&#x4E3A;effect &#x5D4C;&#x5957; &#x662F;&#x5927;&#x5230;&#x5C0F;&#x88AB;track&#x6536;&#x96C6;&#x7684; BFS&#x5C31;&#x662F;&#x5982;&#x6B64;</span>
+
+  <span class="hljs-keyword">while</span> ((job = queue.shift()) !== <span class="hljs-literal">undefined</span>) {
+    <span class="hljs-keyword">if</span> (job === <span class="hljs-literal">null</span>) {
+      <span class="hljs-keyword">continue</span>
+    }
+    <span class="hljs-keyword">if</span> (__DEV__) {
+      checkRecursiveUpdates(seen!, job)
+    }
+    callWithErrorHandling(job, <span class="hljs-literal">null</span>, ErrorCodes.SCHEDULER)
+  }
+  flushPostFlushCbs(seen)
+  isFlushing = <span class="hljs-literal">false</span>
+  <span class="hljs-comment">// some postFlushCb queued jobs!</span>
+  <span class="hljs-comment">// keep flushing until it drains.</span>
+  <span class="hljs-keyword">if</span> (queue.length || postFlushCbs.length) { <span class="hljs-comment">// &#x514D;&#x5F97;&#x5728;postFlushCbs&#x5185;&#x90E8;&#x751F;&#x6210; &#x6240;&#x4EE5;&#x518D;&#x6B21;flushJobs &#x4F46;&#x662F;seen&#x4F1A;&#x4FDD;&#x7559;</span>
+    flushJobs(seen) <span class="hljs-comment">// &#x4F20;&#x627F;Map</span>
+  }
+}
+</code></pre>
+<p>nextTick:</p>
+<pre><code class="lang-typescript">const p = Promise.resolve()
+
+function nextTick(fn?: () =&gt; void): Promise&lt;void&gt; { // &#x5367;&#x69FD;promise &#x5FAE;&#x4EFB;&#x52A1;... &#x670D;&#x4E86; &#x5C31;&#x8FD9;&#x4E48;&#x7B80;&#x5355;
+  return fn ? P.then(fn) : p
+}
+</code></pre>
+<p>&#x6211;&#x4EEC;&#x6709;&#x4EFB;&#x52A1;A&#xFF0C;&#x5982;&#x679C;&#x961F;&#x5217;queue&#x4E2D;&#x6CA1;&#x6709;&#x4EFB;&#x52A1;A&#xFF0C;&#x5219;queue.push(A)&#xFF0C;&#x4F7F;&#x7528;queueFlush&#x65B9;&#x6CD5;&#xFF0C;&#x6807;&#x8BB0;&#x961F;&#x5217;<strong>&#x51C6;&#x5907;&#x6267;&#x884C;</strong>&#xFF0C;&#x628A;flushJobs&#x4E22;&#x8FDB;&#x5FAE;&#x4EFB;&#x52A1;&#x4E2D;&#x3002;</p>
+<p>&#x5FAE;&#x4EFB;&#x52A1;&#x542F;&#x52A8;&#xFF0C;&#x6267;&#x884C;flushJobs&#xFF0C;&#x6807;&#x8BB0;&#x961F;&#x5217;<strong>&#x6B63;&#x5728;&#x6267;&#x884C;</strong>&#xFF0C;&#x5BF9;queue&#x4E2D;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x6839;&#x636E;&#x4EFB;&#x52A1;id&#xFF0C;&#x4ECE;&#x5C0F;&#x5230;&#x5927;&#x8FDB;&#x884C;&#x6392;&#x5E8F;&#xFF0C;<strong>&#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x4ECE;&#x5C0F;&#x5230;&#x5927;&#x8FDB;&#x884C;&#x6392;&#x5E8F;&#x5462;</strong>&#xFF1F;</p>
+<p><strong>&#x5148;&#x8BF4;&#x4E00;&#x4E0B;&#x7EC4;&#x4EF6;&#x7684;&#x66F4;&#x65B0;&#xFF1A;</strong></p>
+<p>&#x5047;&#x8BBE;&#x6211;&#x4EEC;&#x6709;&#x7236;&#x7EC4;&#x4EF6;A&#xFF0C;&#x5B50;&#x7EC4;&#x4EF6;B&#xFF0C;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;R&#xFF0C;A&#x4E0E;B&#x7684;effect&#x5747;&#x88AB;R&#x8FFD;&#x8E2A;&#x5230;&#xFF0C;&#x8FFD;&#x8E2A;&#x5230;&#x7684;&#x987A;&#x5E8F;&#x662F;&#x5148;A&#x7684;A-effect&#xFF0C;&#x540E;B&#x7684;B-effect&#xFF0C;R&#x53D8;&#x52A8;&#xFF0C;&#x4F7F;A-effect&#x548C;B-effect&#x76F8;&#x7EE7;&#x8FDB;&#x5165;queue&#xFF0C;queueFlush&#x88AB;&#x63A8;&#x8FDB;&#x5FAE;&#x4EFB;&#x52A1;&#xFF0C;&#x6267;&#x884C;A&#x7684;A-update&#xFF0C;</p>
+<p>A-update&#x521B;&#x5EFA;&#x5B50;&#x7EC4;&#x4EF6;B&#x7684;&#x65B0;&#x7684;B-vnode&#xFF08;&#x53EA;&#x662F;&#x521B;&#x5EFA;&#xFF09;&#xFF0C;&#x8FDB;&#x884C;patch&#xFF0C;patch&#x68C0;&#x6D4B;&#x5230;&#x65E7;&#x7684;B-vnode&#x548C;&#x65B0;&#x7684;B-vnode&#x4E0D;&#x4E00;&#x81F4;&#xFF0C;&#x9700;&#x8981;&#x8FDB;&#x884C;&#x66F4;&#x65B0;&#xFF0C;&#x5220;&#x9664;queue&#x4E2D;&#x7684;B-effect&#xFF0C;&#x8BBE;&#x7F6E;&#x65E7;B-instance.next&#x4E3A;&#x65B0;B-vnode&#xFF0C;&#x8C03;&#x7528;B-effect&#xFF0C;&#x6B64;&#x65F6;queue&#x4E2D;effect&#x7684;&#x6392;&#x5217;&#x5C06;&#x4E3A;&#x5148;A-effect&#x540E;B-effect&#xFF0C;&#x5B8C;&#x6210;A-update&#x7684;&#x94A9;&#x5B50;&#x3002;</p>
+<p>&#x63A5;&#x7740;&#x6267;&#x884C;B-effect&#xFF0C;&#x68C0;&#x6D4B;&#x5230;&#x65E7;B.instance.next&#xFF0C;&#x8C03;&#x7528;updateComponentPreRender&#xFF0C;&#x53BB;&#x66F4;&#x65B0;&#x65E7;&#x7684;B-instance&#x4E3A;&#x65B0;&#x7684;B-instance&#xFF0C;&#x66F4;&#x65B0;B&#x7684;&#x5B50;vnode&#xFF08;&#x5047;&#x8BBE;B&#x7684;&#x5B50;vnode&#x4E3A;&#x666E;&#x901A;Element&#xFF09;&#xFF0C;&#x5B8C;&#x6210;B-update&#x7684;&#x94A9;&#x5B50;&#x3002;</p>
+<p>&#x6574;&#x4E2A;&#x66F4;&#x65B0;&#x5C31;&#x5B8C;&#x6210;&#x4E86;&#x3002;</p>
+<p><strong>&#x7EC4;&#x4EF6;&#x7684;&#x79FB;&#x9664;&#xFF1A;</strong></p>
+<p>&#x5047;&#x8BBE;&#x6709;&#x54CD;&#x5E94;&#x5F0F;&#x6570;&#x636E;Z&#xFF0C;A&#x7684;A-effect&#x88AB;Z&#x8FFD;&#x8E2A;&#x5230;&#xFF0C;&#x5F53;Z.value&#x4E3A;true&#xFF0C;A&#x7EC4;&#x4EF6;&#x7684;&#x5B50;&#x7EC4;&#x4EF6;&#x4E3A;B&#xFF0C;&#x5982;&#x679C;&#x4E3A;false&#xFF0C;A&#x7EC4;&#x4EF6;&#x7684;&#x5B50;&#x7EC4;&#x4EF6;&#x5C06;&#x4E3A;C&#x3002;</p>
+<p>&#x73B0;&#x5728;&#x628A;Z.value&#x8BBE;&#x7F6E;&#x4E3A;false&#xFF0C;&#x89E6;&#x53D1;A-effect&#xFF0C;&#x521B;&#x5EFA;&#x65B0;C-vnode&#xFF0C;patch(B-vnode, C-vnode)&#xFF0C;&#x5BF9;&#x6BD4;&#x53D1;&#x73B0;&#x4E24;&#x4E2A;vnode&#x4E0D;&#x76F8;&#x7B49;&#xFF0C;&#x4F7F;&#x7528;<strong>unmount</strong>&#x5378;&#x8F7D;B-vnode&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// unmount</span>
+<span class="hljs-keyword">const</span> unmount: UnmountFn = (
+    vnode, <span class="hljs-comment">// B-vnode</span>
+    parentComponent, <span class="hljs-comment">// &#x5F53;&#x524D;&#x4F8B;&#x5B50;&#x662F;&#x4F20;&#x5165;A-instance</span>
+    parentSuspense, <span class="hljs-comment">// suspense&#x7EC4;&#x4EF6;&#x7684;&#x7279;&#x6027;&#xFF0C;&#x5F53;&#x524D;&#x5E76;&#x6CA1;&#x6709;&#x6D89;&#x53CA;</span>
+    doRemove = <span class="hljs-literal">false</span> <span class="hljs-comment">// true</span>
+  ) =&gt; {
+    <span class="hljs-keyword">const</span> {
+      <span class="hljs-keyword">type</span>,
+      props,
+      ref,
+      children,
+      dynamicChildren,
+      shapeFlag,
+      patchFlag,
+      dirs
+    } = vnode
+    <span class="hljs-keyword">const</span> shouldInvokeDirs = shapeFlag &amp; ShapeFlags.ELEMENT &amp;&amp; dirs
+    <span class="hljs-keyword">const</span> shouldKeepAlive = shapeFlag &amp; ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE
+    <span class="hljs-keyword">let</span> vnodeHook: VNodeHook | <span class="hljs-literal">undefined</span> | <span class="hljs-literal">null</span>
+
+    <span class="hljs-comment">// &#x53BB;&#x9664;ref &#x60F3;&#x4E86;&#x89E3;ref&#x53BB;ref&#x7AE0;&#x8282;</span>
+    <span class="hljs-keyword">if</span> (ref != <span class="hljs-literal">null</span> &amp;&amp; parentComponent) {
+      setRef(ref, <span class="hljs-literal">null</span>, parentComponent, <span class="hljs-literal">null</span>)
+    }
+
+    <span class="hljs-comment">// keepAlive &#x5C31;&#x4E0D;&#x6267;&#x884C;props.beforeUnMount&#x94A9;&#x5B50;</span>
+    <span class="hljs-keyword">if</span> ((vnodeHook = props &amp;&amp; props.onVnodeBeforeUnmount) &amp;&amp; !shouldKeepAlive) {
+      invokeVNodeHook(vnodeHook, parentComponent, vnode)
+    }
+
+    <span class="hljs-keyword">if</span> (shapeFlag &amp; ShapeFlags.COMPONENT) { <span class="hljs-comment">// &#x7EC4;&#x4EF6;&#x76F8;&#x5173;</span>
+      <span class="hljs-keyword">if</span> (shouldKeepAlive) {
+        ;(parentComponent!.ctx as KeepAliveContext).deactivate(vnode)
+      } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// &#x79FB;&#x9664;&#x7EC4;&#x4EF6;</span>
+        unmountComponent(vnode.component!, parentSuspense, doRemove)
+      }
+    }
+  }
+
+<span class="hljs-comment">// unmountComponet</span>
+<span class="hljs-keyword">const</span> unmountComponent = (
+    instance: ComponentInternalInstance,
+    parentSuspense: SuspenseBoundary | <span class="hljs-literal">null</span>,
+    doRemove?: <span class="hljs-built_in">boolean</span>
+  ) =&gt; {
+    <span class="hljs-keyword">if</span> (__DEV__ &amp;&amp; instance.type.__hmrId) {
+      unregisterHMR(instance)
+    }
+
+    <span class="hljs-keyword">const</span> { bum, effects, update, subTree, um, da, isDeactivated } = instance
+    <span class="hljs-comment">// beforeUnmount hook</span>
+    <span class="hljs-keyword">if</span> (bum) {
+      invokeArrayFns(bum)
+    }
+    <span class="hljs-keyword">if</span> (effects) { <span class="hljs-comment">// &#x505C;&#x6B62;&#x88AB;&#x8FFD;&#x8E2A;</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; effects.length; i++) {
+        stop(effects[i]) <span class="hljs-comment">// &#x53EF;&#x4EE5;&#x624B;&#x52A8;&#x7528;stop&#x505C;&#x6B62;&#x67D0;&#x4E2A;&#x884C;&#x4E3A;&#x7684;&#x8FFD;&#x8E2A;</span>
+      }
+    }
+    <span class="hljs-comment">// update may be null if a component is unmounted before its async</span>
+    <span class="hljs-comment">// setup has resolved.</span>
+    <span class="hljs-keyword">if</span> (update) {
+      stop(update) <span class="hljs-comment">// updtae &#x662F; effect</span>
+      unmount(subTree, instance, parentSuspense, doRemove) <span class="hljs-comment">// &#x5378;&#x8F7D;&#x5B50;&#x7EC4;&#x4EF6;/&#x5176;&#x4ED6;</span>
+    }
+    <span class="hljs-comment">// unmounted hook &#x94A9;&#x5B50; unmounted</span>
+    <span class="hljs-keyword">if</span> (um) {
+      queuePostRenderEffect(um, parentSuspense)
+    }
+    <span class="hljs-comment">// deactivated hook &#x6307;&#x4EE4;</span>
+    <span class="hljs-keyword">if</span> (
+      da &amp;&amp;
+      !isDeactivated &amp;&amp;
+      instance.vnode.shapeFlag &amp; ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE
+    ) {
+      queuePostRenderEffect(da, parentSuspense)
+    }
+    queuePostRenderEffect(() =&gt; {
+      instance.isUnmounted = <span class="hljs-literal">true</span>
+    }, parentSuspense)
+
+    <span class="hljs-comment">// A component with async dep inside a pending suspense is unmounted before</span>
+    <span class="hljs-comment">// its async dep resolves. This should remove the dep from the suspense, and</span>
+    <span class="hljs-comment">// cause the suspense to resolve immediately if that was the last dep.</span>
+    <span class="hljs-keyword">if</span> (
+      __FEATURE_SUSPENSE__ &amp;&amp;
+      parentSuspense &amp;&amp;
+      !parentSuspense.isResolved &amp;&amp;
+      !parentSuspense.isUnmounted &amp;&amp;
+      instance.asyncDep &amp;&amp;
+      !instance.asyncResolved
+    ) {
+      parentSuspense.deps--
+      <span class="hljs-keyword">if</span> (parentSuspense.deps === <span class="hljs-number">0</span>) {
+        parentSuspense.resolve()
+      }
+    }
+  }
+</code></pre>
+<p><strong>&#x5982;&#x679C;&#x4E0D;&#x6392;&#x5E8F;&#x5BFC;&#x81F4;&#x7684;&#x540E;&#x679C;&#xFF1A;</strong></p>
+<p>&#x6B63;&#x5728;&#x63A2;&#x7A76;....</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="OPTION-API.html" class="navigation navigation-prev " aria-label="Previous page: Options-API">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="类型标记.html" class="navigation navigation-next " aria-label="Next page: 类型标记">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"事件队列与组件更新","level":"1.2.5","depth":2,"next":{"title":"类型标记","level":"1.2.6","depth":2,"path":"Packages/Runtime/类型标记.md","ref":"Packages/Runtime/类型标记.md","articles":[]},"previous":{"title":"Options-API","level":"1.2.4","depth":2,"path":"Packages/Runtime/OPTION-API.md","ref":"Packages/Runtime/OPTION-API.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/Runtime/事件队列与组件更新.md","mtime":"2020-11-16T00:53:38.779Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T06:43:10.740Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

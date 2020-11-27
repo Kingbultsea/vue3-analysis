@@ -1,0 +1,612 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>compile · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="为什么在slot中事件没有更新.html" />
+    
+    
+    <link rel="prev" href="../Runtime/" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Runtime/">
+            
+                <a href="../Runtime/">
+            
+                    
+                    Runtime
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../Runtime/">
+            
+                <a href="../Runtime/">
+            
+                    
+                    runtime
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../Runtime/desc.html">
+            
+                <a href="../Runtime/desc.html">
+            
+                    
+                    渲染流程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../Runtime/desc2.html">
+            
+                <a href="../Runtime/desc2.html">
+            
+                    
+                    渲染流程(子组件)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="../Runtime/OPTION-API.html">
+            
+                <a href="../Runtime/OPTION-API.html">
+            
+                    
+                    Options-API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="../Runtime/事件队列与组件更新.html">
+            
+                <a href="../Runtime/事件队列与组件更新.html">
+            
+                    
+                    事件队列与组件更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="../Runtime/类型标记.html">
+            
+                <a href="../Runtime/类型标记.html">
+            
+                    
+                    类型标记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7" data-path="../Runtime/question.html">
+            
+                <a href="../Runtime/question.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../Runtime/">
+            
+                <a href="../Runtime/">
+            
+                    
+                    Reactivity
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../Reactivity/">
+            
+                <a href="../Reactivity/">
+            
+                    
+                    reactivity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../Reactivity/diff.html">
+            
+                <a href="../Reactivity/diff.html">
+            
+                    
+                    diff算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../Reactivity/问题集合.html">
+            
+                <a href="../Reactivity/问题集合.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../Runtime/">
+            
+                <a href="../Runtime/">
+            
+                    
+                    Compile
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.4.1" data-path="compile-core.html">
+            
+                <a href="compile-core.html">
+            
+                    
+                    compile
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="为什么在slot中事件没有更新.html">
+            
+                <a href="为什么在slot中事件没有更新.html">
+            
+                    
+                    为什么在slot中事件没有更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="问题集合.html">
+            
+                <a href="问题集合.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../API_DOC/">
+            
+                <a href="../API_DOC/">
+            
+                    
+                    API DOC
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >compile</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="&#x5173;&#x4E8E;compile">&#x5173;&#x4E8E;compile</h2>
+<p>&#x5728;&#x5E26;&#x6709;&#x7F16;&#x8BD1;&#x7248;&#x672C;&#x7684;vue&#x4E2D;&#xFF0C;finishComponentSetup&#x4F1A;&#x5BF9;&#x6CA1;&#x6709;render&#x65B9;&#x6CD5;&#xFF0C;&#x4F46;&#x662F;&#x6709;template&#x7684;Component&#xFF0C;&#x505A;&#x7F16;&#x8BD1;&#x5904;&#x7406;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x63A8;&#x8350;&#x4E00;&#x4E2A;compile&#x5728;&#x7EBF;&#x8F6C;&#x6362;&#x6210;render&#x7684;&#x7F51;&#x7AD9;&#xFF1A;</p>
+<p><a href="https://vue-next-template-explorer.netlify.app/" target="_blank">https://vue-next-template-explorer.netlify.app/</a></p>
+<p>finishComponentSetup&#x7684;&#x4EE3;&#x7801;&#x7247;&#x6BB5;:</p>
+<pre><code class="lang-typescript">Component.render = compile(Component.template, {
+        isCustomElement: instance.appContext.config.isCustomElement || NO
+})
+</code></pre>
+<p>&#x53BB;&#x67E5;&#x770B;&#x4E00;&#x4E0B;compile&#x7684;CompilerOptions&#x76F8;&#x5173;&#x914D;&#x7F6E;&#x3002;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> CompilerOptions = ParserOptions &amp; TransformOptions &amp; CodegenOptions
+
+<span class="hljs-comment">// ParserOptions:</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ParserOptions {
+  <span class="hljs-comment">// &#x5E73;&#x53F0;&#x4E0A;&#x672C;&#x5730;&#x5143;&#x7D20;, &#x4F8B;&#x5982;&lt;div&gt;&#x662F;&#x7F51;&#x9875;&#x4E0A;&#x7684;&#x672C;&#x5730;&#x6807;&#x7B7E;</span>
+  isNativeTag?: (tag: <span class="hljs-built_in">string</span>) =&gt; <span class="hljs-built_in">boolean</span>
+
+  <span class="hljs-comment">// &#x4E0D;&#x9700;&#x8981;&#x95ED;&#x5408;&#x7684;&#x539F;&#x751F;&#x5143;&#x7D20;, &#x4F8B;&#x5982; &lt;img&gt;, &lt;br&gt;, &lt;hr&gt;</span>
+  isVoidTag?: (tag: <span class="hljs-built_in">string</span>) =&gt; <span class="hljs-built_in">boolean</span>
+
+  <span class="hljs-comment">// &#x5E94;&#x8BE5;&#x4FDD;&#x7559;&#x5185;&#x90E8;&#x7A7A;&#x767D;&#x7684;&#x5143;&#x7D20;, &#x4F8B;&#x5982;&lt;pre&gt; </span>
+  <span class="hljs-comment">// https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre</span>
+  isPreTag?: (tag: <span class="hljs-built_in">string</span>) =&gt; <span class="hljs-built_in">boolean</span>
+
+  <span class="hljs-comment">// &#x7279;&#x5B9A;&#x4E8E;&#x5E73;&#x53F0;&#x7684;&#x5185;&#x7F6E;&#x7EC4;&#x4EF6;&#xFF0C;&#x4F8B;&#x5982;&lt;Transition&gt;</span>
+  isBuiltInComponent?: (tag: <span class="hljs-built_in">string</span>) =&gt; symbol | <span class="hljs-built_in">void</span>
+
+  <span class="hljs-comment">// &#x81EA;&#x5B9A;&#x4E49;&#x4E8E;&#x5E73;&#x53F0;&#x7684;&#x672C;&#x5730;&#x5143;&#x7D20;</span>
+  isCustomElement?: (tag: <span class="hljs-built_in">string</span>) =&gt; <span class="hljs-built_in">boolean</span>
+
+  <span class="hljs-comment">// &#x83B7;&#x53D6;&#x6807;&#x7B7E;&#x7684;&#x540D;&#x79F0;</span>
+  getNamespace?: (tag: <span class="hljs-built_in">string</span>, parent: ElementNode | <span class="hljs-literal">undefined</span>) =&gt; Namespace
+
+  <span class="hljs-comment">// &#x83B7;&#x53D6;&#x6B64;&#x5143;&#x7D20;&#x7684;&#x6587;&#x672C;&#x5206;&#x6790;&#x6A21;&#x5F0F;</span>
+  getTextMode?: (
+    node: ElementNode,
+    parent: ElementNode | <span class="hljs-literal">undefined</span>
+  ) =&gt; TextModes
+
+  <span class="hljs-comment">// &#x9ED8;&#x8BA4; [&apos;, &apos;]&#xFF0C;&#x53EF;&#x4FEE;&#x6539;&#x4E3A;&#x4F60;&#x559C;&#x6B22;&#x7684;</span>
+  delimiters?: [<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]
+
+  <span class="hljs-comment">// Only needed for DOM compilers&#xFF0C;&#x89E3;&#x7801;&#x5B9E;&#x4F53;</span>
+  decodeEntities?: (rawText: <span class="hljs-built_in">string</span>, asAttr: <span class="hljs-built_in">boolean</span>) =&gt; <span class="hljs-built_in">string</span>
+
+  <span class="hljs-comment">// &#x9519;&#x8BEF;  </span>
+  onError?: (error: CompilerError) =&gt; <span class="hljs-built_in">void</span>
+}
+
+
+<span class="hljs-comment">// TransformOptions&#xFF1A;</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> TransformOptions {
+  <span class="hljs-comment">/**
+   * An array of node trasnforms to be applied to every AST node.
+   */</span>
+  nodeTransforms?: NodeTransform[]
+  <span class="hljs-comment">/**
+   * An object of { name: transform } to be applied to every directive attribute
+   * node found on element nodes.
+   */</span>
+  directiveTransforms?: Record&lt;<span class="hljs-built_in">string</span>, DirectiveTransform | <span class="hljs-literal">undefined</span>&gt;
+  <span class="hljs-comment">/**
+   * An optional hook to transform a node being hoisted.
+   * used by compiler-dom to turn hoisted nodes into stringified HTML vnodes.
+   * @default null
+   */</span>
+  transformHoist?: HoistTransform | <span class="hljs-literal">null</span>
+
+  <span class="hljs-comment">// &#x5982;&#x679C;&#x63D0;&#x4F9B;&#x4E86;&#x5176;&#x4ED6;&#x7684;&#x5185;&#x7F6E;&#x5143;&#x7D20;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x8BE5;&#x9009;&#x9879;&#x6807;&#x8BB0;&#x4E3A;&#x5185;&#x7F6E;&#x7684;&#xFF0C;&#x8FD9;&#x6837;&#x7F16;&#x8BD1;&#x5668;&#x5C06;&#x4E3A;&#x8FD9;&#x4E9B;&#x6807;&#x7B7E;&#x751F;&#x6210;&#x7EC4;&#x4EF6;vnode  </span>
+  isBuiltInComponent?: (tag: <span class="hljs-built_in">string</span>) =&gt; symbol | <span class="hljs-built_in">void</span>
+  <span class="hljs-comment">/**
+   * &#x628A;&#x8868;&#x8FBE;&#x5F0F;  &#x8F6C;&#x6362;&#x6210; `_ctx.foo`
+   * &#x5982;&#x679C;&#x8BE5;&#x9009;&#x9879;&#x4E3A;false, the generated code will be wrapped in a
+   * `with (this) { ... }` block.
+   * - This is force-enabled in module mode, since modules are by default strict
+   * and cannot use `with`
+   * @default mode === &apos;module&apos;
+   */</span>
+  prefixIdentifiers?: <span class="hljs-built_in">boolean</span>
+
+
+  <span class="hljs-comment">// &#x9759;&#x6001;&#x63D0;&#x5347;&#x5230; `_hoisted_x` &#x53D8;&#x91CF;</span>
+  <span class="hljs-comment">// &#x9ED8;&#x8BA4;&#x503C; false</span>
+  hoistStatic?: <span class="hljs-built_in">boolean</span>
+
+  <span class="hljs-comment">// &#x5F00;&#x542F;&#x524D; { onClick: _ctx.foo }  </span>
+  <span class="hljs-comment">// &#x5F00;&#x542F;&#x540E; {</span>
+  <span class="hljs-comment">//         onClick: _cache[1] || (_cache[1] = (...args) =&gt; (_ctx.foo(...args)))</span>
+  <span class="hljs-comment">//       }</span>
+  <span class="hljs-comment">// _cache[index] index&#x6839;&#x636E;&#x5F53;&#x524D;&#x7F13;&#x5B58;&#x4E8B;&#x4EF6;&#x6570;&#x91CF;&#xFF0C;&#x4FDD;&#x8BC1;&#x9884;&#x7559;&#x4E00;&#x4E2A;&#x7A7A;&#x7684;&#x4F4D;&#x7F6E;&#x7D66;&#x8BE5;&#x4E8B;&#x4EF6;</span>
+  <span class="hljs-comment">// &#x9ED8;&#x8BA4;&#x503C; false</span>
+  cacheHandlers?: <span class="hljs-built_in">boolean</span>
+
+  <span class="hljs-comment">// `@babel/parser` &#x4E2D;&#x7684;&#x63D2;&#x4EF6;&#xFF0C;  </span>
+  <span class="hljs-comment">// https://babeljs.io/docs/en/next/babel-parser#plugins</span>
+  expressionPlugins?: ParserPlugin[]
+
+  <span class="hljs-comment">// Single File Component&#x7EC4;&#x4EF6;&#x4E2D;scoped styles ID</span>
+  scopeId?: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>
+  <span class="hljs-comment">/**
+   * Generate SSR-optimized render functions instead.
+   * The resulting funciton must be attached to the component via the
+   * `ssrRender` option instead of `render`.
+   */</span>
+  ssr?: <span class="hljs-built_in">boolean</span>
+  onError?: (error: CompilerError) =&gt; <span class="hljs-built_in">void</span>
+}
+
+<span class="hljs-comment">// CodegenOptions</span>
+</code></pre>
+<p>&#x4F8B;&#x5B50;&#xFF1A;</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;foo&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;bar.baz&quot;</span>&gt;</span>
+  \{\{ world.burn() \}\}
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;ok&quot;</span>&gt;</span>yes<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-else</span>&gt;</span>no<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;(value, index) in list&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>NaN<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>&#x8F6C;&#x6362;&#x6210;render:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> _Vue = Vue
+
+<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params">_ctx, _cache</span>) </span>{
+  <span class="hljs-keyword">with</span> (_ctx) {
+    <span class="hljs-keyword">const</span> { toDisplayString: _toDisplayString, createVNode: _createVNode, openBlock: _openBlock, createBlock: _createBlock, createCommentVNode: _createCommentVNode, createTextVNode: _createTextVNode, Fragment: _Fragment, renderList: _renderList } = _Vue
+
+    <span class="hljs-keyword">return</span> (_openBlock(), _createBlock(<span class="hljs-string">&quot;div&quot;</span>, {
+      id: <span class="hljs-string">&quot;foo&quot;</span>,
+      <span class="hljs-keyword">class</span>: bar.baz
+    }, [
+      _createTextVNode(_toDisplayString(world.burn()) + <span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">1</span> <span class="hljs-comment">/* TEXT */</span>),
+      ok
+        ? (_openBlock(), _createBlock(<span class="hljs-string">&quot;div&quot;</span>, { key: <span class="hljs-number">0</span> }, <span class="hljs-string">&quot;yes&quot;</span>))
+        : (_openBlock(), _createBlock(_Fragment, { key: <span class="hljs-number">1</span> }, [
+            _createTextVNode(<span class="hljs-string">&quot;no&quot;</span>)
+          ], <span class="hljs-number">64</span> <span class="hljs-comment">/* STABLE_FRAGMENT */</span>)),
+      (_openBlock(<span class="hljs-literal">true</span>), _createBlock(_Fragment, <span class="hljs-literal">null</span>, _renderList(list, (value, index) =&gt; {
+        <span class="hljs-keyword">return</span> (_openBlock(), _createBlock(<span class="hljs-string">&quot;div&quot;</span>, <span class="hljs-literal">null</span>, [
+          _createVNode(<span class="hljs-string">&quot;span&quot;</span>, <span class="hljs-literal">null</span>, _toDisplayString(value + index), <span class="hljs-number">1</span> <span class="hljs-comment">/* TEXT */</span>)
+        ]))
+      }), <span class="hljs-number">256</span> <span class="hljs-comment">/* UNKEYED_FRAGMENT */</span>))
+    ], <span class="hljs-number">2</span> <span class="hljs-comment">/* CLASS */</span>))
+  }
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../Runtime/" class="navigation navigation-prev " aria-label="Previous page: Compile">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="为什么在slot中事件没有更新.html" class="navigation navigation-next " aria-label="Next page: 为什么在slot中事件没有更新">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"compile","level":"1.4.1","depth":2,"next":{"title":"为什么在slot中事件没有更新","level":"1.4.2","depth":2,"path":"Packages/compile-core/为什么在slot中事件没有更新.md","ref":"Packages/compile-core/为什么在slot中事件没有更新.md","articles":[]},"previous":{"title":"Compile","level":"1.4","depth":1,"path":"Packages/Runtime/index.md","ref":"Packages/Runtime/index.md","articles":[{"title":"compile","level":"1.4.1","depth":2,"path":"Packages/compile-core/compile-core.md","ref":"Packages/compile-core/compile-core.md","articles":[]},{"title":"为什么在slot中事件没有更新","level":"1.4.2","depth":2,"path":"Packages/compile-core/为什么在slot中事件没有更新.md","ref":"Packages/compile-core/为什么在slot中事件没有更新.md","articles":[]},{"title":"问题集合","level":"1.4.3","depth":2,"path":"Packages/compile-core/问题集合.md","ref":"Packages/compile-core/问题集合.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/compile-core/compile-core.md","mtime":"2020-11-22T17:01:29.527Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T06:40:19.272Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

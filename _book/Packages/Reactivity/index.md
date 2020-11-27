@@ -474,3 +474,106 @@ set(原本的target, Reflect.set传入的key, Reflect.set传入的value，Reflec
 
 
 ### trigger
+
+```typescript
+export function trigger(
+  target: object,
+  type: TriggerOpTypes,
+  key?: unknown,
+  newValue?: unknown,
+  oldValue?: unknown,
+  oldTarget?: Map<unknown, unknown> | Set<unknown>
+) {
+  const depsMap = targetMap.get(target)
+  if (!depsMap) {
+    return
+  }
+
+  const effects = new Set<ReactiveEffect>() // 收集当前target要触发的effect
+  const computedRunners = new Set<ReactiveEffect>()
+
+  // 添加要触发的effect
+  const add = (effectsToAdd: Set<ReactiveEffect> | undefined) => {
+    if (effectsToAdd) {
+      effectsToAdd.forEach(effect => {
+        // activeEffect 和 shouldTrack 都是effect.ts 的全局值
+        if (effect !== activeEffect || !shouldTrack) {
+          if (effect.options.computed) {
+            computedRunners.add(effect) // computed相关
+          } else {
+            effects.add(effect)
+          }
+        } else {
+          // 不能是运行中的effect 或者 当前effect不能追踪
+          // 因为 effect(() => { reactiveData.foo++ })
+          // 首先track，赋值操作trigger，再触发track，死循环  
+        }
+      })
+    }
+  }
+
+  if (type === TriggerOpTypes.CLEAR) {
+    // 使用Map Set WeakMap WeakSet类型的响应式数据使用clear方法，才会触发
+    // 测试用例在reactivity/__test__/collections/Map.sepc.ts 
+    // 全局搜索 'should observe size mutations'
+    depsMap.forEach(add)
+  } else if (key === 'length' && isArray(target)) {
+    // taregt是数组的情况下 我们修改其length长度，是一种修改操作
+    depsMap.forEach((dep, key) => {
+      // 缩短长度的操作等于删除元素 触发effect
+      // 追踪过length的effect 都需要触发
+      if (key === 'length' || key >= (newValue as number)) {
+        add(dep)
+      }
+    })
+  } else {
+    // 使用void 0 代替 undefinded 因为undefinded又可能被重写  
+    if (key !== void 0) {
+      add(depsMap.get(key))
+    }
+      
+    // iteration key on ADD | DELETE | Map.SET
+    const isAddOrDelete =
+      type === TriggerOpTypes.ADD ||
+      (type === TriggerOpTypes.DELETE && !isArray(target))
+    if (
+      isAddOrDelete ||
+      (type === TriggerOpTypes.SET && target instanceof Map)
+    ) {
+      add(depsMap.get(isArray(target) ? 'length' : ITERATE_KEY))
+    }
+    if (isAddOrDelete && target instanceof Map) {
+      add(depsMap.get(MAP_KEY_ITERATE_KEY))
+    }
+  }
+
+  const run = (effect: ReactiveEffect) => {
+    if (__DEV__ && effect.options.onTrigger) {
+      effect.options.onTrigger({
+        effect,
+        target,
+        key,
+        type,
+        newValue,
+        oldValue,
+        oldTarget
+      })
+    }
+    if (effect.options.scheduler) { // 渲染processComponent的时候在setupRenderEffect方法中，instance.update = effect(()=>{}, prodEffectOptions)
+      effect.options.scheduler(effect)
+    } else {
+      effect()
+    }
+  }
+
+  // effect.options.computed 类型的优先级比较高
+  computedRunners.forEach(run)
+  effects.forEach(run)
+}
+```
+
+
+
+# 总结
+
+![img](https://res.psy-1.com/FgI4CjHTomSP_-I8f2XafNpzLXMK)不总结了，就这么简单。

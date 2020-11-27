@@ -121,7 +121,7 @@ render(testVnode, HTMLDivElement)
 
 判断到n2不为空，进行<font color=#ff8000>patch</font>，判断到n1 == null，且n2.shapeFlag进行decode，为ShapeFlags.COMPONENT类型，执行processComponent。
 这里的decode和encode是什么来的？
-我们在生成vnode的时候，vnode.type数据被<font color=#ff8000>normalizeChildren</font>加密过，因为当前children为null,所以type为0，加密方式为<font color=#ff8000>vnode.shapeFlag |= type</font>
+我们在生成vnode的时候，vnode.type数据被<font color=#ff8000>normalizeChildren</font>加密过，因为当前children为null,所以type为0，加密方式为<font color=#ff8000>vnode.shapeFlag |= type</font>,
 解密方式为<font color=#ff8000>const a = vnode.shapeFlag & ShapeFlags.COMPONENT</font>，只要a > 0就为true，ShapeFlags.COMPONENT为一个常数。
 ```typescript
 export declare const enum ShapeFlags {
@@ -165,18 +165,18 @@ export declare const enum ShapeFlags {
 ![bailefolun](https://res.psy-1.com/FmdgGYpuhYvAxJDIYXyxZEaHTkdW)是不是顿时大悟，感觉自己的代码质量大升，下次写代码也可以通过二进制标记来进行类型判断了！学废了没？那继续下面的东西。
 
 #### processComponent 
-<font color=#ff8000>processComponent</font>，判断到<font color=#ff8000>n1 == null && n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE</font>
+<font color=#ff8000>processComponent</font>，判断到<font color=#ff8000>n1 == null && n2.shapeFlag & ShapeFlags.COMPONENT_KEPT_ALIVE</font>,
 则执行<font color=#ff8000>mountComponent</font>，这个东西作用是挂载组件，这里挂载组件分三步走：
 
 * createComponentInstance 创建instance，一个组件相关的Object。
 * setupComponent，对instance.attrs、vnode.type.setup和vnode.type中的所有关键OPTIONS字段的处理。
 * setupRenderEffect，处理instance.render、instance.vnode.type、instance.subTree、更新组件的effect和instance.subTree.props合并instance.attrs。
 
-#### ①createComponentInstance
+#### ①createComponentInstance 
 没有做什么，就是像vnode一样，生成了一个对象<font color=#ff8000>instance</font>，该对象记录了当前组件的信息，比如parent字段为父组件的instance，
 root根组件的instance，render根据STATEFUL_COMPONENT、FUNCTIONAL_COMPONENT所生成的一个返回vnode的函数，也会记录一些生命周期的钩子相关字段。
 
-#### ②setupComponent
+#### ②setupComponent 
 <font color=#ff8000>initProps</font>:
 
 ```typescript
@@ -284,7 +284,7 @@ return normalizedEntry
 
 
 
-**3**.如果有<font color=#ff8000>needCastKeys</font>，这里<font color=#ff8000>normalized</font>改一个名称为<font color=#ff8000>options</font>
+**3**.如果有<font color=#ff8000>needCastKeys</font>，这里<font color=#ff8000>normalized</font>改一个名称为<font color=#ff8000>options</font>。
 
 ```typescript
 if (needCastKeys) {
@@ -423,7 +423,7 @@ instance.proxy = new Proxy(instance.ctx, PublicInstanceProxyHandlers)
 ```
 
 
-<font color=#ff8000>instance.type.setup的运行：</font>
+<font color=#ff8000>instance.type.setup的运行</font>：
 
 ```typescript
 currentInstance = instance // 使用钩子api的时候会使用到。

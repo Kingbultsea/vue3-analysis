@@ -1,0 +1,636 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>为什么在slot中事件没有更新 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="问题集合.html" />
+    
+    
+    <link rel="prev" href="compile-core.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    Runtime
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../Runtime/">
+            
+                <a href="../Runtime/">
+            
+                    
+                    runtime
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../Runtime/desc.html">
+            
+                <a href="../Runtime/desc.html">
+            
+                    
+                    渲染流程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../Runtime/desc2.html">
+            
+                <a href="../Runtime/desc2.html">
+            
+                    
+                    渲染流程(子组件)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="../Runtime/OPTION-API.html">
+            
+                <a href="../Runtime/OPTION-API.html">
+            
+                    
+                    Options-API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="../Runtime/事件队列与组件更新.html">
+            
+                <a href="../Runtime/事件队列与组件更新.html">
+            
+                    
+                    事件队列与组件更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="../Runtime/类型标记.html">
+            
+                <a href="../Runtime/类型标记.html">
+            
+                    
+                    类型标记
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7" data-path="../Runtime/question.html">
+            
+                <a href="../Runtime/question.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    Reactivity
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../Reactivity/">
+            
+                <a href="../Reactivity/">
+            
+                    
+                    reactivity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../Reactivity/diff.html">
+            
+                <a href="../Reactivity/diff.html">
+            
+                    
+                    diff算法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../Reactivity/问题集合.html">
+            
+                <a href="../Reactivity/问题集合.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    Compile
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="compile-core.html">
+            
+                <a href="compile-core.html">
+            
+                    
+                    compile
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.2" data-path="为什么在slot中事件没有更新.html">
+            
+                <a href="为什么在slot中事件没有更新.html">
+            
+                    
+                    为什么在slot中事件没有更新
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="问题集合.html">
+            
+                <a href="问题集合.html">
+            
+                    
+                    问题集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    API DOC
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../API_DOC/">
+            
+                <a href="../API_DOC/">
+            
+                    
+                    API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >为什么在slot中事件没有更新</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x4E3A;&#x4EC0;&#x4E48;&#x4F7F;&#x7528;slot&#xFF0C;&#x4E8B;&#x4EF6;&#x6CA1;&#x6709;&#x66F4;&#x65B0;&#xFF1F;">&#x4E3A;&#x4EC0;&#x4E48;&#x4F7F;&#x7528;slot&#xFF0C;&#x4E8B;&#x4EF6;&#x6CA1;&#x6709;&#x66F4;&#x65B0;&#xFF1F;</h1>
+<p>&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- parent --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;changeText&quot;</span>&gt;</span>change test<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">A</span> <span class="hljs-attr">:name</span>=<span class="hljs-string">&quot;test&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;A&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-slot</span>=<span class="hljs-string">&quot;{ record }&quot;</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">B</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;B&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-slot:over</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;handleClick(record)&quot;</span>&gt;</span>click me &#x554A;2
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">B</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">A</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- A --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">slot</span> <span class="hljs-attr">:record</span>=<span class="hljs-string">&quot;name&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+</code></pre>
+<p>&#x4F7F;&#x7528;compile&#x8F6C;&#x6362;&#x540E;&#x7684;&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { createVNode as _createVNode, toDisplayString as _toDisplayString, resolveComponent as _resolveComponent, withCtx as _withCtx, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createBlock as _createBlock } from <span class="hljs-string">&quot;vue&quot;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params">_ctx, _cache, $props, $setup, $data, $options</span>) </span>{
+  <span class="hljs-keyword">const</span> _component_B = _resolveComponent(<span class="hljs-string">&quot;B&quot;</span>)
+  <span class="hljs-keyword">const</span> _component_A = _resolveComponent(<span class="hljs-string">&quot;A&quot;</span>)
+
+  <span class="hljs-keyword">return</span> (_openBlock(), _createBlock(_Fragment, <span class="hljs-literal">null</span>, [
+    _createVNode(<span class="hljs-string">&quot;button&quot;</span>, {
+      onClick: _cache[<span class="hljs-number">1</span>] || (_cache[<span class="hljs-number">1</span>] = (...args) =&gt; (_ctx.changeText(...args)))
+    }, <span class="hljs-string">&quot;change test&quot;</span>),
+    _createVNode(_component_A, {
+      name: _ctx.test,
+      ref: <span class="hljs-string">&quot;A&quot;</span>
+    }, {
+      <span class="hljs-keyword">default</span>: _withCtx(({ record }) =&gt; [
+        _createTextVNode(_toDisplayString(record) + <span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">1</span> <span class="hljs-comment">/* TEXT */</span>),
+        _createVNode(_component_B, { ref: <span class="hljs-string">&quot;B&quot;</span> }, {
+          over: _withCtx(() =&gt; [
+            _createVNode(<span class="hljs-string">&quot;button&quot;</span>, {
+              onClick: $event =&gt; (_ctx.handleClick(record))
+            }, <span class="hljs-string">&quot;click me &#x554A;2 &quot;</span>, <span class="hljs-number">8</span> <span class="hljs-comment">/* PROPS */</span>, [<span class="hljs-string">&quot;onClick&quot;</span>])
+          ]),
+          _: <span class="hljs-number">1</span>
+        }, <span class="hljs-number">512</span> <span class="hljs-comment">/* NEED_PATCH */</span>)
+      ]),
+      _: <span class="hljs-number">1</span>
+    }, <span class="hljs-number">8</span> <span class="hljs-comment">/* PROPS */</span>, [<span class="hljs-string">&quot;name&quot;</span>])
+  ], <span class="hljs-number">64</span> <span class="hljs-comment">/* STABLE_FRAGMENT */</span>))
+}
+</code></pre>
+<p>A:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> { renderSlot: _renderSlot, createVNode: _createVNode, openBlock: _openBlock, createBlock: _createBlock } = Vue
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params">_ctx, _cache</span>) </span>{
+  <span class="hljs-keyword">return</span> (_openBlock(), _createBlock(<span class="hljs-string">&quot;div&quot;</span>, <span class="hljs-literal">null</span>, [
+    _renderSlot(_ctx.$slots, <span class="hljs-string">&quot;default&quot;</span>, { record: _ctx.name }) <span class="hljs-comment">// { record: _ctx.name } &#x4F20;&#x5165; default &#x65B9;&#x6CD5;&#x4E2D;</span>
+    <span class="hljs-comment">// createBlock(Fragment, { key: props.key /* &#x8FD9;&#x91CC;&#x53C2;&#x6570;&#x6CA1;&#x6709;key */ }, default(props), PatchFlags.STABLE_FRAGMENT)</span>
+  ]))
+}
+</code></pre>
+<p>&#x70B9;&#x51FB;handle&#x4E3A;&#x4EC0;&#x4E48;&#x4F20;&#x5165;&#x7684;&#x4E1C;&#x897F;&#x8FD8;&#x662F;&#x65E7;&#x7684;&#x503C;&#xFF1F;&#x4E3A;&#x4EC0;&#x4E48;&#x4E0D;&#x4F1A;&#x66F4;&#x65B0;&#xFF1F;</p>
+<p>&#x6211;&#x73B0;&#x5728;&#x662F;&#x5047;&#x8BBE;&#x4F60;&#x5DF2;&#x7ECF;&#x719F;&#x6089;&#x9996;&#x6B21;&#x6E32;&#x67D3;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x5728;&#x66F4;&#x65B0;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5728;&#x7EC4;&#x4EF6;A&#x7684;update&#x4E2D;&#xFF0C;&#x751F;&#x6210;&#x4E86;vnode&#xFF0C;&#x8BE5;vnode&#xFF0C;&#x5728;patch&#x7B2C;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x7684;&#x65F6;&#x5019;&#x53D1;&#x73B0;record&#x90A3;&#x6BB5;textVnode&#x6709;&#x53D8;&#x5316;&#xFF0C;&#x6545;&#x66F4;&#x65B0;&#x8BE5;&#x5143;&#x7D20;&#x3002;</p>
+<p>&#x7B2C;&#x4E8C;&#x4E2A;&#x5143;&#x7D20;&#x662F;&#x7EC4;&#x4EF6;B&#xFF0C;&#x66F4;&#x65B0;&#x7EC4;&#x4EF6;B&#x524D;&#x4F1A;&#x4F7F;&#x7528;shouldUpdateComponent&#x65B9;&#x6CD5;&#xFF1A;</p>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shouldUpdateComponent</span>(<span class="hljs-params">prevVNode, nextVNode, optimized</span>) </span>{
+    <span class="hljs-keyword">const</span> { props: prevProps, children: prevChildren } = prevVNode;
+    <span class="hljs-keyword">const</span> { props: nextProps, children: nextChildren, patchFlag } = nextVNode;
+    <span class="hljs-comment">// Parent component&apos;s render function was hot-updated. Since this may have</span>
+    <span class="hljs-comment">// caused the child component&apos;s slots content to have changed, we need to</span>
+    <span class="hljs-comment">// force the child to update as well.</span>
+    <span class="hljs-keyword">if</span> ((process.env.NODE_ENV !== <span class="hljs-string">&apos;production&apos;</span>) &amp;&amp; (prevChildren || nextChildren) &amp;&amp; isHmrUpdating) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-comment">// force child update for runtime directive or transition on component vnode.</span>
+    <span class="hljs-keyword">if</span> (nextVNode.dirs || nextVNode.transition) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">if</span> (patchFlag &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (patchFlag &amp; <span class="hljs-number">1024</span> <span class="hljs-comment">/* DYNAMIC_SLOTS */</span>) {
+            <span class="hljs-comment">// slot content that references values that might have changed,</span>
+            <span class="hljs-comment">// e.g. in a v-for</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">if</span> (patchFlag &amp; <span class="hljs-number">16</span> <span class="hljs-comment">/* FULL_PROPS */</span>) {
+            <span class="hljs-keyword">if</span> (!prevProps) {
+                <span class="hljs-keyword">return</span> !!nextProps;
+            }
+            <span class="hljs-comment">// presence of this flag indicates props are always non-null</span>
+            <span class="hljs-keyword">return</span> hasPropsChanged(prevProps, nextProps);
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (patchFlag &amp; <span class="hljs-number">8</span> <span class="hljs-comment">/* PROPS */</span>) {
+            <span class="hljs-keyword">const</span> dynamicProps = nextVNode.dynamicProps;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; dynamicProps.length; i++) {
+                <span class="hljs-keyword">const</span> key = dynamicProps[i];
+                <span class="hljs-keyword">if</span> (nextProps[key] !== prevProps[key]) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!optimized) {
+        <span class="hljs-comment">// this path is only taken by manually written render functions</span>
+        <span class="hljs-comment">// so presence of any children leads to a forced update</span>
+        <span class="hljs-keyword">if</span> (prevChildren || nextChildren) {
+            <span class="hljs-keyword">if</span> (!nextChildren || !nextChildren.$stable) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (prevProps === nextProps) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+        <span class="hljs-keyword">if</span> (!prevProps) {
+            <span class="hljs-keyword">return</span> !!nextProps;
+        }
+        <span class="hljs-keyword">if</span> (!nextProps) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        }
+        <span class="hljs-keyword">return</span> hasPropsChanged(prevProps, nextProps);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+</code></pre>
+<p>&#x8FD9;&#x4E2A;&#x4E1C;&#x897F;&#x662F;&#x5224;&#x65AD;&#x4F60;&#x7684;props&#x548C;children&#x6709;&#x6CA1;&#x6709;&#x6539;&#x53D8;&#xFF0C;&#x6CA1;&#x6709;&#x5219;&#x8FD4;&#x56DE;false&#xFF0C;&#x6240;&#x4EE5;B&#x7EC4;&#x4EF6;&#x4E0D;&#x4F1A;&#x66F4;&#x65B0;&#x3002;</p>
+<p>&#x90A3;&#x4E48;&#xFF0C;&#x4F60;&#x662F;&#x4E0D;&#x662F;&#x60F3;&#x95EE;&#xFF0C;record&#x662F;&#x6307;&#x5F15;&#x5C5E;&#x6027;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#x8FD8;&#x662F;&#x65E7;&#x7684;&#xFF1F;&#x4F60;&#x53EF;&#x4EE5;&#x53BB;&#x8BA4;&#x771F;&#x770B;&#x770B;initSlot&#x548C;renderSlot&#xFF0C;&#x662F;&#x8C03;&#x7528;&#x4E3A;Object&#x7684;&#x5B50;&#x7EC4;&#x4EF6;&#x6765;&#x5B9E;&#x884C;&#x7684;&#xFF0C;&#x65E7;&#x7684;record&#x5C31;&#x662F;&#x5728;&#x9996;&#x6B21;&#x6E32;&#x67D3;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8C03;&#x7528;defalut&#x4E2D;&#x7684;&#x521D;&#x59CB;&#x503C;&#xFF0C;&#x5E94;&#x7528;&#x7684;&#x5730;&#x65B9;&#x4E5F;&#x5C31;&#x662F;&#x9996;&#x6B21;&#x7684;&#x73AF;&#x5883;&#x3002;</p>
+<p>&#x800C;&#x65B0;&#x7684;record&#x6839;&#x672C;&#x5C31;&#x6CA1;&#x6709;&#x88AB;&#x66F4;&#x65B0;&#x5230;&#x7EC4;&#x4EF6;B&#x4E0A;&#x3002;</p>
+<p><strong>&#x90A3;&#x4E3A;&#x4EC0;&#x4E48;&#x6211;&#x76F4;&#x63A5;&#x8C03;&#x7528;&#x7EC4;&#x4EF6;B&#x7684;update&#x65B9;&#x6CD5;&#xFF0C;&#x8FD8;&#x662F;&#x4E0D;&#x66F4;&#x65B0;&#x5462;&#xFF1F;</strong></p>
+<p>&#x8FD9;&#x8FB9;&#x5EFA;&#x8BAE;&#x4F60;&#x518D;&#x53BB;&#x719F;&#x6089;&#x4E00;&#x4E0B;&#x6E32;&#x67D3;&#x6D41;&#x7A0B;&#xFF0C;&#x82F1;&#x6587;&#x7EC4;&#x4EF6;B&#x7684;vnode&#x4F9D;&#x65E7;&#x6CA1;&#x6709;&#x53D1;&#x751F;&#x53D8;&#x5316;&#xFF0C;&#x9700;&#x8981;&#x7684;&#x662F;&#x7EC4;&#x4EF6;A&#x521B;&#x5EFA;&#x65B0;&#x7684;&#x7EC4;&#x4EF6;B&#x7684;vnode&#x624D;&#x80FD;&#x8FBE;&#x5230;&#x4F60;&#x7684;&#x6548;&#x679C;&#x3002;</p>
+<h3 id="&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;">&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;</h3>
+<p>&#x4E3A;&#x4E86;&#x4F7F;&#x7EC4;&#x4EF6;B&#x66F4;&#x65B0;&#xFF0C;&#x53EF;&#x4EE5;&#x968F;&#x4FBF;&#x7ED1;&#x5B9A;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x7D66;B&#xFF0C;&#x6BD4;&#x5982;</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">B</span> <span class="hljs-attr">:asd</span>=<span class="hljs-string">&quot;record&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">B</span>&gt;</span>
+</code></pre>
+<p>&#x6216;&#x8005;</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">B</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;opacity: 0&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">B</span>&gt;</span>
+</code></pre>
+<h3 id="&#x5173;&#x4E8E;&#x4FEE;&#x590D;">&#x5173;&#x4E8E;&#x4FEE;&#x590D;</h3>
+<h5 id="&#x539F;&#x59CB;&#x95EE;&#x9898;&#xFF1A;httpsgithubcomvuejsvue-nextissues2618">&#x539F;&#x59CB;&#x95EE;&#x9898;&#xFF1A;<a href="https://github.com/vuejs/vue-next/issues/2618" target="_blank">https://github.com/vuejs/vue-next/issues/2618</a></h5>
+<p><strong>&#x4FEE;&#x590D;&#x65B9;&#x6CD5;</strong>&#xFF1A;<a href="https://github.com/vuejs/vue-next/pull/2568/files" target="_blank">https://github.com/vuejs/vue-next/pull/2568/files</a></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="compile-core.html" class="navigation navigation-prev " aria-label="Previous page: compile">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="问题集合.html" class="navigation navigation-next " aria-label="Next page: 问题集合">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"为什么在slot中事件没有更新","level":"1.4.2","depth":2,"next":{"title":"问题集合","level":"1.4.3","depth":2,"path":"Packages/compile-core/问题集合.md","ref":"Packages/compile-core/问题集合.md","articles":[]},"previous":{"title":"compile","level":"1.4.1","depth":2,"path":"Packages/compile-core/compile-core.md","ref":"Packages/compile-core/compile-core.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Packages/compile-core/为什么在slot中事件没有更新.md","mtime":"2020-11-22T16:56:54.725Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-27T06:43:10.740Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
