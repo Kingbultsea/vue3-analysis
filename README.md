@@ -12,7 +12,7 @@ vue3中重要的包：Reactivity、runtime-x和 compile-x。
 <div style="align: center;display: flex;justify-content: center;">
 <img src="https://res.psy-1.com/FiliFdZcSPATp8w3p9UJO71soIId"/>
 </div>
-
+![png](https://res.psy-1.com/Fnx65xPBBRn9FD_pT791__nK9ky_)
 
 gitbook链接：https://kingbultsea.github.io/vue3-analysis/book/index.html
 
@@ -45,8 +45,6 @@ rendererAttrsFallthrough.spec.ts
 在微任务内部打上断点debugger，单步调试时，直接点击跳转到下一个断点即可。
 
 ## Reactivity
-![png](https://res.psy-1.com/Fnx65xPBBRn9FD_pT791__nK9ky_)
-
 Reactivity是响应式数据包，vue3中可以使用ref和relative来进行响应式数据化，这个包涉及三个概念effect、track、trigger，
 effect(fn)就好比添加影响，fn执行的过程中，遇到响应式数据取值，则触发响应式数据所获取的字段的track，
 添加追踪当前激活的effect，当有事件触发响应式数据对应的字段的修改值的行为时，将会trigger，触发所追踪的effect，再次执行fn的流程。
