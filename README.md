@@ -12,7 +12,10 @@ vue3中重要的包：Reactivity、runtime-x和 compile-x。
 <div style="align: center;display: flex;justify-content: center;">
 <img src="https://res.psy-1.com/FiliFdZcSPATp8w3p9UJO71soIId"/>
 </div>
-![png](https://res.psy-1.com/Fnx65xPBBRn9FD_pT791__nK9ky_)
+
+<div style="align: center;display: flex;justify-content: center;">
+<img src="https://res.psy-1.com/Fnx65xPBBRn9FD_pT791__nK9ky_"/>
+</div>
 
 gitbook链接：https://kingbultsea.github.io/vue3-analysis/book/index.html
 
