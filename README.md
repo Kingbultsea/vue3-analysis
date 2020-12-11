@@ -5,7 +5,7 @@ vue3中重要的包：Reactivity、runtime-x和 compile-x。
 
 ##### （最后更新时间：2020年12月11日02点00分）
 
-（不懂的，想来学习的，或者是想交流的欢迎进群54266285讨论。目前gitbook还没有整理，有些知识点可能比较乱，表述得不清楚，可以进群探讨）
+（不懂的，想来学习的，或者是想交流的欢迎进群54266285讨论，欢迎大家呀~。目前gitbook还没有整理，有些知识点可能比较乱，表述得不清楚，可以进群探讨）
 
 <div style="align: center;display: flex;justify-content: center;">
 <img src="https://res.psy-1.com/Fnx65xPBBRn9FD_pT791__nK9ky_"/>
