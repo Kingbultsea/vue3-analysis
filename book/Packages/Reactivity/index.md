@@ -4,7 +4,7 @@
 
 ## watchEffect例子
 
-![镜.png](https://res.psy-1.com/Fh0zdTeVNOMNuZhqUBvilNpar9ZX)
+![镜.png](https://res.psy-1.com/FpccJXU0JOa8Dr1anVnx126iBB64)
 
 # 响应式
 

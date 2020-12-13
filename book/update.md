@@ -10,4 +10,4 @@
 
 > “我也能联想到这个关系到收集响应值及所依赖的，就是不太懂它是怎么做到上面那样功能的，是将传过去的函数转成字符串再进行文本解析出响应值吗”
 
-![镜.png](https://res.psy-1.com/Fh0zdTeVNOMNuZhqUBvilNpar9ZX)
+![镜.png](https://res.psy-1.com/FpccJXU0JOa8Dr1anVnx126iBB64)
