@@ -175,9 +175,9 @@ const modifierGuards: Record<
 
 Function
 
+
+
 ## patchEvent
-
-
 
 ```typescript
 export function patchEvent(
@@ -190,4 +190,133 @@ export function patchEvent(
     // ...
 }
 ```
+
+
+
+## withDirectives
+
+设置了vnode.dirs，会在组件的mountElement检测到dirs，调用：
+
+```typescript
+invokeDirectiveHook(vnode, null, parentComponent, 'beforeMount')
+```
+
+#### Example
+
+```html
+<input v-model="foo"/>
+```
+
+```typescript
+import { vModelText as _vModelText, createVNode as _createVNode, withDirectives as _withDirectives, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return _withDirectives((_openBlock(), _createBlock("input", {
+    "onUpdate:modelValue": $event => (_ctx.foo = $event)
+  }, null, 8 /* PROPS */, ["onUpdate:modelValue"])),  // vnode
+                         
+  [
+    [_vModelText, _ctx.foo]
+  ] // directives
+                        )
+}
+```
+
+```typescript
+/**
+ * Adds directives to a VNode.
+ */
+export function withDirectives<T extends VNode>(
+  vnode: T,
+  directives: DirectiveArguments
+): T {
+  const internalInstance = currentRenderingInstance // 渲染组件的步骤3中的renderComponentRoot 会设置 为 当前Instance
+  if (internalInstance === null) {
+    __DEV__ && warn(`withDirectives can only be used inside render functions.`)
+    return vnode
+  }
+  const instance = internalInstance.proxy
+  const bindings: DirectiveBinding[] = vnode.dirs || (vnode.dirs = [])
+  for (let i = 0; i < directives.length; i++) {
+    let [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i]
+    if (isFunction(dir)) { // directive： [_vModelText, _ctx.foo]
+      dir = {
+        mounted: dir,
+        updated: dir
+      } as ObjectDirective
+    }
+    bindings.push({ // _vModelText 是对象 _ctx.foo 是ref 或者 reactive
+      dir,
+      instance,
+      value,
+      oldValue: void 0,
+      arg,
+      modifiers
+    })
+  }
+  return vnode
+}
+```
+
+
+
+## invokeDirectiveHook
+
+```typescript
+export function invokeDirectiveHook(
+  vnode: VNode,
+  prevVNode: VNode | null,
+  instance: ComponentInternalInstance | null,
+  name: keyof ObjectDirective
+) {
+  const bindings = vnode.dirs!
+  const oldBindings = prevVNode && prevVNode.dirs!
+  for (let i = 0; i < bindings.length; i++) {
+    const binding = bindings[i]
+    if (oldBindings) {
+      binding.oldValue = oldBindings[i].value
+    }
+    const hook = binding.dir[name] as DirectiveHook | undefined
+    if (hook) {
+      callWithAsyncErrorHandling(hook, instance, ErrorCodes.DIRECTIVE_HOOK, [
+        vnode.el,
+        binding,
+        vnode,
+        prevVNode
+      ])
+    }
+  }
+}
+```
+
+
+
+#### Examlple
+
+##### v-model指令
+
+```typescript
+// mountComponent
+if (
+      (vnodeHook = props && props.onVnodeMounted) ||
+      (transition && !transition.persisted) ||
+      dirs
+    ) {
+      queuePostRenderEffect(() => {
+        vnodeHook && invokeVNodeHook(vnodeHook, parentComponent, vnode)
+        transition && !transition.persisted && transition.enter(el)
+        dirs && invokeDirectiveHook(vnode, null, parentComponent, 'mounted')
+      }, parentSuspense) // 进入队列
+    }
+
+// patchElement
+if ((vnodeHook = newProps.onVnodeUpdated) || dirs) {
+      queuePostRenderEffect(() => {
+        vnodeHook && invokeVNodeHook(vnodeHook, parentComponent, n2, n1)
+        dirs && invokeDirectiveHook(n2, n1, parentComponent, 'updated')
+      }, parentSuspense) // parentSuspense为null 所以启动的是 queuePostFlushCb() 进入队列
+    }
+```
+
+实际上和hook没有任何关系，因为设置withDirectives的时候，传入directive的是[vModelText, _ctx.foo] 一个是对象，一个是值。
 
