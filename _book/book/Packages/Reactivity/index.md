@@ -1,3 +1,11 @@
+# 来个漫画？
+
+![png](https://res.psy-1.com/Fnx65xPBBRn9FD_pT791__nK9ky_)
+
+## watchEffect例子
+
+![镜.png](https://res.psy-1.com/FpccJXU0JOa8Dr1anVnx126iBB64)
+
 # 响应式
 
 先看以下与响应式相关常用API有哪些。

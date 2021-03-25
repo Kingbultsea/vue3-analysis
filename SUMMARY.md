@@ -1,5 +1,5 @@
 # Summary
-* [今日更新](./更新/2020年12月13日22-42.md)
+* [今日更新](./Packages/BUGS/iframe-bug.md)
 * [介绍](README.md)
 
 * Runtime
@@ -20,5 +20,9 @@
     * [compile](Packages/compile-core/compile-core.md)
     * [为什么在slot中事件没有更新](Packages/compile-core/为什么在slot中事件没有更新.md)
     * [问题集合](Packages/compile-core/问题集合.md)
+
 * API DOC
     * [API](Packages/API_DOC/index.md)
+
+* BUGS
+    * [iframe](Packages/BUGS/iframe-bug.md)
